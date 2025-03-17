@@ -1,0 +1,1 @@
+{"version":3,"file":"140.bundle.js","mappings":"2IAEA,MAIA,EAJ2BA,IAClBC,EAAAA,cAAA,WAAK,c","sources":["webpack://my_pra/./src/pages/NotFound.tsx"],"sourcesContent":["import React from \"react\";\n\nconst NotFound: React.FC = () => {\n  return <div>404 - 页面未找到</div>;\n};\n\nexport default NotFound;\n"],"names":["NotFound","React"],"sourceRoot":""}

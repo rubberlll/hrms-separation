@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkmy_pra=self.webpackChunkmy_pra||[]).push([[610],{8610:(e,t,r)=>{r.r(t),r.d(t,{default:()=>n});var a=r(6540),s=r(1568),c=r(2941),l=r(6744);const n=()=>{const e=(0,l.Zp)();return a.createElement(s.Ay,{status:"403",title:"403",subTitle:"对不起，您没有权限访问此页面",extra:a.createElement(c.Ay,{type:"primary",onClick:()=>e("/")},"返回首页")})}}}]);
+//# sourceMappingURL=610.bundle.js.map
