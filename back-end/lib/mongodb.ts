@@ -15,7 +15,8 @@ declare global {
 }
 
 const MONGODB_URI =
-  process.env.MONGODB_URI || "mongodb://localhost:27017/hrm-system";
+  process.env.MONGODB_URI ||
+  "mongodb+srv://3048318664:123456Admin@cluster0.xiggqvc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
 if (!MONGODB_URI) {
   throw new Error("请在环境变量中定义 MONGODB_URI");
