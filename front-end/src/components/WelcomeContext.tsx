@@ -1,9 +1,9 @@
 import React from "react";
 import { Carousel } from "antd";
 import { Image } from "antd";
-const manage = require("../assets/images/manage.jpg");
-const work = require("../assets/images/work.jpg");
-const teamwork = require("../assets/images/teamwork.jpg");
+import manage from "../assets/images/manage.jpg";
+import work from "../assets/images/work.jpg";
+import teamwork from "../assets/images/teamwork.jpg";
 const contentStyle: React.CSSProperties = {
   margin: 0,
   height: "40px",
@@ -23,29 +23,17 @@ const WelcomeContext: React.FC = () => {
       <h3 style={fontStyle}>祝您工作愉快</h3>
       <Carousel afterChange={onChange} autoplay arrows infinite={true}>
         <div>
-          <Image
-            width={"100%"}
-            height={360}
-            src={require("../assets/images/manage.jpg")}
-          />
+          <Image width={"100%"} height={360} src={manage} />
           <h3 style={contentStyle}></h3>
         </div>
 
         <div>
-          <Image
-            width={"100%"}
-            height={360}
-            src={require("../assets/images/work.jpg")}
-          />
+          <Image width={"100%"} height={360} src={work} />
           <h3 style={contentStyle}></h3>
         </div>
 
         <div>
-          <Image
-            width={"100%"}
-            height={360}
-            src={require("../assets/images/teamwork.jpg")}
-          />
+          <Image width={"100%"} height={360} src={teamwork} />
           <h3 style={contentStyle}></h3>
         </div>
       </Carousel>

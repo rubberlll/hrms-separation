@@ -165,7 +165,7 @@ const UserDetail: React.FC = () => {
       </Space>
       <Table
         dataSource={employeeOnly}
-        columns={columns}
+        columns={columns as any}
         rowKey="key"
         pagination={{ pageSize: 10 }}
       />

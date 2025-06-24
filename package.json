@@ -1,0 +1,19 @@
+{
+  "name": "hrms-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "npm --prefix back-end run dev:next",
+    "dev:frontend": "npm --prefix front-end run dev",
+    "build": "npm run build:backend && npm run build:frontend",
+    "build:backend": "npm --prefix back-end run build:next",
+    "build:frontend": "npm --prefix front-end run build",
+    "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
+    "start:backend": "npm --prefix back-end run start:next",
+    "start:frontend": "npm --prefix front-end run start"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
