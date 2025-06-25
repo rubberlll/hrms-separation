@@ -3,10 +3,9 @@ import type { FormProps } from "antd";
 import { Button, Checkbox, Form, Input, Card, message, Tabs } from "antd";
 import "./login.less";
 import { useNavigate } from "react-router-dom";
-// 修改图片导入方式为 require 方式
-const navigatingImage = require("@/assets/images/Navigating.jpg");
-import { useLoginStore } from "@/store/useLoginStore";
-import request from "@/utils/request";
+import navigatingImage from "../../assets/images/Navigating.jpg";
+import { useLoginStore } from "../../store/useLoginStore";
+import request from "../../utils/request";
 import { CheckCircleOutlined } from "@ant-design/icons";
 
 type FieldType = {
@@ -77,10 +76,7 @@ const Login: React.FC = () => {
   return (
     <div className="loginContainer">
       {contextHolder}
-      <Card
-        style={{ width: 500 }}
-        cover={<img alt="navigating" src={navigatingImage} />}
-      >
+      <Card cover={<img alt="navigating" src={navigatingImage} />}>
         <Tabs
           activeKey={activeTab}
           onChange={setActiveTab}
