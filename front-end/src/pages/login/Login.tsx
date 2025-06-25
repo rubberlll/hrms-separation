@@ -7,7 +7,11 @@ import navigatingImage from "../../assets/images/Navigating.jpg";
 import { useLoginStore } from "../../store/useLoginStore";
 import request from "../../utils/request";
 import { CheckCircleOutlined } from "@ant-design/icons";
-
+import tabLeft from "../../assets/images/tabLeft.png";
+import tabRight from "../../assets/images/tabRight.png";
+import { UserOutlined, HomeOutlined } from "@ant-design/icons";
+import jobFinder from "../../assets/images/jobFinder.png";
+import recruiterFinder from "../../assets/images/recruiterFinder.png";
 type FieldType = {
   username: string;
   password: string;
@@ -26,6 +30,7 @@ const Login: React.FC = () => {
   const { setLogin } = useLoginStore();
   const [activeTab, setActiveTab] = useState("login");
   const [messageApi, contextHolder] = message.useMessage();
+  const [role, setRole] = useState<"jobseeker" | "recruiter">("jobseeker");
 
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
     const result = await setLogin({
@@ -76,140 +81,199 @@ const Login: React.FC = () => {
   return (
     <div className="loginContainer">
       {contextHolder}
-      <Card cover={<img alt="navigating" src={navigatingImage} />}>
-        <Tabs
-          activeKey={activeTab}
-          onChange={setActiveTab}
-          centered
-          items={[
-            {
-              key: "login",
-              label: "登录",
-              children: (
-                <Form
-                  name="basic"
-                  labelCol={{ span: 6 }}
-                  wrapperCol={{ span: 14 }}
-                  style={{ maxWidth: 800 }}
-                  initialValues={{ remember: true }}
-                  onFinish={onFinish}
-                  onFinishFailed={onFinishFailed}
-                  autoComplete="off"
-                >
-                  <Form.Item<FieldType>
-                    label="用户名"
-                    name="username"
-                    rules={[{ required: true, message: "请输入用户名" }]}
-                    className="loginForm"
-                  >
-                    <Input />
-                  </Form.Item>
+      <Card>
+        <div className="loginTopSwitch">
+          <div
+            className={role === "jobseeker" ? "activeLeft" : ""}
+            onClick={() => setRole("jobseeker")}
+            style={
+              role === "jobseeker"
+                ? {
+                    backgroundImage: `url(${tabLeft})`,
+                    backgroundRepeat: "no-repeat",
+                    backgroundSize: "cover",
+                  }
+                : {}
+            }
+          >
+            <UserOutlined />
+            我是求职者
+          </div>
+          <div
+            className={role === "recruiter" ? "activeRight" : ""}
+            onClick={() => setRole("recruiter")}
+            style={
+              role === "recruiter"
+                ? {
+                    backgroundImage: `url(${tabRight})`,
+                    backgroundRepeat: "no-repeat",
+                    backgroundSize: "cover",
+                  }
+                : {}
+            }
+          >
+            <HomeOutlined />
+            我是招聘方
+          </div>
+        </div>
+        <div
+          className={`loginMainContent ${
+            role === "recruiter" ? "recruiter" : ""
+          }`}
+        >
+          <div className="loginLeftForm ">
+            <Tabs
+              activeKey={activeTab}
+              onChange={setActiveTab}
+              centered
+              items={[
+                {
+                  key: "login",
+                  label: "登录",
+                  children: (
+                    <Form
+                      name="basic"
+                      labelCol={{ span: 6 }}
+                      wrapperCol={{ span: 14 }}
+                      style={{ maxWidth: 400 }}
+                      initialValues={{ remember: true }}
+                      onFinish={onFinish}
+                      onFinishFailed={onFinishFailed}
+                      autoComplete="off"
+                    >
+                      <Form.Item<FieldType>
+                        label="用户名"
+                        name="username"
+                        rules={[{ required: true, message: "请输入用户名" }]}
+                        className="loginForm"
+                      >
+                        <Input />
+                      </Form.Item>
 
-                  <Form.Item<FieldType>
-                    label="密码"
-                    name="password"
-                    rules={[{ required: true, message: "请输入密码" }]}
-                  >
-                    <Input.Password />
-                  </Form.Item>
+                      <Form.Item<FieldType>
+                        label="密码"
+                        name="password"
+                        rules={[{ required: true, message: "请输入密码" }]}
+                      >
+                        <Input.Password />
+                      </Form.Item>
 
-                  <Form.Item<FieldType>
-                    name="remember"
-                    valuePropName="checked"
-                    wrapperCol={{ offset: 6, span: 14 }}
-                    label={null}
-                  >
-                    <Checkbox>记住密码</Checkbox>
-                  </Form.Item>
+                      <Form.Item<FieldType>
+                        name="remember"
+                        valuePropName="checked"
+                        wrapperCol={{ offset: 6, span: 14 }}
+                        label={null}
+                      >
+                        <Checkbox>记住密码</Checkbox>
+                      </Form.Item>
 
-                  <Form.Item wrapperCol={{ offset: 10, span: 3 }} label={null}>
-                    <Button type="primary" htmlType="submit">
-                      登录
-                    </Button>
-                  </Form.Item>
-                </Form>
-              ),
-            },
-            {
-              key: "register",
-              label: "注册",
-              children: (
-                <Form
-                  name="register"
-                  labelCol={{ span: 6 }}
-                  wrapperCol={{ span: 14 }}
-                  style={{ maxWidth: 800 }}
-                  onFinish={onRegisterFinish}
-                  onFinishFailed={onRegisterFinishFailed}
-                  autoComplete="off"
-                >
-                  <Form.Item
-                    label="用户名"
-                    name="username"
-                    rules={[
-                      { required: true, message: "请输入用户名" },
-                      { min: 3, message: "用户名至少3个字符" },
-                    ]}
-                  >
-                    <Input />
-                  </Form.Item>
+                      <Form.Item
+                        wrapperCol={{ offset: 10, span: 3 }}
+                        label={null}
+                      >
+                        <Button type="primary" htmlType="submit">
+                          登录
+                        </Button>
+                      </Form.Item>
+                    </Form>
+                  ),
+                },
+                {
+                  key: "register",
+                  label: "注册",
+                  children: (
+                    <Form
+                      name="register"
+                      labelCol={{ span: 6 }}
+                      wrapperCol={{ span: 14 }}
+                      style={{ maxWidth: 400 }}
+                      onFinish={onRegisterFinish}
+                      onFinishFailed={onRegisterFinishFailed}
+                      autoComplete="off"
+                    >
+                      <Form.Item
+                        label="用户名"
+                        name="username"
+                        rules={[
+                          { required: true, message: "请输入用户名" },
+                          { min: 3, message: "用户名至少3个字符" },
+                        ]}
+                      >
+                        <Input />
+                      </Form.Item>
 
-                  <Form.Item
-                    label="邮箱"
-                    name="email"
-                    rules={[
-                      {
-                        required: true,
-                        type: "email",
-                        message: "请输入有效的邮箱地址",
-                      },
-                    ]}
-                  >
-                    <Input />
-                  </Form.Item>
+                      <Form.Item
+                        label="邮箱"
+                        name="email"
+                        rules={[
+                          {
+                            required: true,
+                            type: "email",
+                            message: "请输入有效的邮箱地址",
+                          },
+                        ]}
+                      >
+                        <Input />
+                      </Form.Item>
 
-                  <Form.Item
-                    label="密码"
-                    name="password"
-                    rules={[
-                      { required: true, message: "请输入密码" },
-                      { min: 6, message: "密码至少6个字符" },
-                    ]}
-                  >
-                    <Input.Password />
-                  </Form.Item>
+                      <Form.Item
+                        label="密码"
+                        name="password"
+                        rules={[
+                          { required: true, message: "请输入密码" },
+                          { min: 6, message: "密码至少6个字符" },
+                        ]}
+                      >
+                        <Input.Password />
+                      </Form.Item>
 
-                  <Form.Item
-                    label="确认密码"
-                    name="confirmPassword"
-                    dependencies={["password"]}
-                    rules={[
-                      { required: true, message: "请确认密码" },
-                      ({ getFieldValue }) => ({
-                        validator(_, value) {
-                          if (!value || getFieldValue("password") === value) {
-                            return Promise.resolve();
-                          }
-                          return Promise.reject(
-                            new Error("两次输入的密码不一致")
-                          );
-                        },
-                      }),
-                    ]}
-                  >
-                    <Input.Password />
-                  </Form.Item>
+                      <Form.Item
+                        label="确认密码"
+                        name="confirmPassword"
+                        dependencies={["password"]}
+                        rules={[
+                          { required: true, message: "请确认密码" },
+                          ({ getFieldValue }) => ({
+                            validator(_, value) {
+                              if (
+                                !value ||
+                                getFieldValue("password") === value
+                              ) {
+                                return Promise.resolve();
+                              }
+                              return Promise.reject(
+                                new Error("两次输入的密码不一致")
+                              );
+                            },
+                          }),
+                        ]}
+                      >
+                        <Input.Password />
+                      </Form.Item>
 
-                  <Form.Item wrapperCol={{ offset: 10, span: 3 }} label={null}>
-                    <Button type="primary" htmlType="submit">
-                      注册
-                    </Button>
-                  </Form.Item>
-                </Form>
-              ),
-            },
-          ]}
-        />
+                      <Form.Item
+                        wrapperCol={{ offset: 10, span: 3 }}
+                        label={null}
+                      >
+                        <Button type="primary" htmlType="submit">
+                          注册
+                        </Button>
+                      </Form.Item>
+                    </Form>
+                  ),
+                },
+              ]}
+            />
+          </div>
+          <div className="loginRightImg">
+            <img
+              src={role === "jobseeker" ? jobFinder : recruiterFinder}
+              alt="二维码"
+              className="qrImg"
+              style={{ cursor: "pointer" }}
+            />
+          </div>
+        </div>
       </Card>
     </div>
   );

@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { Spin } from "antd";
 import { RouterProvider } from "react-router-dom";
 import router from "./router";
 import { ConfigProvider, theme } from "antd";
@@ -13,7 +14,15 @@ function App() {
         algorithm: isDarkMode ? theme.darkAlgorithm : theme.defaultAlgorithm,
       }}
     >
-      <Suspense fallback={<div>加载中...</div>}>
+      <Suspense
+        fallback={
+          <Spin
+            tip="加载中..."
+            size="large"
+            style={{ width: "100%", marginTop: "20vh" }}
+          />
+        }
+      >
         <RouterProvider router={router} />
       </Suspense>
     </ConfigProvider>
