@@ -1,23 +1,23 @@
 .loginContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
   background: linear-gradient(
     135deg,
     #ff5c10 0%,
     #e1e1e1 50%,
     rgb(87, 156, 224) 100%
   );
-
   background-position: center;
   background-repeat: no-repeat;
   backdrop-filter: blur(10px);
-}
-
-body,
-html {
-  overflow: hidden;
+  z-index: 9999;
 }
 
 // 让登录卡片接近背景宽度

@@ -29,40 +29,71 @@ const router = createBrowserRouter([
   },
   {
     path: "/",
-    element: <PrivateRoute children={<Home />} />,
+    element: (
+      <PrivateRoute>
+        <Home />
+      </PrivateRoute>
+    ),
     children: [
       {
         index: true,
         Component: Welcome,
       },
-
       {
         path: "user",
-        Component: User,
+        element: (
+          <PrivateRoute roles={["admin", "hr", "employee", "user"]}>
+            <User />
+          </PrivateRoute>
+        ),
       },
       {
-        path: "/recruitment/resume",
-        Component: Resume,
+        path: "recruitment/resume",
+        element: (
+          <PrivateRoute roles={["admin", "hr", "user"]}>
+            <Resume />
+          </PrivateRoute>
+        ),
       },
       {
-        path: "/recruitment/jobs",
-        Component: Job,
+        path: "recruitment/jobs",
+        element: (
+          <PrivateRoute roles={["admin", "hr", "employee", "user"]}>
+            <Job />
+          </PrivateRoute>
+        ),
       },
       {
-        path: "/recruitment/apply",
-        element: <ApplyPage />,
+        path: "recruitment/apply",
+        element: (
+          <PrivateRoute roles={["admin", "hr", "employee", "user"]}>
+            <ApplyPage />
+          </PrivateRoute>
+        ),
       },
       {
-        path: "/recruitment/my-applications",
-        element: <MyApplications />,
+        path: "recruitment/my-applications",
+        element: (
+          <PrivateRoute roles={["admin", "hr", "employee", "user"]}>
+            <MyApplications />
+          </PrivateRoute>
+        ),
       },
       {
-        path: "/permission-management",
-        element: <PermissionManagement />,
+        path: "permission-management",
+        element: (
+          <PrivateRoute roles={["admin"]}>
+            <PermissionManagement />
+          </PrivateRoute>
+        ),
       },
       {
-        path: "/department",
-        element: <Department />,
+        path: "department",
+        element: (
+          <PrivateRoute roles={["admin", "hr"]}>
+            <Department />
+          </PrivateRoute>
+        ),
       },
     ],
   },
