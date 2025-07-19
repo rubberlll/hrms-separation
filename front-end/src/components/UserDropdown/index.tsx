@@ -15,6 +15,7 @@ import { useLoginStore } from "../../store/useLoginStore";
 import { useThemeStore } from "../../store/useThemeStore";
 import request from "../../utils/request";
 import "./index.less";
+import { useNavigate } from "react-router-dom";
 
 const UserDropdown: React.FC = () => {
   const logout = useLoginStore((state) => state.logout);
@@ -25,6 +26,7 @@ const UserDropdown: React.FC = () => {
   const [isSettingsModalVisible, setIsSettingsModalVisible] = useState(false);
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (user) {
@@ -136,7 +138,10 @@ const UserDropdown: React.FC = () => {
 
             {/* 菜单项 */}
             <div className="menu-section">
-              <div className="menu-item">
+              <div
+                className="menu-item"
+                onClick={() => navigate("/user-center")}
+              >
                 <div className="menu-content">
                   <UserOutlined className="menu-icon" />
                   <span>个人中心</span>

@@ -14,6 +14,16 @@ interface UserInfo {
   avatar?: string;
   entryDate?: string;
   employmentType?: "全职" | "兼职" | "实习";
+  // 新增个人资料字段
+  nickname?: string;
+  bio?: string;
+  location?: string;
+  graduationYear?: number;
+  education?: string;
+  school?: string;
+  major?: string;
+  jobIntention?: string;
+  jobStatus?: string;
 }
 
 interface LoginStore {

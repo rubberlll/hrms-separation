@@ -151,7 +151,7 @@ const Navbar: React.FC = () => {
                   color: "#222",
                   cursor: "pointer",
                 }}
-                onClick={() => navigate("/user")}
+                onClick={() => navigate("/user-center")}
               >
                 <UserOutlined
                   style={{ fontSize: 22, marginBottom: 2, color: "#222" }}

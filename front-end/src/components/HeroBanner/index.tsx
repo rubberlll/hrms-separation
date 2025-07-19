@@ -5,14 +5,14 @@ import "./index.less";
 
 const bannerData = [
   {
-    title: "岗位投递",
-    subtitle: "一键投递，快速入职",
-    desc: "海量岗位，一键投递，助你高效找到心仪工作。",
-  },
-  {
     title: "简历制作",
     subtitle: "生成简历，提升竞争力",
     desc: "markdown编辑，极简模版，让你的简历出彩。",
+  },
+  {
+    title: "岗位投递",
+    subtitle: "一键投递，快速入职",
+    desc: "海量岗位，一键投递，助你高效找到心仪工作。",
   },
   {
     title: "企业管理",

@@ -1,0 +1,82 @@
+.ucenter-root {
+  position: relative;
+  min-height: 600px;
+  background: none;
+}
+.ucenter-header-bg {
+  width: 100%;
+  height: 180px;
+  background: linear-gradient(90deg, #ff7a00 0%, #ffe8d6 100%);
+  border-radius: 16px 16px 0 0;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 0;
+}
+.ucenter-profile-card {
+  position: relative;
+  z-index: 1;
+  margin: 0 auto;
+  margin-top: 40px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px #eee;
+  padding: 32px 32px 16px 32px;
+  max-width: 1300px;
+  display: flex;
+  align-items: flex-start;
+  gap: 32px;
+}
+.ucenter-profile-info {
+  flex: 1;
+}
+.ucenter-nickname {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+.ucenter-auth {
+  color: #888;
+  margin-bottom: 8px;
+}
+.ucenter-auth-link {
+  color: #00b96b;
+  margin-left: 8px;
+}
+.ucenter-base-tags {
+  margin-bottom: 8px;
+}
+.ucenter-bio {
+  color: #888;
+  margin-bottom: 8px;
+}
+.ucenter-profile-stats {
+  display: flex;
+  gap: 32px;
+  margin-left: 32px;
+  align-items: center;
+}
+.ucenter-profile-stat-num {
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+}
+.ucenter-profile-stat-label {
+  font-size: 13px;
+  color: #888;
+  text-align: center;
+}
+.ucenter-profile-actions {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.ucenter-tabs-card {
+  margin: 32px auto 0 auto;
+  max-width: 1300px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px #eee;
+  padding: 24px 32px;
+}

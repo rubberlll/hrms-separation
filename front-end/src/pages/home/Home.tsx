@@ -53,14 +53,16 @@ const ExperienceList = [
 
 const Home: React.FC = () => {
   return (
-    <div className="home-container">
+    <div>
       <Navbar />
       {/* 轮播图部分 */}
-      <div className="carousel-section" style={{ padding: 0 }}>
-        <HeroBanner />
+      <div className="section">
+        <div>
+          <HeroBanner />
+        </div>
       </div>
       {/* 面试经验区块 */}
-      <div className="experience-section">
+      <div className="experience-section  ">
         <h2 className="experience-title">精选面试经验</h2>
         <Row gutter={[24, 24]}>
           {ExperienceList.map((exp, idx) => (

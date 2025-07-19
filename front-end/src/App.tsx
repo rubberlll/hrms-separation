@@ -5,12 +5,16 @@ import router from "./router";
 import { ConfigProvider, theme } from "antd";
 import { useThemeStore } from "./store/useThemeStore";
 import React from "react";
+import "./styles/antd-theme.less";
 function App() {
   const { isDarkMode } = useThemeStore();
 
   return (
     <ConfigProvider
       theme={{
+        token: {
+          colorPrimary: "#ff5c10",
+        },
         algorithm: isDarkMode ? theme.darkAlgorithm : theme.defaultAlgorithm,
       }}
     >

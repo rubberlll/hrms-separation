@@ -21,6 +21,9 @@ const PermissionManagement = lazy(
   () => import("../pages/PermissionManagement")
 );
 const Department = lazy(() => import("../pages/department"));
+const UserCenter = lazy(() => import("../pages/userCenter/index"));
+
+import CLayout from "../layouts/CLayout";
 
 const router = createBrowserRouter([
   {
@@ -31,71 +34,81 @@ const router = createBrowserRouter([
     path: "/",
     element: (
       <PrivateRoute>
-        <Home />
+        <CLayout>
+          <Home />
+        </CLayout>
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/user",
+    element: (
+      <PrivateRoute roles={["admin", "hr", "employee", "user"]}>
+        <User />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/user-center",
+    element: (
+      <PrivateRoute roles={["admin", "hr", "employee", "user"]}>
+        <CLayout />
       </PrivateRoute>
     ),
     children: [
       {
         index: true,
-        Component: Welcome,
-      },
-      {
-        path: "user",
-        element: (
-          <PrivateRoute roles={["admin", "hr", "employee", "user"]}>
-            <User />
-          </PrivateRoute>
-        ),
-      },
-      {
-        path: "recruitment/resume",
-        element: (
-          <PrivateRoute roles={["admin", "hr", "user"]}>
-            <Resume />
-          </PrivateRoute>
-        ),
-      },
-      {
-        path: "recruitment/jobs",
-        element: (
-          <PrivateRoute roles={["admin", "hr", "employee", "user"]}>
-            <Job />
-          </PrivateRoute>
-        ),
-      },
-      {
-        path: "recruitment/apply",
-        element: (
-          <PrivateRoute roles={["admin", "hr", "employee", "user"]}>
-            <ApplyPage />
-          </PrivateRoute>
-        ),
-      },
-      {
-        path: "recruitment/my-applications",
-        element: (
-          <PrivateRoute roles={["admin", "hr", "employee", "user"]}>
-            <MyApplications />
-          </PrivateRoute>
-        ),
-      },
-      {
-        path: "permission-management",
-        element: (
-          <PrivateRoute roles={["admin"]}>
-            <PermissionManagement />
-          </PrivateRoute>
-        ),
-      },
-      {
-        path: "department",
-        element: (
-          <PrivateRoute roles={["admin", "hr"]}>
-            <Department />
-          </PrivateRoute>
-        ),
+        element: <UserCenter />,
       },
     ],
+  },
+  {
+    path: "/recruitment/resume",
+    element: (
+      <PrivateRoute roles={["admin", "hr", "user"]}>
+        <Resume />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/recruitment/jobs",
+    element: (
+      <PrivateRoute roles={["admin", "hr", "employee", "user"]}>
+        <Job />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/recruitment/apply",
+    element: (
+      <PrivateRoute roles={["admin", "hr", "employee", "user"]}>
+        <ApplyPage />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/recruitment/my-applications",
+    element: (
+      <PrivateRoute roles={["admin", "hr", "employee", "user"]}>
+        <MyApplications />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/permission-management",
+    element: (
+      <PrivateRoute roles={["admin"]}>
+        <PermissionManagement />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/department",
+    element: (
+      <PrivateRoute roles={["admin", "hr"]}>
+        <Department />
+      </PrivateRoute>
+    ),
   },
   {
     path: "/403",

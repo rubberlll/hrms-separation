@@ -14,6 +14,16 @@ export interface IUser extends Document {
   employmentType?: "全职" | "兼职" | "实习";
   createdAt: Date;
   comparePassword: (candidatePassword: string) => Promise<boolean>;
+  // 新增个人资料字段
+  nickname?: string;
+  bio?: string;
+  location?: string;
+  graduationYear?: number;
+  education?: string;
+  school?: string;
+  major?: string;
+  jobIntention?: string;
+  jobStatus?: string;
 }
 
 const UserSchema = new Schema<IUser>(
@@ -44,6 +54,16 @@ const UserSchema = new Schema<IUser>(
       type: String,
       enum: ["全职", "兼职", "实习"],
     },
+    // 新增个人资料字段
+    nickname: { type: String },
+    bio: { type: String },
+    location: { type: String },
+    graduationYear: { type: Number },
+    education: { type: String },
+    school: { type: String },
+    major: { type: String },
+    jobIntention: { type: String },
+    jobStatus: { type: String },
   },
   { timestamps: true }
 );
