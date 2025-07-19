@@ -1,7 +1,7 @@
 import React from "react";
 import Navbar from "../../components/Navbar";
 import UserDropdown from "../../components/UserDropdown/index";
-import { Carousel } from "antd";
+import HeroBanner from "../../components/HeroBanner";
 import { Card, Row, Col, Button } from "antd";
 import { GithubOutlined } from "@ant-design/icons";
 import "./home.less";
@@ -56,18 +56,8 @@ const Home: React.FC = () => {
     <div className="home-container">
       <Navbar />
       {/* 轮播图部分 */}
-      <div className="carousel-section">
-        <Carousel autoplay dots>
-          {carouselItems.map((item, idx) => (
-            <div key={idx} className="carousel-item">
-              <img src={item.img} alt={item.title} className="carousel-image" />
-              <div className="carousel-content">
-                <h2>{item.title}</h2>
-                <p>{item.desc}</p>
-              </div>
-            </div>
-          ))}
-        </Carousel>
+      <div className="carousel-section" style={{ padding: 0 }}>
+        <HeroBanner />
       </div>
       {/* 面试经验区块 */}
       <div className="experience-section">

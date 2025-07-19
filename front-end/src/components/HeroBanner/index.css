@@ -1,0 +1,77 @@
+.hero-banner-carousel .slick-dots {
+  bottom: 32px;
+}
+.hero-banner-slide {
+  margin-top: 72px;
+  height: 240px;
+  min-height: 180px;
+  background: #ffffff;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0 5vw;
+  position: relative;
+}
+.hero-banner-multi {
+  justify-content: space-between;
+}
+.hero-banner-card {
+  background: #ff7a00;
+  border-radius: 16px;
+  flex: 1;
+  margin: 0 12px;
+  padding: 24px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  transition: box-shadow 0.2s;
+}
+.hero-banner-card:first-child {
+  margin-left: 0;
+}
+.hero-banner-card:last-child {
+  margin-right: 0;
+}
+.hero-banner-badge {
+  background: #ff7a00;
+  color: #fff;
+  border-radius: 20px;
+  padding: 4px 14px;
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 12px;
+  display: inline-block;
+}
+.hero-banner-title {
+  font-size: 24px;
+  font-weight: 900;
+  color: #fff;
+  margin-bottom: 8px;
+  line-height: 1.1;
+}
+.hero-banner-subtitle {
+  font-size: 16px;
+  color: #fff;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+.hero-banner-desc {
+  font-size: 13px;
+  color: #fff;
+  margin-bottom: 14px;
+}
+.hero-banner-btns {
+  display: flex;
+  gap: 10px;
+}
+.hero-banner-main-btn {
+  background: #ff7a00;
+  border-color: #ff7a00;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 0 16px;
+  height: 32px;
+  font-size: 13px;
+}

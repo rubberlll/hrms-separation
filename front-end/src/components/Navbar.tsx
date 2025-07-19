@@ -12,7 +12,7 @@ import {
 
 const navMenus = [
   { key: "/", label: "首页" },
-  { key: "/recruitment/jobs", label: "职位" },
+  { key: "/recruitment/jobs", label: "岗位投递" },
   { key: "/recruitment/my-applications", label: "我的投递" },
   { key: "/recruitment/resume", label: "简历制作" },
 ];
@@ -87,7 +87,7 @@ const Navbar: React.FC = () => {
           <Input
             placeholder="搜索职位、公司..."
             style={{
-              width: 300,
+              width: 260,
               borderRadius: 4,
               border: "1px solid #e8e8e8",
               borderRight: "none",
