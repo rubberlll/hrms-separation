@@ -101,17 +101,168 @@ const UserDropdown: React.FC = () => {
     },
   ];
 
+  const [isHovered, setIsHovered] = useState(false);
+
   return (
     <>
-      <Dropdown menu={{ items }}>
-        <a onClick={(e) => e.preventDefault()}>
-          <Space>
-            <UserAvatar />
-            <span>{username || "用户"}</span>
-            <DownOutlined />
-          </Space>
-        </a>
-      </Dropdown>
+      <div
+        style={{
+          position: "relative",
+          cursor: "pointer",
+          transition: "transform 0.2s ease",
+          display: "inline-block",
+        }}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        <div
+          style={{
+            transform: isHovered
+              ? "scale(2) translate(-10px, 5px)"
+              : "scale(1) translate(0, 0)",
+            transition: "transform 0.2s ease",
+            zIndex: isHovered ? 1001 : 1,
+          }}
+        >
+          <UserAvatar />
+        </div>
+
+        {/* 自定义下拉卡片 */}
+        {isHovered && (
+          <div
+            style={{
+              position: "absolute",
+              top: "30px",
+              left: "-100px",
+              width: "280px",
+              background: "#fff",
+              borderRadius: "12px",
+              boxShadow: "0 4px 20px rgba(0, 0, 0, 0.15)",
+              border: "1px solid #f0f0f0",
+              zIndex: 1000,
+              padding: "60px 20px 20px",
+            }}
+          >
+            {/* 用户信息区域 */}
+            <div style={{ textAlign: "center", marginBottom: "20px" }}>
+              <div
+                style={{
+                  fontSize: "18px",
+                  fontWeight: "bold",
+                  marginBottom: "8px",
+                }}
+              >
+                {username || "用户"}
+              </div>
+              <div
+                style={{
+                  fontSize: "12px",
+                  color: "#666",
+                  marginBottom: "16px",
+                }}
+              >
+                用户等级: LV1
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-around",
+                  fontSize: "14px",
+                }}
+              >
+                <div>
+                  <div style={{ fontWeight: "bold" }}>0</div>
+                  <div style={{ fontSize: "12px", color: "#666" }}>关注</div>
+                </div>
+                <div>
+                  <div style={{ fontWeight: "bold" }}>0</div>
+                  <div style={{ fontSize: "12px", color: "#666" }}>粉丝</div>
+                </div>
+                <div>
+                  <div style={{ fontWeight: "bold" }}>0</div>
+                  <div style={{ fontSize: "12px", color: "#666" }}>动态</div>
+                </div>
+              </div>
+            </div>
+
+            {/* 菜单项 */}
+            <div>
+              <div
+                style={{
+                  padding: "12px 0",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  fontSize: "14px",
+                  color: "#333",
+                }}
+                onClick={() => setIsSettingsModalVisible(true)}
+              >
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <SettingOutlined style={{ marginRight: "8px" }} />
+                  <span>设置</span>
+                </div>
+                <span style={{ fontSize: "12px", color: "#999" }}>⌘S</span>
+              </div>
+
+              <div
+                style={{
+                  height: "1px",
+                  background: "#f0f0f0",
+                  margin: "8px 0",
+                }}
+              />
+
+              <div
+                style={{
+                  padding: "12px 0",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  fontSize: "14px",
+                  color: "#333",
+                }}
+                onClick={() => toggleTheme()}
+              >
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <span>切换到{isDarkMode ? "浅色" : "深色"}主题</span>
+                </div>
+              </div>
+
+              <div
+                style={{
+                  height: "1px",
+                  background: "#f0f0f0",
+                  margin: "8px 0",
+                }}
+              />
+
+              <div
+                style={{
+                  padding: "12px 0",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  fontSize: "14px",
+                  color: "#333",
+                }}
+                onClick={() => {
+                  logout();
+                  window.location.href = "/login";
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <span>退出登录</span>
+                </div>
+                <span style={{ fontSize: "12px", color: "#999" }}>⌘P</span>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
 
       <Modal
         title="个人设置"

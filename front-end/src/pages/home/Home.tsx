@@ -1,48 +1,10 @@
 import React from "react";
+import Navbar from "../../components/Navbar";
 import UserDropdown from "../../components/UserDropdown";
 import { Carousel } from "antd";
-import { Card, Row, Col } from "antd";
+import { Card, Row, Col, Button } from "antd";
+import { GithubOutlined } from "@ant-design/icons";
 import "./home.less";
-
-// 简单Navbar组件
-const Navbar: React.FC = () => (
-  <div
-    style={{
-      width: "100%",
-      height: 60,
-      background: "#001529",
-      color: "#fff",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "space-between",
-      padding: "0 40px",
-      boxSizing: "border-box",
-      position: "sticky",
-      top: 0,
-      zIndex: 1000,
-    }}
-  >
-    <div style={{ fontSize: 22, fontWeight: 700 }}>HRMS 招聘平台</div>
-    <div style={{ display: "flex", alignItems: "center" }}>
-      <a href="/" style={{ color: "#fff", marginRight: 24 }}>
-        首页
-      </a>
-      <a href="/recruitment/jobs" style={{ color: "#fff", marginRight: 24 }}>
-        职位
-      </a>
-      <a
-        href="/recruitment/my-applications"
-        style={{ color: "#fff", marginRight: 24 }}
-      >
-        我的投递
-      </a>
-      <a href="/recruitment/resume" style={{ color: "#fff", marginRight: 24 }}>
-        简历
-      </a>
-      <UserDropdown />
-    </div>
-  </div>
-);
 
 // 轮播图内容
 const carouselItems = [
@@ -91,75 +53,37 @@ const ExperienceList = [
 
 const Home: React.FC = () => {
   return (
-    <div style={{ background: "#f5f6fa", minHeight: "100vh" }}>
+    <div className="home-container">
       <Navbar />
       {/* 轮播图部分 */}
-      <div
-        style={{
-          maxWidth: 1000,
-          margin: "32px auto 0",
-          background: "#fff",
-          borderRadius: 12,
-          boxShadow: "0 2px 8px #eee",
-          padding: 32,
-        }}
-      >
+      <div className="carousel-section">
         <Carousel autoplay dots>
           {carouselItems.map((item, idx) => (
-            <div
-              key={idx}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                height: 320,
-              }}
-            >
-              <img
-                src={item.img}
-                alt={item.title}
-                style={{
-                  width: 260,
-                  height: 180,
-                  objectFit: "cover",
-                  borderRadius: 8,
-                  marginRight: 48,
-                }}
-              />
-              <div>
-                <h2 style={{ fontSize: 28, marginBottom: 12 }}>{item.title}</h2>
-                <p style={{ fontSize: 18, color: "#666" }}>{item.desc}</p>
+            <div key={idx} className="carousel-item">
+              <img src={item.img} alt={item.title} className="carousel-image" />
+              <div className="carousel-content">
+                <h2>{item.title}</h2>
+                <p>{item.desc}</p>
               </div>
             </div>
           ))}
         </Carousel>
       </div>
       {/* 面试经验区块 */}
-      <div
-        style={{
-          maxWidth: 1000,
-          margin: "32px auto",
-          background: "#fff",
-          borderRadius: 12,
-          boxShadow: "0 2px 8px #eee",
-          padding: 32,
-        }}
-      >
-        <h2 style={{ fontWeight: 700, fontSize: 24, marginBottom: 24 }}>
-          精选面试经验
-        </h2>
+      <div className="experience-section">
+        <h2 className="experience-title">精选面试经验</h2>
         <Row gutter={[24, 24]}>
           {ExperienceList.map((exp, idx) => (
             <Col span={8} key={idx}>
               <Card
                 title={exp.title}
                 bordered={false}
-                style={{ minHeight: 180 }}
+                className="experience-card"
               >
-                <div style={{ color: "#888", marginBottom: 8 }}>
+                <div className="experience-meta">
                   {exp.company} | by {exp.author}
                 </div>
-                <div style={{ color: "#333" }}>{exp.content}</div>
+                <div className="experience-content">{exp.content}</div>
               </Card>
             </Col>
           ))}
