@@ -1,0 +1,84 @@
+.user-dropdown-container {
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  display: inline-block;
+}
+.avatar-wrapper {
+  transition: transform 0.2s ease;
+  position: relative;
+}
+.avatar-wrapper.hovered {
+  transform: scale(2) translate(0px, 5px);
+  z-index: 1001;
+}
+.avatar-wrapper.normal {
+  transform: scale(1) translate(0, 0);
+  z-index: 1;
+}
+.dropdown-card {
+  position: absolute;
+  top: 26px;
+  left: -120px;
+  width: 280px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  border: 1px solid #f0f0f0;
+  z-index: 1000;
+  padding: 60px 20px 20px;
+}
+.user-info-section {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.user-info-section .username {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+.user-info-section .user-level {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 16px;
+}
+.user-info-section .user-stats {
+  display: flex;
+  justify-content: space-around;
+  font-size: 14px;
+}
+.user-info-section .user-stats .stat-item .stat-number {
+  font-weight: bold;
+}
+.user-info-section .user-stats .stat-item .stat-label {
+  font-size: 12px;
+  color: #666;
+}
+.menu-section .menu-item {
+  padding: 12px 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+  color: #333;
+}
+.menu-section .menu-item:hover {
+  background-color: #f5f5f5;
+}
+.menu-section .menu-item .menu-content {
+  display: flex;
+  align-items: center;
+}
+.menu-section .menu-item .menu-content .menu-icon {
+  margin-right: 8px;
+}
+.menu-section .menu-item .menu-shortcut {
+  font-size: 12px;
+  color: #999;
+}
+.menu-section .menu-divider {
+  height: 1px;
+  background: #f0f0f0;
+  margin: 8px 0;
+}

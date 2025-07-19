@@ -1,28 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { DownOutlined, SettingOutlined } from "@ant-design/icons";
-import type { App, MenuProps } from "antd";
 import {
-  Dropdown,
-  Space,
-  theme,
-  Modal,
-  Form,
-  Input,
-  DatePicker,
-  Select,
-  message,
-} from "antd";
-import UserAvatar from "./UserAvater";
-import { useLoginStore } from "../store/useLoginStore";
-import { useThemeStore } from "../store/useThemeStore";
-import request from "../utils/request";
+  SettingOutlined,
+  FileTextOutlined,
+  StarOutlined,
+  UserOutlined,
+  LogoutOutlined,
+  RightOutlined,
+  BgColorsOutlined,
+} from "@ant-design/icons";
+import type { App, MenuProps } from "antd";
+import { Modal, Form, Input, DatePicker, Select, message, Tag } from "antd";
+import UserAvatar from "../UserAvater";
+import { useLoginStore } from "../../store/useLoginStore";
+import { useThemeStore } from "../../store/useThemeStore";
+import request from "../../utils/request";
+import "./index.less";
 
 const UserDropdown: React.FC = () => {
   const logout = useLoginStore((state) => state.logout);
   const user = useLoginStore((state) => state.userInfo);
   const toggleTheme = useThemeStore((state) => state.toggleTheme);
   const isDarkMode = useThemeStore((state) => state.isDarkMode);
-  const { token } = theme.useToken();
   const [username, setUsername] = useState<string>("");
   const [isSettingsModalVisible, setIsSettingsModalVisible] = useState(false);
   const [form] = Form.useForm();
@@ -106,158 +104,73 @@ const UserDropdown: React.FC = () => {
   return (
     <>
       <div
-        style={{
-          position: "relative",
-          cursor: "pointer",
-          transition: "transform 0.2s ease",
-          display: "inline-block",
-        }}
+        className="user-dropdown-container"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        <div
-          style={{
-            transform: isHovered
-              ? "scale(2) translate(-10px, 5px)"
-              : "scale(1) translate(0, 0)",
-            transition: "transform 0.2s ease",
-            zIndex: isHovered ? 1001 : 1,
-          }}
-        >
+        <div className={`avatar-wrapper ${isHovered ? "hovered" : "normal"}`}>
           <UserAvatar />
         </div>
 
         {/* 自定义下拉卡片 */}
         {isHovered && (
-          <div
-            style={{
-              position: "absolute",
-              top: "30px",
-              left: "-100px",
-              width: "280px",
-              background: "#fff",
-              borderRadius: "12px",
-              boxShadow: "0 4px 20px rgba(0, 0, 0, 0.15)",
-              border: "1px solid #f0f0f0",
-              zIndex: 1000,
-              padding: "60px 20px 20px",
-            }}
-          >
+          <div className="dropdown-card">
             {/* 用户信息区域 */}
-            <div style={{ textAlign: "center", marginBottom: "20px" }}>
-              <div
-                style={{
-                  fontSize: "18px",
-                  fontWeight: "bold",
-                  marginBottom: "8px",
-                }}
-              >
-                {username || "用户"}
-              </div>
-              <div
-                style={{
-                  fontSize: "12px",
-                  color: "#666",
-                  marginBottom: "16px",
-                }}
-              >
-                用户等级: LV1
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-around",
-                  fontSize: "14px",
-                }}
-              >
-                <div>
-                  <div style={{ fontWeight: "bold" }}>0</div>
-                  <div style={{ fontSize: "12px", color: "#666" }}>关注</div>
-                </div>
-                <div>
-                  <div style={{ fontWeight: "bold" }}>0</div>
-                  <div style={{ fontSize: "12px", color: "#666" }}>粉丝</div>
-                </div>
-                <div>
-                  <div style={{ fontWeight: "bold" }}>0</div>
-                  <div style={{ fontSize: "12px", color: "#666" }}>动态</div>
-                </div>
+            <div className="user-info-section">
+              <div className="username">{username || "用户"}</div>
+              <div className="user-level">
+                用户权限:{" "}
+                <Tag
+                  color={
+                    user?.role === "admin"
+                      ? "red"
+                      : user?.role === "hr" || user?.role === "employee"
+                      ? "orange"
+                      : "blue"
+                  }
+                >
+                  {user?.role || "未知"}
+                </Tag>
               </div>
             </div>
 
             {/* 菜单项 */}
-            <div>
-              <div
-                style={{
-                  padding: "12px 0",
-                  cursor: "pointer",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  fontSize: "14px",
-                  color: "#333",
-                }}
-                onClick={() => setIsSettingsModalVisible(true)}
-              >
-                <div style={{ display: "flex", alignItems: "center" }}>
-                  <SettingOutlined style={{ marginRight: "8px" }} />
-                  <span>设置</span>
+            <div className="menu-section">
+              <div className="menu-item">
+                <div className="menu-content">
+                  <UserOutlined className="menu-icon" />
+                  <span>个人中心</span>
                 </div>
-                <span style={{ fontSize: "12px", color: "#999" }}>⌘S</span>
+                <RightOutlined style={{ color: "#bbb", fontSize: 12 }} />
+              </div>
+              <div className="menu-item">
+                <div className="menu-content">
+                  <FileTextOutlined className="menu-icon" />
+                  <span>投稿管理</span>
+                </div>
+                <RightOutlined style={{ color: "#bbb", fontSize: 12 }} />
               </div>
 
-              <div
-                style={{
-                  height: "1px",
-                  background: "#f0f0f0",
-                  margin: "8px 0",
-                }}
-              />
-
-              <div
-                style={{
-                  padding: "12px 0",
-                  cursor: "pointer",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  fontSize: "14px",
-                  color: "#333",
-                }}
-                onClick={() => toggleTheme()}
-              >
-                <div style={{ display: "flex", alignItems: "center" }}>
-                  <span>切换到{isDarkMode ? "浅色" : "深色"}主题</span>
+              <div className="menu-divider" />
+              <div className="menu-item" onClick={() => toggleTheme()}>
+                <div className="menu-content">
+                  <BgColorsOutlined className="menu-icon" />
+                  <span>主题：{isDarkMode ? "深色" : "浅色"}</span>
                 </div>
+                <RightOutlined style={{ color: "#bbb", fontSize: 12 }} />
               </div>
-
+              <div className="menu-divider" />
               <div
-                style={{
-                  height: "1px",
-                  background: "#f0f0f0",
-                  margin: "8px 0",
-                }}
-              />
-
-              <div
-                style={{
-                  padding: "12px 0",
-                  cursor: "pointer",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  fontSize: "14px",
-                  color: "#333",
-                }}
+                className="menu-item"
                 onClick={() => {
                   logout();
                   window.location.href = "/login";
                 }}
               >
-                <div style={{ display: "flex", alignItems: "center" }}>
+                <div className="menu-content">
+                  <LogoutOutlined className="menu-icon" />
                   <span>退出登录</span>
                 </div>
-                <span style={{ fontSize: "12px", color: "#999" }}>⌘P</span>
               </div>
             </div>
           </div>

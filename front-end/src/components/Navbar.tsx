@@ -2,8 +2,13 @@ import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button, Input } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
-import UserDropdown from "./UserDropdown";
+import UserDropdown from "./UserDropdown/index";
 import logo from "../assets/images/logo1.png";
+import {
+  UserOutlined,
+  FileTextOutlined,
+  UploadOutlined,
+} from "@ant-design/icons";
 
 const navMenus = [
   { key: "/", label: "首页" },
@@ -126,8 +131,76 @@ const Navbar: React.FC = () => {
             }}
           />
           {/* UserDropdown */}
-          <div style={{ marginLeft: 48 }}>
+          <div
+            style={{ marginLeft: 32, display: "flex", alignItems: "center" }}
+          >
             <UserDropdown />
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 12,
+                marginLeft: 32,
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  color: "#222",
+                  cursor: "pointer",
+                }}
+                onClick={() => navigate("/user")}
+              >
+                <UserOutlined
+                  style={{ fontSize: 22, marginBottom: 2, color: "#222" }}
+                />
+                <span style={{ fontSize: 13, fontWeight: 500, color: "#222" }}>
+                  个人中心
+                </span>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  color: "#222",
+                  cursor: "pointer",
+                }}
+                onClick={() => navigate("/post/manage")}
+              >
+                <FileTextOutlined
+                  style={{ fontSize: 22, marginBottom: 2, color: "#222" }}
+                />
+                <span style={{ fontSize: 13, fontWeight: 500, color: "#222" }}>
+                  投稿管理
+                </span>
+              </div>
+              <Button
+                type="primary"
+                icon={<UploadOutlined style={{ fontSize: 20 }} />}
+                style={{
+                  background: "#ff7a00",
+                  borderColor: "#ff7a00",
+                  color: "#fff",
+                  fontWeight: 600,
+                  borderRadius: 8,
+                  padding: "0 16px",
+                  height: 40,
+                  marginLeft: 8,
+                }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.background = "#ff9100")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.background = "#ff7a00")
+                }
+                onClick={() => navigate("/post/create")}
+              >
+                发布
+              </Button>
+            </div>
           </div>
         </div>
       </div>

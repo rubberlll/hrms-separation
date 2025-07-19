@@ -1,6 +1,6 @@
 import React from "react";
 import Navbar from "../../components/Navbar";
-import UserDropdown from "../../components/UserDropdown";
+import UserDropdown from "../../components/UserDropdown/index";
 import { Carousel } from "antd";
 import { Card, Row, Col, Button } from "antd";
 import { GithubOutlined } from "@ant-design/icons";
