@@ -39,7 +39,11 @@ const Login: React.FC = () => {
     });
 
     if (result.success) {
-      navigate("/");
+      if (role === "jobseeker") {
+        navigate("/");
+      } else {
+        navigate("/admin");
+      }
     } else {
       // 显示错误信息
       messageApi.error(result.message || "登录失败");

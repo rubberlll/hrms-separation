@@ -10,7 +10,7 @@ const ResumeMaker: React.FC = () => {
       <Navbar />
       <div
         className="resume-maker-iframe-wrapper"
-        style={{ position: "relative" }}
+        style={{ position: "relative", marginTop: 68 }}
       >
         {loading && (
           <div

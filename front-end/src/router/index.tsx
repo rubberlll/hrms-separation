@@ -25,6 +25,8 @@ const PostManage = lazy(() => import("../pages/post"));
 const ResumeMaker = lazy(() => import("../pages/ResumeMaker"));
 
 import CLayout from "../layouts/CLayout";
+const AdminLayout = lazy(() => import("../layouts/AdminLayout"));
+const AdminDashboard = lazy(() => import("../pages/admin/Dashboard"));
 
 const router = createBrowserRouter([
   {
@@ -144,6 +146,36 @@ const router = createBrowserRouter([
     element: (
       <PrivateRoute roles={["admin", "hr", "user", "employee"]}>
         <ResumeMaker />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/admin",
+    element: (
+      <PrivateRoute roles={["admin", "hr", "employee"]}>
+        <AdminLayout>
+          <AdminDashboard />
+        </AdminLayout>
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/admin/candidates",
+    element: (
+      <PrivateRoute roles={["admin", "hr", "employee"]}>
+        <AdminLayout>
+          <Resume />
+        </AdminLayout>
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/admin/permission-management",
+    element: (
+      <PrivateRoute roles={["admin", "hr", "employee"]}>
+        <AdminLayout>
+          <PermissionManagement />
+        </AdminLayout>
       </PrivateRoute>
     ),
   },

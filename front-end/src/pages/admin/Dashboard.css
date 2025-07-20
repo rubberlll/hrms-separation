@@ -1,0 +1,21 @@
+.ant-card {
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(255, 122, 0, 0.04);
+}
+.ant-statistic-title {
+  font-size: 16px;
+  color: #888;
+}
+.ant-statistic-content-value {
+  font-size: 32px;
+  font-weight: 700;
+  color: #222;
+}
+.ant-list-item-meta-title {
+  font-size: 18px;
+  font-weight: 700;
+}
+.ant-list-item-meta-description {
+  font-size: 15px;
+  color: #888;
+}
