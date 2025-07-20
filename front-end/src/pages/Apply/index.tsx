@@ -13,9 +13,17 @@ import {
   Space,
   Typography,
 } from "antd";
-import { UploadOutlined, ArrowLeftOutlined } from "@ant-design/icons";
+import {
+  UploadOutlined,
+  ArrowLeftOutlined,
+  EnvironmentOutlined,
+  ApartmentOutlined,
+  SearchOutlined,
+  ReloadOutlined,
+} from "@ant-design/icons";
 import request from "../../utils/request";
 import dayjs from "dayjs";
+import "./index.less";
 
 const ApplyPage: React.FC = () => {
   const [form] = Form.useForm();
@@ -27,6 +35,8 @@ const ApplyPage: React.FC = () => {
   const [viewMode, setViewMode] = useState<"list" | "apply">("list");
   const [searchText, setSearchText] = useState<string>("");
   const [filterDepartment, setFilterDepartment] = useState<string>("all");
+  const [filterStatus, setFilterStatus] = useState<string>("all");
+  const [filterJobType, setFilterJobType] = useState<string>("all");
   const [departments, setDepartments] = useState<any[]>([]);
 
   // 添加工作经验和教育经历的状态
@@ -245,6 +255,8 @@ const ApplyPage: React.FC = () => {
   const resetFilters = () => {
     setSearchText("");
     setFilterDepartment("all");
+    setFilterStatus("all");
+    setFilterJobType("all");
   };
 
   // 添加工作经验表单项
@@ -272,26 +284,31 @@ const ApplyPage: React.FC = () => {
   };
 
   return (
-    <div style={{ maxWidth: 800, margin: "0 auto", padding: "24px" }}>
+    <div className="apply-container">
       {viewMode === "list" ? (
         <>
-          <h2>职位列表</h2>
+          <h2 className="apply-title">职位列表</h2>
+          <div className="apply-subtitle">
+            发现您的理想工作机会 · 共找到 {filteredJobs.length} 个职位
+          </div>
           <Spin spinning={loading}>
             {/* 搜索和筛选区域 */}
-            <Card style={{ marginBottom: 16 }}>
-              <Row gutter={[16, 16]}>
-                <Col span={12}>
-                  <Input.Search
-                    placeholder="搜索职位名称、描述或地点"
+            <Card className="apply-search-card">
+              <Row gutter={16} align="middle">
+                <Col flex="1 1 260px">
+                  <Input
+                    className="apply-search-input"
+                    prefix={<SearchOutlined style={{ color: "#bfbfbf" }} />}
+                    placeholder="搜索职位名称或描述"
                     value={searchText}
                     onChange={(e) => setSearchText(e.target.value)}
-                    onSearch={(value) => setSearchText(value)}
                     allowClear
                   />
                 </Col>
-                <Col span={8}>
+                <Col flex="0 0 180px">
                   <Select
-                    placeholder="按部门筛选"
+                    className="apply-search-select"
+                    placeholder="选择部门"
                     style={{ width: "100%" }}
                     value={filterDepartment}
                     onChange={(value) => setFilterDepartment(value)}
@@ -304,8 +321,42 @@ const ApplyPage: React.FC = () => {
                     ))}
                   </Select>
                 </Col>
-                <Col span={4}>
-                  <Button onClick={resetFilters}>重置筛选</Button>
+                <Col flex="0 0 150px">
+                  <Select
+                    className="apply-search-select"
+                    placeholder="招聘状态"
+                    style={{ width: "100%" }}
+                    value={filterStatus}
+                    onChange={(value) => setFilterStatus(value)}
+                  >
+                    <Select.Option value="all">全部状态</Select.Option>
+                    <Select.Option value="open">招聘中</Select.Option>
+                    <Select.Option value="closed">已关闭</Select.Option>
+                    <Select.Option value="archived">已归档</Select.Option>
+                  </Select>
+                </Col>
+                <Col flex="0 0 150px">
+                  <Select
+                    className="apply-search-select"
+                    placeholder="招聘类型"
+                    style={{ width: "100%" }}
+                    value={filterJobType}
+                    onChange={(value) => setFilterJobType(value)}
+                  >
+                    <Select.Option value="all">全部类型</Select.Option>
+                    <Select.Option value="社招">社招</Select.Option>
+                    <Select.Option value="校招">校招</Select.Option>
+                    <Select.Option value="实习">实习</Select.Option>
+                  </Select>
+                </Col>
+                <Col flex="0 0 110px">
+                  <Button
+                    className="apply-search-reset"
+                    icon={<ReloadOutlined />}
+                    onClick={resetFilters}
+                  >
+                    重置
+                  </Button>
                 </Col>
               </Row>
             </Card>
@@ -317,51 +368,47 @@ const ApplyPage: React.FC = () => {
             ) : (
               <Space direction="vertical" style={{ width: "100%" }}>
                 {filteredJobs.map((job) => (
-                  <Card key={job._id}>
-                    <Row justify="space-between" align="middle">
-                      <Col>
-                        <Typography.Title level={4} style={{ margin: 0 }}>
-                          {job.title}
-                          <Typography.Text
-                            type="success"
-                            style={{ fontSize: "14px", marginLeft: "10px" }}
-                          >
-                            招聘中
-                          </Typography.Text>
-                        </Typography.Title>
-                        <Typography.Text type="secondary">
-                          {getDepartmentName(job)} · {job.location}
-                          {job.jobType && ` · ${job.jobType}`}
-                        </Typography.Text>
-                        {job.salaryRange && (
-                          <Typography.Text
-                            type="success"
-                            style={{ display: "block", marginTop: 8 }}
-                          >
-                            {job.salaryRange}
-                          </Typography.Text>
-                        )}
-                      </Col>
-                      <Col>
-                        <Button
-                          type="primary"
-                          onClick={() => handleApplyJob(job)}
-                        >
-                          申请职位
-                        </Button>
-                      </Col>
-                    </Row>
-                    <Typography.Paragraph style={{ marginTop: 16 }}>
+                  <div key={job._id} className="apply-job-card">
+                    <div className="apply-job-header">
+                      <span className="apply-job-title">{job.title}</span>
+                      {job.status === "open" && (
+                        <span className="apply-job-status">招聘中</span>
+                      )}
+                      <Button
+                        className="apply-job-apply-btn"
+                        onClick={() => handleApplyJob(job)}
+                      >
+                        申请职位
+                      </Button>
+                    </div>
+                    <div className="apply-job-info">
+                      <ApartmentOutlined /> {getDepartmentName(job)}
+                      <EnvironmentOutlined style={{ marginLeft: 16 }} />{" "}
+                      {job.location}
+                      {job.jobType && (
+                        <span style={{ marginLeft: 16 }}>{job.jobType}</span>
+                      )}
+                    </div>
+                    <div className="apply-job-desc">
                       <strong>职位描述：</strong>
                       <br />
                       {job.description}
-                    </Typography.Paragraph>
-                    {job.expiryDate && (
-                      <Typography.Text type="secondary">
-                        截止日期: {dayjs(job.expiryDate).format("YYYY-MM-DD")}
-                      </Typography.Text>
+                    </div>
+                    {job.skills && job.skills.length > 0 && (
+                      <div className="apply-job-skills">
+                        {job.skills.map((skill) => (
+                          <span className="apply-job-skill-tag" key={skill}>
+                            {skill}
+                          </span>
+                        ))}
+                      </div>
                     )}
-                  </Card>
+                    {job.expiryDate && (
+                      <div className="apply-job-expiry">
+                        截止日期: {dayjs(job.expiryDate).format("YYYY-MM-DD")}
+                      </div>
+                    )}
+                  </div>
                 ))}
               </Space>
             )}
@@ -373,7 +420,7 @@ const ApplyPage: React.FC = () => {
             <Button
               icon={<ArrowLeftOutlined />}
               onClick={handleBackToList}
-              style={{ marginRight: 16 }}
+              className="apply-back-btn"
             >
               返回
             </Button>
@@ -395,14 +442,11 @@ const ApplyPage: React.FC = () => {
               {selectedJob?.jobType && ` · ${selectedJob?.jobType}`}
             </Typography.Text>
             {selectedJob?.salaryRange && (
-              <Typography.Text
-                type="success"
-                style={{ display: "block", marginTop: 8 }}
-              >
+              <Typography.Text type="success" className="apply-job-salary">
                 {selectedJob?.salaryRange}
               </Typography.Text>
             )}
-            <Typography.Paragraph style={{ marginTop: 16 }}>
+            <Typography.Paragraph className="apply-job-desc">
               <strong>职位描述：</strong>
               <br />
               {selectedJob?.description}
@@ -429,17 +473,9 @@ const ApplyPage: React.FC = () => {
             </Form.Item>
 
             {/* 工作经验部分 */}
-            <Card title="工作经验" style={{ marginBottom: 16 }}>
+            <Card title="工作经验" className="apply-section">
               {workExperiences.map((_, index) => (
-                <div
-                  key={index}
-                  style={{
-                    marginBottom: 16,
-                    border: "1px dashed #d9d9d9",
-                    padding: 16,
-                    borderRadius: 4,
-                  }}
-                >
+                <div key={index} className="apply-section">
                   <Row gutter={16}>
                     <Col span={12}>
                       <Form.Item
@@ -489,30 +525,27 @@ const ApplyPage: React.FC = () => {
                       type="dashed"
                       danger
                       onClick={() => removeWorkExperience(index)}
-                      style={{ marginTop: 8 }}
+                      className="apply-add-btn"
                     >
                       删除此工作经验
                     </Button>
                   )}
                 </div>
               ))}
-              <Button type="dashed" onClick={addWorkExperience} block>
+              <Button
+                type="dashed"
+                onClick={addWorkExperience}
+                block
+                className="apply-add-btn"
+              >
                 + 添加工作经验
               </Button>
             </Card>
 
             {/* 教育经历部分 */}
-            <Card title="教育经历" style={{ marginBottom: 16 }}>
+            <Card title="教育经历" className="apply-section">
               {educations.map((_, index) => (
-                <div
-                  key={index}
-                  style={{
-                    marginBottom: 16,
-                    border: "1px dashed #d9d9d9",
-                    padding: 16,
-                    borderRadius: 4,
-                  }}
-                >
+                <div key={index} className="apply-section">
                   <Row gutter={16}>
                     <Col span={12}>
                       <Form.Item
@@ -559,14 +592,19 @@ const ApplyPage: React.FC = () => {
                       type="dashed"
                       danger
                       onClick={() => removeEducation(index)}
-                      style={{ marginTop: 8 }}
+                      className="apply-add-btn"
                     >
                       删除此教育经历
                     </Button>
                   )}
                 </div>
               ))}
-              <Button type="dashed" onClick={addEducation} block>
+              <Button
+                type="dashed"
+                onClick={addEducation}
+                block
+                className="apply-add-btn"
+              >
                 + 添加教育经历
               </Button>
             </Card>

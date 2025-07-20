@@ -13,10 +13,8 @@ const Forbidden = lazy(() => import("../pages/Forbidden"));
 import PrivateRoute from "../components/PrivateRoute";
 const Resume = lazy(() => import("../pages/Resume"));
 const Job = lazy(() => import("../pages/Job"));
-const ApplyPage = lazy(() => import("../pages/recruitment/Apply"));
-const MyApplications = lazy(
-  () => import("../pages/recruitment/MyApplications")
-);
+const ApplyPage = lazy(() => import("../pages/Apply"));
+const MyApplications = lazy(() => import("../pages/myApplication"));
 const PermissionManagement = lazy(
   () => import("../pages/PermissionManagement")
 );
@@ -78,10 +76,12 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/recruitment/jobs",
+    path: "/jobs",
     element: (
       <PrivateRoute roles={["admin", "hr", "employee", "user"]}>
-        <Job />
+        <CLayout>
+          <ApplyPage />
+        </CLayout>
       </PrivateRoute>
     ),
   },
@@ -94,10 +94,12 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/recruitment/my-applications",
+    path: "/my-applications",
     element: (
       <PrivateRoute roles={["admin", "hr", "employee", "user"]}>
-        <MyApplications />
+        <CLayout>
+          <MyApplications />
+        </CLayout>
       </PrivateRoute>
     ),
   },

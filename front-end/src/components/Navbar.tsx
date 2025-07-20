@@ -13,8 +13,8 @@ import PostCreateModal from "./PostCreateModal";
 
 const navMenus = [
   { key: "/", label: "首页" },
-  { key: "/recruitment/jobs", label: "岗位投递" },
-  { key: "/recruitment/my-applications", label: "我的投递" },
+  { key: "/jobs", label: "岗位投递" },
+  { key: "/my-applications", label: "我的投递" },
   { key: "/resume-maker", label: "简历制作" },
 ];
 
