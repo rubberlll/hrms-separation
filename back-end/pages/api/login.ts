@@ -65,16 +65,21 @@ export default async function handler(
 
     // 创建JWT
     const secret = process.env.JWT_SECRET || "your-secret-key";
-    const userInfo = {
-      userId: user._id,
-      username: user.username,
-      role: user.role,
-      email: user.email,
-      status: user.status,
-      exp: Math.floor(Date.now() / 1000) + 24 * 60 * 60, // 24小时过期
-    };
+    const userObj = user.toObject();
+    delete userObj.password;
+    userObj.userId = userObj._id;
 
-    const token = jwt.sign(userInfo, secret);
+    const token = jwt.sign(
+      {
+        userId: userObj._id,
+        username: userObj.username,
+        role: userObj.role,
+        email: userObj.email,
+        status: userObj.status,
+        exp: Math.floor(Date.now() / 1000) + 24 * 60 * 60,
+      },
+      secret
+    );
     console.log("登录成功, 生成令牌:", {
       username,
       userId: user._id,
@@ -86,7 +91,7 @@ export default async function handler(
       message: "登录成功",
       data: {
         token,
-        userInfo,
+        userInfo: userObj,
       },
     });
   } catch (error) {

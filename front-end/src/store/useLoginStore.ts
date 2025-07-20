@@ -36,6 +36,7 @@ interface LoginStore {
   }) => Promise<{ success: boolean; message?: string }>;
   verifyToken: () => Promise<boolean>;
   logout: () => void;
+  setUserInfo: (userInfo: UserInfo) => void;
 }
 
 export const useLoginStore = create<LoginStore>()(
@@ -97,6 +98,10 @@ export const useLoginStore = create<LoginStore>()(
         localStorage.removeItem("token");
         localStorage.removeItem("userInfo");
         set({ token: "", userInfo: null, isLogin: false });
+      },
+
+      setUserInfo: (userInfo) => {
+        set({ userInfo });
       },
     }),
     {

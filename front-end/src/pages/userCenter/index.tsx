@@ -35,10 +35,10 @@ const UserCenter: React.FC = () => {
             <span className="ucenter-auth-status">ID: {userInfo?.userId}</span>
           </div>
           <div className="ucenter-base-tags">
-            <Tag>中华女子学院</Tag>
-            <Tag>2026</Tag>
-            <Tag>前端工程师</Tag>
-            <Tag>IP属地: 陕西</Tag>
+            {userInfo?.school && <Tag>{userInfo.school}</Tag>}
+            {userInfo?.graduationYear && <Tag>{userInfo.graduationYear}</Tag>}
+            {userInfo?.jobIntention && <Tag>{userInfo.jobIntention}</Tag>}
+            {userInfo?.location && <Tag>{userInfo.location}</Tag>}
           </div>
           <div className="ucenter-bio">
             {userInfo?.bio ? (

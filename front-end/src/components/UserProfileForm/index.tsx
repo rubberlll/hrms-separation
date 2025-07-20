@@ -34,20 +34,10 @@ const UserProfileForm: React.FC<Props> = ({
         onFinish={onFinish}
         className="user-profile-form"
       >
-        <Form.Item
-          wrapperCol={{ offset: 1 }}
-          style={{ marginBottom: 32 }}
-        ></Form.Item>
         <Form.Item name="nickname" label="我的昵称">
           <Input />
         </Form.Item>
-        <Form.Item name="gender" label="我的性别">
-          <Select>
-            <Option value="男">男</Option>
-            <Option value="女">女</Option>
-            <Option value="保密">保密</Option>
-          </Select>
-        </Form.Item>
+
         <Form.Item name="bio" label="我的简介">
           <Input.TextArea rows={2} />
         </Form.Item>
