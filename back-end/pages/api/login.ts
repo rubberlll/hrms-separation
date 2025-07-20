@@ -65,7 +65,7 @@ export default async function handler(
 
     // 创建JWT
     const secret = process.env.JWT_SECRET || "your-secret-key";
-    const userObj = user.toObject();
+    const userObj = user.toObject() as any;
     delete userObj.password;
     userObj.userId = userObj._id;
 

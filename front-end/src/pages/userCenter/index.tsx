@@ -4,6 +4,7 @@ import { Avatar, Button, Tabs, Tag } from "antd";
 import { EditOutlined } from "@ant-design/icons";
 import { useLoginStore } from "../../store/useLoginStore";
 import UserProfileDrawer from "../../components/UserProfileDrawer";
+import AvatarUpload from "../../components/AvatarUpload";
 
 const roleColor = (role: string) => {
   if (role === "admin") return "red";
@@ -13,16 +14,41 @@ const roleColor = (role: string) => {
 
 const UserCenter: React.FC = () => {
   const userInfo = useLoginStore((state) => state.userInfo);
+  const setUserInfo = useLoginStore((state) => state.setUserInfo);
   const [drawerOpen, setDrawerOpen] = useState(false);
+
+  const handleAvatarUploadSuccess = async (avatarUrl: string) => {
+    // 更新用户信息中的头像
+    if (userInfo) {
+      const updatedUserInfo = { ...userInfo, avatar: avatarUrl };
+      setUserInfo(updatedUserInfo);
+
+      // 同时更新后端数据库
+      try {
+        await fetch("/api/users/update-profile", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId: userInfo.userId,
+            avatar: avatarUrl,
+          }),
+        });
+      } catch (error) {
+        console.error("更新头像失败:", error);
+      }
+    }
+  };
 
   return (
     <div className="ucenter-root">
       {/* <div className="ucenter-header-bg" /> */}
       <div className="ucenter-profile-card" style={{ marginTop: 0 }}>
-        <Avatar
-          size={96}
+        <AvatarUpload
           src={userInfo?.avatar}
-          style={{ background: "#eee" }}
+          size={96}
+          onUploadSuccess={handleAvatarUploadSuccess}
         />
         <div className="ucenter-profile-info">
           <div className="ucenter-nickname">
