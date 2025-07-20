@@ -22,6 +22,7 @@ const PermissionManagement = lazy(
 );
 const Department = lazy(() => import("../pages/department"));
 const UserCenter = lazy(() => import("../pages/userCenter/index"));
+const SearchResult = lazy(() => import("../pages/search/SearchResult"));
 
 import CLayout from "../layouts/CLayout";
 
@@ -111,6 +112,16 @@ const router = createBrowserRouter([
     element: (
       <PrivateRoute roles={["admin", "hr"]}>
         <Department />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/search",
+    element: (
+      <PrivateRoute roles={["admin", "hr", "employee", "user"]}>
+        <CLayout>
+          <SearchResult />
+        </CLayout>
       </PrivateRoute>
     ),
   },

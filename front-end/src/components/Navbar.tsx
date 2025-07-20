@@ -22,6 +22,7 @@ const Navbar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [postModalOpen, setPostModalOpen] = React.useState(false);
+  const [searchValue, setSearchValue] = React.useState("");
 
   return (
     <div
@@ -97,6 +98,12 @@ const Navbar: React.FC = () => {
               borderBottomRightRadius: 0,
               height: 40,
             }}
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+            onPressEnter={() => {
+              if (searchValue.trim())
+                navigate(`/search?q=${encodeURIComponent(searchValue.trim())}`);
+            }}
           />
           <Button
             type="primary"
@@ -128,8 +135,8 @@ const Navbar: React.FC = () => {
               e.currentTarget.style.borderColor = "#e8e8e8";
             }}
             onClick={() => {
-              // 这里添加搜索逻辑
-              console.log("搜索触发");
+              if (searchValue.trim())
+                navigate(`/search?q=${encodeURIComponent(searchValue.trim())}`);
             }}
           />
           {/* UserDropdown */}
