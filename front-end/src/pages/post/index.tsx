@@ -5,7 +5,7 @@ import PostCard from "../../components/PostCard";
 import { Button, Popconfirm, message, Spin, DatePicker, Radio } from "antd";
 import dayjs from "dayjs";
 import "./index.less";
-import EditPostModal from "./EditPostModal";
+import EditPostModal from "../../components/EditPostModal";
 
 const { RangePicker } = DatePicker;
 

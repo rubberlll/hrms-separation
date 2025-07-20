@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Form, Input, Button, message } from "antd";
-import request from "../../utils/request";
+import request from "../utils/request";
 
 interface Props {
   open: boolean;

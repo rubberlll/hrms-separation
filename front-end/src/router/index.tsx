@@ -24,6 +24,7 @@ const Department = lazy(() => import("../pages/department"));
 const UserCenter = lazy(() => import("../pages/userCenter/index"));
 const SearchResult = lazy(() => import("../pages/search"));
 const PostManage = lazy(() => import("../pages/post"));
+const ResumeMaker = lazy(() => import("../pages/ResumeMaker"));
 
 import CLayout from "../layouts/CLayout";
 
@@ -133,6 +134,14 @@ const router = createBrowserRouter([
         <CLayout>
           <PostManage />
         </CLayout>
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/resume-maker",
+    element: (
+      <PrivateRoute roles={["admin", "hr", "user", "employee"]}>
+        <ResumeMaker />
       </PrivateRoute>
     ),
   },

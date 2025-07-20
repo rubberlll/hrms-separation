@@ -15,7 +15,7 @@ const navMenus = [
   { key: "/", label: "首页" },
   { key: "/recruitment/jobs", label: "岗位投递" },
   { key: "/recruitment/my-applications", label: "我的投递" },
-  { key: "/recruitment/resume", label: "简历制作" },
+  { key: "/resume-maker", label: "简历制作" },
 ];
 
 const Navbar: React.FC = () => {
