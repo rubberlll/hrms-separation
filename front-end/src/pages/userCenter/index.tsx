@@ -21,32 +21,37 @@ const UserCenter: React.FC = () => {
   const setLoginUserInfo = useLoginStore((state) => state.setUserInfo);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [posts, setPosts] = useState<any[]>([]);
-  const [userInfo, setUserInfo] = useState<any>(loginUserInfo);
+  const [userInfo, setUserInfo] = useState<any>(null);
+  const [userInfoLoaded, setUserInfoLoaded] = useState(false);
   const isSelf = !params.id || params.id === loginUserInfo?.userId;
 
   // 获取用户信息
   useEffect(() => {
+    setUserInfoLoaded(false);
     if (!params.id || params.id === loginUserInfo?.userId) {
       setUserInfo(loginUserInfo);
+      setUserInfoLoaded(true);
     } else {
       request.get(`/users/update-profile?userId=${params.id}`).then((res) => {
         if (res.data?.data) setUserInfo(res.data.data);
+        setUserInfoLoaded(true);
       });
     }
   }, [params.id, loginUserInfo]);
 
   // 获取帖子
   useEffect(() => {
-    if (userInfo?.userId) {
-      request
-        .get("/posts", { params: { author: userInfo.userId } })
-        .then((res) => {
+    if (userInfoLoaded && userInfo) {
+      const authorId = userInfo.userId || userInfo._id;
+      if (authorId) {
+        request.get("/posts", { params: { author: authorId } }).then((res) => {
           if (res.data?.data) {
             setPosts(res.data.data);
           }
         });
+      }
     }
-  }, [userInfo?.userId]);
+  }, [userInfo, userInfoLoaded]);
 
   const handleAvatarUploadSuccess = async (avatarUrl: string) => {
     if (userInfo) {

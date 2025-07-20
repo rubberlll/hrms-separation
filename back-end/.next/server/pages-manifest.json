@@ -4,8 +4,5 @@
   "/_document": "pages/_document.js",
   "/api/posts": "pages/api/posts.js",
   "/api/verify-token": "pages/api/verify-token.js",
-  "/api/login": "pages/api/login.js",
-  "/api/users/update-profile": "pages/api/users/update-profile.js",
-  "/api/jobs": "pages/api/jobs.js",
-  "/api/departments": "pages/api/departments.js"
+  "/api/users/update-profile": "pages/api/users/update-profile.js"
 }
