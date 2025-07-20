@@ -1,7 +1,13 @@
 import React from "react";
 import { UserOutlined } from "@ant-design/icons";
-import { App, Avatar, Space } from "antd";
+import { Avatar } from "antd";
 
-const UserAvatar: React.FC = () => <Avatar size={36} icon={<UserOutlined />} />;
+interface Props {
+  src?: string;
+}
+
+const UserAvatar: React.FC<Props> = ({ src }) => (
+  <Avatar src={src} icon={!src && <UserOutlined />} />
+);
 
 export default UserAvatar;

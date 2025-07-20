@@ -111,7 +111,7 @@ const UserDropdown: React.FC = () => {
         onMouseLeave={() => setIsHovered(false)}
       >
         <div className={`avatar-wrapper ${isHovered ? "hovered" : "normal"}`}>
-          <UserAvatar />
+          <UserAvatar src={user?.avatar} />
         </div>
 
         {/* 自定义下拉卡片 */}

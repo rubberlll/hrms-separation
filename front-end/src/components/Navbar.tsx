@@ -9,6 +9,7 @@ import {
   FileTextOutlined,
   UploadOutlined,
 } from "@ant-design/icons";
+import PostCreateModal from "./PostCreateModal";
 
 const navMenus = [
   { key: "/", label: "首页" },
@@ -20,6 +21,7 @@ const navMenus = [
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [postModalOpen, setPostModalOpen] = React.useState(false);
 
   return (
     <div
@@ -196,7 +198,7 @@ const Navbar: React.FC = () => {
                 onMouseLeave={(e) =>
                   (e.currentTarget.style.background = "#ff7a00")
                 }
-                onClick={() => navigate("/post/create")}
+                onClick={() => setPostModalOpen(true)}
               >
                 发布
               </Button>
@@ -204,6 +206,10 @@ const Navbar: React.FC = () => {
           </div>
         </div>
       </div>
+      <PostCreateModal
+        open={postModalOpen}
+        onClose={() => setPostModalOpen(false)}
+      />
     </div>
   );
 };

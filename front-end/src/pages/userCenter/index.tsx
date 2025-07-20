@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./index.less";
 import { Avatar, Button, Tabs, Tag } from "antd";
 import { EditOutlined } from "@ant-design/icons";
 import { useLoginStore } from "../../store/useLoginStore";
 import UserProfileDrawer from "../../components/UserProfileDrawer";
 import AvatarUpload from "../../components/AvatarUpload";
+import request from "../../utils/request";
+import PostCard from "../../components/PostCard";
 
 const roleColor = (role: string) => {
   if (role === "admin") return "red";
@@ -16,6 +18,19 @@ const UserCenter: React.FC = () => {
   const userInfo = useLoginStore((state) => state.userInfo);
   const setUserInfo = useLoginStore((state) => state.setUserInfo);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [posts, setPosts] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (userInfo?.userId) {
+      request.get("/posts").then((res) => {
+        if (res.data?.data) {
+          setPosts(
+            res.data.data.filter((p: any) => p.author?._id === userInfo.userId)
+          );
+        }
+      });
+    }
+  }, [userInfo?.userId]);
 
   const handleAvatarUploadSuccess = async (avatarUrl: string) => {
     // 更新用户信息中的头像
@@ -97,15 +112,38 @@ const UserCenter: React.FC = () => {
         <Tabs
           defaultActiveKey="1"
           items={[
-            { key: "1", label: "发布(3)", children: <div>发布内容区</div> },
-            { key: "2", label: "评论(2)", children: <div>评论内容区</div> },
-            { key: "3", label: "投递记录", children: <div>投递记录区</div> },
-            { key: "4", label: "刷题", children: <div>刷题区</div> },
-            { key: "5", label: "收藏", children: <div>收藏区</div> },
+            {
+              key: "1",
+              label: `发布(${posts.length})`,
+              children: (
+                <div>
+                  {posts.length === 0 ? (
+                    <div
+                      style={{
+                        color: "#aaa",
+                        textAlign: "center",
+                        margin: "48px 0",
+                      }}
+                    >
+                      暂无发布内容
+                    </div>
+                  ) : (
+                    posts.map((post) => (
+                      <PostCard
+                        key={post._id}
+                        post={post}
+                        userInfo={userInfo}
+                      />
+                    ))
+                  )}
+                </div>
+              ),
+            },
+            { key: "2", label: "评论(0)", children: <div>评论内容区</div> },
+            { key: "3", label: "收藏(0)", children: <div>收藏区</div> },
           ]}
         />
       </div>
-      {/* 右侧卡片区可后续补充 */}
     </div>
   );
 };

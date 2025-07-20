@@ -1,0 +1,40 @@
+.post-card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  margin-bottom: 24px;
+  padding: 24px;
+}
+.post-card .post-card-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.post-card .post-card-avatar {
+  margin-right: 12px;
+}
+.post-card .post-card-user {
+  font-weight: 700;
+  font-size: 20px;
+  color: #222;
+  display: flex;
+  align-items: center;
+}
+.post-card .post-card-meta {
+  font-size: 13px;
+  color: #aaa;
+  margin: 2px 0 0 0;
+}
+.post-card .post-card-meta .school-job {
+  margin-left: 8px;
+  color: #bdbdbd;
+}
+.post-card .post-card-title {
+  font-weight: 700;
+  font-size: 18px;
+  margin: 8px 0;
+}
+.post-card .post-card-content {
+  color: #333;
+  margin-bottom: 8px;
+}
