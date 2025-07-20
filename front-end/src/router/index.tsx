@@ -22,7 +22,7 @@ const PermissionManagement = lazy(
 );
 const Department = lazy(() => import("../pages/department"));
 const UserCenter = lazy(() => import("../pages/userCenter/index"));
-const SearchResult = lazy(() => import("../pages/search/SearchResult"));
+const SearchResult = lazy(() => import("../pages/search"));
 const PostManage = lazy(() => import("../pages/post"));
 
 import CLayout from "../layouts/CLayout";

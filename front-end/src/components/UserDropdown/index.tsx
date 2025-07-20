@@ -148,7 +148,10 @@ const UserDropdown: React.FC = () => {
                 </div>
                 <RightOutlined style={{ color: "#bbb", fontSize: 12 }} />
               </div>
-              <div className="menu-item">
+              <div
+                className="menu-item"
+                onClick={() => navigate("/post-manage")}
+              >
                 <div className="menu-content">
                   <FileTextOutlined className="menu-icon" />
                   <span>投稿管理</span>
@@ -157,7 +160,7 @@ const UserDropdown: React.FC = () => {
               </div>
 
               <div className="menu-divider" />
-              <div className="menu-item" onClick={() => toggleTheme()}>
+              <div className="menu-item">
                 <div className="menu-content">
                   <BgColorsOutlined className="menu-icon" />
                   <span>主题：{isDarkMode ? "深色" : "浅色"}</span>
