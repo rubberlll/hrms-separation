@@ -1,5 +1,6 @@
 import React from "react";
 import { Avatar } from "antd";
+import { useNavigate } from "react-router-dom";
 import "./index.less";
 
 interface PostCardProps {
@@ -17,11 +18,20 @@ const PostCard: React.FC<PostCardProps> = ({ post, userInfo }) => {
       "0"
     )}`;
   };
+  const navigate = useNavigate();
 
   return (
     <div className="post-card">
       <div className="post-card-header">
-        <Avatar src={userInfo?.avatar} size={40} className="post-card-avatar" />
+        <Avatar
+          src={userInfo?.avatar}
+          size={40}
+          className="post-card-avatar"
+          style={{ cursor: "pointer" }}
+          onClick={() =>
+            userInfo?._id && navigate(`/user-center/${userInfo._id}`)
+          }
+        />
         <div>
           <div className="post-card-user">
             {userInfo?.nickname || userInfo?.username}

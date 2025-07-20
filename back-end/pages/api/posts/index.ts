@@ -32,7 +32,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     const posts = await (Post as any)
       .find(filter)
       .sort({ createdAt: -1 })
-      .populate("author", "username avatar");
+      .populate("author", "username avatar school jobIntention nickname");
     return res
       .status(200)
       .json({ code: 200, message: "获取帖子列表成功", data: posts });

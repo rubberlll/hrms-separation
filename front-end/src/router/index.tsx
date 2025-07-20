@@ -60,6 +60,10 @@ const router = createBrowserRouter([
         index: true,
         element: <UserCenter />,
       },
+      {
+        path: ":id",
+        element: <UserCenter />,
+      },
     ],
   },
   {

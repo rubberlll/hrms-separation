@@ -7,6 +7,7 @@ import UserProfileDrawer from "../../components/UserProfileDrawer";
 import AvatarUpload from "../../components/AvatarUpload";
 import request from "../../utils/request";
 import PostCard from "../../components/PostCard/index.tsx";
+import { useParams } from "react-router-dom";
 
 const roleColor = (role: string) => {
   if (role === "admin") return "red";
@@ -15,11 +16,26 @@ const roleColor = (role: string) => {
 };
 
 const UserCenter: React.FC = () => {
-  const userInfo = useLoginStore((state) => state.userInfo);
-  const setUserInfo = useLoginStore((state) => state.setUserInfo);
+  const params = useParams();
+  const loginUserInfo = useLoginStore((state) => state.userInfo);
+  const setLoginUserInfo = useLoginStore((state) => state.setUserInfo);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [posts, setPosts] = useState<any[]>([]);
+  const [userInfo, setUserInfo] = useState<any>(loginUserInfo);
+  const isSelf = !params.id || params.id === loginUserInfo?.userId;
 
+  // 获取用户信息
+  useEffect(() => {
+    if (!params.id || params.id === loginUserInfo?.userId) {
+      setUserInfo(loginUserInfo);
+    } else {
+      request.get(`/users/update-profile?userId=${params.id}`).then((res) => {
+        if (res.data?.data) setUserInfo(res.data.data);
+      });
+    }
+  }, [params.id, loginUserInfo]);
+
+  // 获取帖子
   useEffect(() => {
     if (userInfo?.userId) {
       request
@@ -33,12 +49,10 @@ const UserCenter: React.FC = () => {
   }, [userInfo?.userId]);
 
   const handleAvatarUploadSuccess = async (avatarUrl: string) => {
-    // 更新用户信息中的头像
     if (userInfo) {
       const updatedUserInfo = { ...userInfo, avatar: avatarUrl };
+      setLoginUserInfo(updatedUserInfo);
       setUserInfo(updatedUserInfo);
-
-      // 同时更新后端数据库
       try {
         await fetch("/api/users/update-profile", {
           method: "PUT",
@@ -58,13 +72,21 @@ const UserCenter: React.FC = () => {
 
   return (
     <div className="ucenter-root">
-      {/* <div className="ucenter-header-bg" /> */}
       <div className="ucenter-profile-card" style={{ marginTop: 0 }}>
-        <AvatarUpload
-          src={userInfo?.avatar}
-          size={96}
-          onUploadSuccess={handleAvatarUploadSuccess}
-        />
+        {isSelf && (
+          <AvatarUpload
+            src={userInfo?.avatar}
+            size={96}
+            onUploadSuccess={handleAvatarUploadSuccess}
+          />
+        )}
+        {!isSelf && (
+          <Avatar
+            src={userInfo?.avatar}
+            size={96}
+            style={{ background: "#eee", marginRight: 24 }}
+          />
+        )}
         <div className="ucenter-profile-info">
           <div className="ucenter-nickname">
             {userInfo?.username || "未登录"}
@@ -85,28 +107,34 @@ const UserCenter: React.FC = () => {
             {userInfo?.bio ? (
               <>
                 {userInfo.bio}
-                <EditOutlined
-                  style={{ marginLeft: 8, cursor: "pointer" }}
-                  onClick={() => setDrawerOpen(true)}
-                />
+                {isSelf && (
+                  <EditOutlined
+                    style={{ marginLeft: 8, cursor: "pointer" }}
+                    onClick={() => setDrawerOpen(true)}
+                  />
+                )}
               </>
             ) : (
               <>
                 点击添加简介，让大家认识你
-                <EditOutlined
-                  style={{ marginLeft: 8, cursor: "pointer" }}
-                  onClick={() => setDrawerOpen(true)}
-                />
+                {isSelf && (
+                  <EditOutlined
+                    style={{ marginLeft: 8, cursor: "pointer" }}
+                    onClick={() => setDrawerOpen(true)}
+                  />
+                )}
               </>
             )}
           </div>
         </div>
       </div>
-      <UserProfileDrawer
-        open={drawerOpen}
-        onClose={() => setDrawerOpen(false)}
-        userInfo={userInfo}
-      />
+      {isSelf && (
+        <UserProfileDrawer
+          open={drawerOpen}
+          onClose={() => setDrawerOpen(false)}
+          userInfo={userInfo}
+        />
+      )}
       {/* Tab区块 */}
       <div className="ucenter-tabs-card">
         <Tabs

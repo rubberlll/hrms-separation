@@ -87,7 +87,7 @@ const Navbar: React.FC = () => {
         {/* 搜索框 */}
         <div style={{ marginLeft: 32, display: "flex", alignItems: "center" }}>
           <Input
-            placeholder="搜索职位、公司..."
+            placeholder="搜索面试经验、公司..."
             style={{
               width: 260,
               borderRadius: 4,
