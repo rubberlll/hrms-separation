@@ -1,0 +1,86 @@
+"use strict";
+/*
+ * ATTENTION: An "eval-source-map" devtool has been used.
+ * This devtool is neither made for production nor for readable output files.
+ * It uses "eval()" calls to create a separate source file with attached SourceMaps in the browser devtools.
+ * If you are trying to read the output file, select a different devtool (https://webpack.js.org/configuration/devtool/)
+ * or disable the default devtool with "devtool: false".
+ * If you are looking for production-ready output files, see mode: "production" (https://webpack.js.org/configuration/mode/).
+ */
+(() => {
+var exports = {};
+exports.id = "pages/api/upload/avatar";
+exports.ids = ["pages/api/upload/avatar"];
+exports.modules = {
+
+/***/ "next/dist/compiled/next-server/pages-api.runtime.dev.js":
+/*!**************************************************************************!*\
+  !*** external "next/dist/compiled/next-server/pages-api.runtime.dev.js" ***!
+  \**************************************************************************/
+/***/ ((module) => {
+
+module.exports = require("next/dist/compiled/next-server/pages-api.runtime.dev.js");
+
+/***/ }),
+
+/***/ "@vercel/blob":
+/*!*******************************!*\
+  !*** external "@vercel/blob" ***!
+  \*******************************/
+/***/ ((module) => {
+
+module.exports = import("@vercel/blob");;
+
+/***/ }),
+
+/***/ "formidable":
+/*!*****************************!*\
+  !*** external "formidable" ***!
+  \*****************************/
+/***/ ((module) => {
+
+module.exports = import("formidable");;
+
+/***/ }),
+
+/***/ "fs":
+/*!*********************!*\
+  !*** external "fs" ***!
+  \*********************/
+/***/ ((module) => {
+
+module.exports = require("fs");
+
+/***/ }),
+
+/***/ "(api)/./node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js?kind=PAGES_API&page=%2Fapi%2Fupload%2Favatar&preferredRegion=&absolutePagePath=.%2Fpages%5Capi%5Cupload%5Cavatar.ts&middlewareConfigBase64=e30%3D!":
+/*!************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js?kind=PAGES_API&page=%2Fapi%2Fupload%2Favatar&preferredRegion=&absolutePagePath=.%2Fpages%5Capi%5Cupload%5Cavatar.ts&middlewareConfigBase64=e30%3D! ***!
+  \************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.a(module, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {\n__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   config: () => (/* binding */ config),\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__),\n/* harmony export */   routeModule: () => (/* binding */ routeModule)\n/* harmony export */ });\n/* harmony import */ var next_dist_server_future_route_modules_pages_api_module_compiled__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! next/dist/server/future/route-modules/pages-api/module.compiled */ \"(api)/./node_modules/next/dist/server/future/route-modules/pages-api/module.compiled.js\");\n/* harmony import */ var next_dist_server_future_route_modules_pages_api_module_compiled__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(next_dist_server_future_route_modules_pages_api_module_compiled__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var next_dist_server_future_route_kind__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! next/dist/server/future/route-kind */ \"(api)/./node_modules/next/dist/server/future/route-kind.js\");\n/* harmony import */ var next_dist_build_templates_helpers__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! next/dist/build/templates/helpers */ \"(api)/./node_modules/next/dist/build/templates/helpers.js\");\n/* harmony import */ var _pages_api_upload_avatar_ts__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./pages\\api\\upload\\avatar.ts */ \"(api)/./pages/api/upload/avatar.ts\");\nvar __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_pages_api_upload_avatar_ts__WEBPACK_IMPORTED_MODULE_3__]);\n_pages_api_upload_avatar_ts__WEBPACK_IMPORTED_MODULE_3__ = (__webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__)[0];\n\n\n\n// Import the userland code.\n\n// Re-export the handler (should be the default export).\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,next_dist_build_templates_helpers__WEBPACK_IMPORTED_MODULE_2__.hoist)(_pages_api_upload_avatar_ts__WEBPACK_IMPORTED_MODULE_3__, \"default\"));\n// Re-export config.\nconst config = (0,next_dist_build_templates_helpers__WEBPACK_IMPORTED_MODULE_2__.hoist)(_pages_api_upload_avatar_ts__WEBPACK_IMPORTED_MODULE_3__, \"config\");\n// Create and export the route module that will be consumed.\nconst routeModule = new next_dist_server_future_route_modules_pages_api_module_compiled__WEBPACK_IMPORTED_MODULE_0__.PagesAPIRouteModule({\n    definition: {\n        kind: next_dist_server_future_route_kind__WEBPACK_IMPORTED_MODULE_1__.RouteKind.PAGES_API,\n        page: \"/api/upload/avatar\",\n        pathname: \"/api/upload/avatar\",\n        // The following aren't used in production.\n        bundlePath: \"\",\n        filename: \"\"\n    },\n    userland: _pages_api_upload_avatar_ts__WEBPACK_IMPORTED_MODULE_3__\n});\n\n//# sourceMappingURL=pages-api.js.map\n__webpack_async_result__();\n} catch(e) { __webpack_async_result__(e); } });//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiKGFwaSkvLi9ub2RlX21vZHVsZXMvbmV4dC9kaXN0L2J1aWxkL3dlYnBhY2svbG9hZGVycy9uZXh0LXJvdXRlLWxvYWRlci9pbmRleC5qcz9raW5kPVBBR0VTX0FQSSZwYWdlPSUyRmFwaSUyRnVwbG9hZCUyRmF2YXRhciZwcmVmZXJyZWRSZWdpb249JmFic29sdXRlUGFnZVBhdGg9LiUyRnBhZ2VzJTVDYXBpJTVDdXBsb2FkJTVDYXZhdGFyLnRzJm1pZGRsZXdhcmVDb25maWdCYXNlNjQ9ZTMwJTNEISIsIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7OztBQUFzRztBQUN2QztBQUNMO0FBQzFEO0FBQzREO0FBQzVEO0FBQ0EsaUVBQWUsd0VBQUssQ0FBQyx3REFBUSxZQUFZLEVBQUM7QUFDMUM7QUFDTyxlQUFlLHdFQUFLLENBQUMsd0RBQVE7QUFDcEM7QUFDTyx3QkFBd0IsZ0hBQW1CO0FBQ2xEO0FBQ0EsY0FBYyx5RUFBUztBQUN2QjtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0EsS0FBSztBQUNMLFlBQVk7QUFDWixDQUFDOztBQUVELHFDIiwic291cmNlcyI6WyJ3ZWJwYWNrOi8vbXlfcHJhLz82YzU0Il0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IFBhZ2VzQVBJUm91dGVNb2R1bGUgfSBmcm9tIFwibmV4dC9kaXN0L3NlcnZlci9mdXR1cmUvcm91dGUtbW9kdWxlcy9wYWdlcy1hcGkvbW9kdWxlLmNvbXBpbGVkXCI7XG5pbXBvcnQgeyBSb3V0ZUtpbmQgfSBmcm9tIFwibmV4dC9kaXN0L3NlcnZlci9mdXR1cmUvcm91dGUta2luZFwiO1xuaW1wb3J0IHsgaG9pc3QgfSBmcm9tIFwibmV4dC9kaXN0L2J1aWxkL3RlbXBsYXRlcy9oZWxwZXJzXCI7XG4vLyBJbXBvcnQgdGhlIHVzZXJsYW5kIGNvZGUuXG5pbXBvcnQgKiBhcyB1c2VybGFuZCBmcm9tIFwiLi9wYWdlc1xcXFxhcGlcXFxcdXBsb2FkXFxcXGF2YXRhci50c1wiO1xuLy8gUmUtZXhwb3J0IHRoZSBoYW5kbGVyIChzaG91bGQgYmUgdGhlIGRlZmF1bHQgZXhwb3J0KS5cbmV4cG9ydCBkZWZhdWx0IGhvaXN0KHVzZXJsYW5kLCBcImRlZmF1bHRcIik7XG4vLyBSZS1leHBvcnQgY29uZmlnLlxuZXhwb3J0IGNvbnN0IGNvbmZpZyA9IGhvaXN0KHVzZXJsYW5kLCBcImNvbmZpZ1wiKTtcbi8vIENyZWF0ZSBhbmQgZXhwb3J0IHRoZSByb3V0ZSBtb2R1bGUgdGhhdCB3aWxsIGJlIGNvbnN1bWVkLlxuZXhwb3J0IGNvbnN0IHJvdXRlTW9kdWxlID0gbmV3IFBhZ2VzQVBJUm91dGVNb2R1bGUoe1xuICAgIGRlZmluaXRpb246IHtcbiAgICAgICAga2luZDogUm91dGVLaW5kLlBBR0VTX0FQSSxcbiAgICAgICAgcGFnZTogXCIvYXBpL3VwbG9hZC9hdmF0YXJcIixcbiAgICAgICAgcGF0aG5hbWU6IFwiL2FwaS91cGxvYWQvYXZhdGFyXCIsXG4gICAgICAgIC8vIFRoZSBmb2xsb3dpbmcgYXJlbid0IHVzZWQgaW4gcHJvZHVjdGlvbi5cbiAgICAgICAgYnVuZGxlUGF0aDogXCJcIixcbiAgICAgICAgZmlsZW5hbWU6IFwiXCJcbiAgICB9LFxuICAgIHVzZXJsYW5kXG59KTtcblxuLy8jIHNvdXJjZU1hcHBpbmdVUkw9cGFnZXMtYXBpLmpzLm1hcCJdLCJuYW1lcyI6W10sInNvdXJjZVJvb3QiOiIifQ==\n//# sourceURL=webpack-internal:///(api)/./node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js?kind=PAGES_API&page=%2Fapi%2Fupload%2Favatar&preferredRegion=&absolutePagePath=.%2Fpages%5Capi%5Cupload%5Cavatar.ts&middlewareConfigBase64=e30%3D!\n");
+
+/***/ }),
+
+/***/ "(api)/./pages/api/upload/avatar.ts":
+/*!************************************!*\
+  !*** ./pages/api/upload/avatar.ts ***!
+  \************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.a(module, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {\n__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   config: () => (/* binding */ config),\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var _vercel_blob__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @vercel/blob */ \"@vercel/blob\");\n/* harmony import */ var formidable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! formidable */ \"formidable\");\n/* harmony import */ var fs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! fs */ \"fs\");\n/* harmony import */ var fs__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(fs__WEBPACK_IMPORTED_MODULE_2__);\nvar __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_vercel_blob__WEBPACK_IMPORTED_MODULE_0__, formidable__WEBPACK_IMPORTED_MODULE_1__]);\n([_vercel_blob__WEBPACK_IMPORTED_MODULE_0__, formidable__WEBPACK_IMPORTED_MODULE_1__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);\n\n\n\nconst config = {\n    api: {\n        bodyParser: false\n    }\n};\nasync function handler(req, res) {\n    if (req.method !== \"POST\") {\n        return res.status(405).json({\n            success: false,\n            message: \"Method not allowed\"\n        });\n    }\n    try {\n        const form = (0,formidable__WEBPACK_IMPORTED_MODULE_1__[\"default\"])({\n            maxFileSize: 2 * 1024 * 1024,\n            filter: ({ mimetype })=>{\n                return mimetype && mimetype.includes(\"image\");\n            }\n        });\n        const [fields, files] = await form.parse(req);\n        const file = files.file?.[0];\n        if (!file) {\n            return res.status(400).json({\n                success: false,\n                message: \"没有找到上传的文件\"\n            });\n        }\n        // 读取文件内容\n        const fileBuffer = fs__WEBPACK_IMPORTED_MODULE_2___default().readFileSync(file.filepath);\n        // 生成唯一文件名\n        const fileName = `avatar_${Date.now()}_${Math.random().toString(36).substring(2)}.${file.originalFilename?.split(\".\").pop() || \"jpg\"}`;\n        // 上传到 Vercel Blob Storage\n        const { url } = await (0,_vercel_blob__WEBPACK_IMPORTED_MODULE_0__.put)(fileName, fileBuffer, {\n            access: \"public\",\n            contentType: file.mimetype || \"image/jpeg\"\n        });\n        // 删除临时文件\n        fs__WEBPACK_IMPORTED_MODULE_2___default().unlinkSync(file.filepath);\n        res.status(200).json({\n            success: true,\n            url,\n            message: \"头像上传成功\"\n        });\n    } catch (error) {\n        console.error(\"头像上传错误:\", error);\n        res.status(500).json({\n            success: false,\n            message: \"上传失败\"\n        });\n    }\n}\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (handler);\n\n__webpack_async_result__();\n} catch(e) { __webpack_async_result__(e); } });//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiKGFwaSkvLi9wYWdlcy9hcGkvdXBsb2FkL2F2YXRhci50cyIsIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7QUFDbUM7QUFDQztBQUNoQjtBQUViLE1BQU1HLFNBQVM7SUFDcEJDLEtBQUs7UUFDSEMsWUFBWTtJQUNkO0FBQ0YsRUFBRTtBQUVGLGVBQWVDLFFBQVFDLEdBQW1CLEVBQUVDLEdBQW9CO0lBQzlELElBQUlELElBQUlFLE1BQU0sS0FBSyxRQUFRO1FBQ3pCLE9BQU9ELElBQ0pFLE1BQU0sQ0FBQyxLQUNQQyxJQUFJLENBQUM7WUFBRUMsU0FBUztZQUFPQyxTQUFTO1FBQXFCO0lBQzFEO0lBRUEsSUFBSTtRQUNGLE1BQU1DLE9BQU9iLHNEQUFVQSxDQUFDO1lBQ3RCYyxhQUFhLElBQUksT0FBTztZQUN4QkMsUUFBUSxDQUFDLEVBQUVDLFFBQVEsRUFBRTtnQkFDbkIsT0FBT0EsWUFBWUEsU0FBU0MsUUFBUSxDQUFDO1lBQ3ZDO1FBQ0Y7UUFFQSxNQUFNLENBQUNDLFFBQVFDLE1BQU0sR0FBRyxNQUFNTixLQUFLTyxLQUFLLENBQUNkO1FBQ3pDLE1BQU1lLE9BQU9GLE1BQU1FLElBQUksRUFBRSxDQUFDLEVBQUU7UUFFNUIsSUFBSSxDQUFDQSxNQUFNO1lBQ1QsT0FBT2QsSUFBSUUsTUFBTSxDQUFDLEtBQUtDLElBQUksQ0FBQztnQkFDMUJDLFNBQVM7Z0JBQ1RDLFNBQVM7WUFDWDtRQUNGO1FBRUEsU0FBUztRQUNULE1BQU1VLGFBQWFyQixzREFBZSxDQUFDb0IsS0FBS0csUUFBUTtRQUVoRCxVQUFVO1FBQ1YsTUFBTUMsV0FBVyxDQUFDLE9BQU8sRUFBRUMsS0FBS0MsR0FBRyxHQUFHLENBQUMsRUFBRUMsS0FBS0MsTUFBTSxHQUNqREMsUUFBUSxDQUFDLElBQ1RDLFNBQVMsQ0FBQyxHQUFHLENBQUMsRUFBRVYsS0FBS1csZ0JBQWdCLEVBQUVDLE1BQU0sS0FBS0MsU0FBUyxNQUFNLENBQUM7UUFFckUsMEJBQTBCO1FBQzFCLE1BQU0sRUFBRUMsR0FBRyxFQUFFLEdBQUcsTUFBTXBDLGlEQUFHQSxDQUFDMEIsVUFBVUgsWUFBWTtZQUM5Q2MsUUFBUTtZQUNSQyxhQUFhaEIsS0FBS0wsUUFBUSxJQUFJO1FBQ2hDO1FBRUEsU0FBUztRQUNUZixvREFBYSxDQUFDb0IsS0FBS0csUUFBUTtRQUUzQmpCLElBQUlFLE1BQU0sQ0FBQyxLQUFLQyxJQUFJLENBQUM7WUFDbkJDLFNBQVM7WUFDVHdCO1lBQ0F2QixTQUFTO1FBQ1g7SUFDRixFQUFFLE9BQU8yQixPQUFPO1FBQ2RDLFFBQVFELEtBQUssQ0FBQyxXQUFXQTtRQUN6QmhDLElBQUlFLE1BQU0sQ0FBQyxLQUFLQyxJQUFJLENBQUM7WUFDbkJDLFNBQVM7WUFDVEMsU0FBUztRQUNYO0lBQ0Y7QUFDRjtBQUVBLGlFQUFlUCxPQUFPQSxFQUFDIiwic291cmNlcyI6WyJ3ZWJwYWNrOi8vbXlfcHJhLy4vcGFnZXMvYXBpL3VwbG9hZC9hdmF0YXIudHM/ZTYyZSJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBOZXh0QXBpUmVxdWVzdCwgTmV4dEFwaVJlc3BvbnNlIH0gZnJvbSBcIm5leHRcIjtcclxuaW1wb3J0IHsgcHV0IH0gZnJvbSBcIkB2ZXJjZWwvYmxvYlwiO1xyXG5pbXBvcnQgZm9ybWlkYWJsZSBmcm9tIFwiZm9ybWlkYWJsZVwiO1xyXG5pbXBvcnQgZnMgZnJvbSBcImZzXCI7XHJcblxyXG5leHBvcnQgY29uc3QgY29uZmlnID0ge1xyXG4gIGFwaToge1xyXG4gICAgYm9keVBhcnNlcjogZmFsc2UsXHJcbiAgfSxcclxufTtcclxuXHJcbmFzeW5jIGZ1bmN0aW9uIGhhbmRsZXIocmVxOiBOZXh0QXBpUmVxdWVzdCwgcmVzOiBOZXh0QXBpUmVzcG9uc2UpIHtcclxuICBpZiAocmVxLm1ldGhvZCAhPT0gXCJQT1NUXCIpIHtcclxuICAgIHJldHVybiByZXNcclxuICAgICAgLnN0YXR1cyg0MDUpXHJcbiAgICAgIC5qc29uKHsgc3VjY2VzczogZmFsc2UsIG1lc3NhZ2U6IFwiTWV0aG9kIG5vdCBhbGxvd2VkXCIgfSk7XHJcbiAgfVxyXG5cclxuICB0cnkge1xyXG4gICAgY29uc3QgZm9ybSA9IGZvcm1pZGFibGUoe1xyXG4gICAgICBtYXhGaWxlU2l6ZTogMiAqIDEwMjQgKiAxMDI0LCAvLyAyTUJcclxuICAgICAgZmlsdGVyOiAoeyBtaW1ldHlwZSB9KSA9PiB7XHJcbiAgICAgICAgcmV0dXJuIG1pbWV0eXBlICYmIG1pbWV0eXBlLmluY2x1ZGVzKFwiaW1hZ2VcIik7XHJcbiAgICAgIH0sXHJcbiAgICB9KTtcclxuXHJcbiAgICBjb25zdCBbZmllbGRzLCBmaWxlc10gPSBhd2FpdCBmb3JtLnBhcnNlKHJlcSk7XHJcbiAgICBjb25zdCBmaWxlID0gZmlsZXMuZmlsZT8uWzBdO1xyXG5cclxuICAgIGlmICghZmlsZSkge1xyXG4gICAgICByZXR1cm4gcmVzLnN0YXR1cyg0MDApLmpzb24oe1xyXG4gICAgICAgIHN1Y2Nlc3M6IGZhbHNlLFxyXG4gICAgICAgIG1lc3NhZ2U6IFwi5rKh5pyJ5om+5Yiw5LiK5Lyg55qE5paH5Lu2XCIsXHJcbiAgICAgIH0pO1xyXG4gICAgfVxyXG5cclxuICAgIC8vIOivu+WPluaWh+S7tuWGheWuuVxyXG4gICAgY29uc3QgZmlsZUJ1ZmZlciA9IGZzLnJlYWRGaWxlU3luYyhmaWxlLmZpbGVwYXRoKTtcclxuXHJcbiAgICAvLyDnlJ/miJDllK/kuIDmlofku7blkI1cclxuICAgIGNvbnN0IGZpbGVOYW1lID0gYGF2YXRhcl8ke0RhdGUubm93KCl9XyR7TWF0aC5yYW5kb20oKVxyXG4gICAgICAudG9TdHJpbmcoMzYpXHJcbiAgICAgIC5zdWJzdHJpbmcoMil9LiR7ZmlsZS5vcmlnaW5hbEZpbGVuYW1lPy5zcGxpdChcIi5cIikucG9wKCkgfHwgXCJqcGdcIn1gO1xyXG5cclxuICAgIC8vIOS4iuS8oOWIsCBWZXJjZWwgQmxvYiBTdG9yYWdlXHJcbiAgICBjb25zdCB7IHVybCB9ID0gYXdhaXQgcHV0KGZpbGVOYW1lLCBmaWxlQnVmZmVyLCB7XHJcbiAgICAgIGFjY2VzczogXCJwdWJsaWNcIixcclxuICAgICAgY29udGVudFR5cGU6IGZpbGUubWltZXR5cGUgfHwgXCJpbWFnZS9qcGVnXCIsXHJcbiAgICB9KTtcclxuXHJcbiAgICAvLyDliKDpmaTkuLTml7bmlofku7ZcclxuICAgIGZzLnVubGlua1N5bmMoZmlsZS5maWxlcGF0aCk7XHJcblxyXG4gICAgcmVzLnN0YXR1cygyMDApLmpzb24oe1xyXG4gICAgICBzdWNjZXNzOiB0cnVlLFxyXG4gICAgICB1cmwsXHJcbiAgICAgIG1lc3NhZ2U6IFwi5aS05YOP5LiK5Lyg5oiQ5YqfXCIsXHJcbiAgICB9KTtcclxuICB9IGNhdGNoIChlcnJvcikge1xyXG4gICAgY29uc29sZS5lcnJvcihcIuWktOWDj+S4iuS8oOmUmeivrzpcIiwgZXJyb3IpO1xyXG4gICAgcmVzLnN0YXR1cyg1MDApLmpzb24oe1xyXG4gICAgICBzdWNjZXNzOiBmYWxzZSxcclxuICAgICAgbWVzc2FnZTogXCLkuIrkvKDlpLHotKVcIixcclxuICAgIH0pO1xyXG4gIH1cclxufVxyXG5cclxuZXhwb3J0IGRlZmF1bHQgaGFuZGxlcjtcclxuIl0sIm5hbWVzIjpbInB1dCIsImZvcm1pZGFibGUiLCJmcyIsImNvbmZpZyIsImFwaSIsImJvZHlQYXJzZXIiLCJoYW5kbGVyIiwicmVxIiwicmVzIiwibWV0aG9kIiwic3RhdHVzIiwianNvbiIsInN1Y2Nlc3MiLCJtZXNzYWdlIiwiZm9ybSIsIm1heEZpbGVTaXplIiwiZmlsdGVyIiwibWltZXR5cGUiLCJpbmNsdWRlcyIsImZpZWxkcyIsImZpbGVzIiwicGFyc2UiLCJmaWxlIiwiZmlsZUJ1ZmZlciIsInJlYWRGaWxlU3luYyIsImZpbGVwYXRoIiwiZmlsZU5hbWUiLCJEYXRlIiwibm93IiwiTWF0aCIsInJhbmRvbSIsInRvU3RyaW5nIiwic3Vic3RyaW5nIiwib3JpZ2luYWxGaWxlbmFtZSIsInNwbGl0IiwicG9wIiwidXJsIiwiYWNjZXNzIiwiY29udGVudFR5cGUiLCJ1bmxpbmtTeW5jIiwiZXJyb3IiLCJjb25zb2xlIl0sInNvdXJjZVJvb3QiOiIifQ==\n//# sourceURL=webpack-internal:///(api)/./pages/api/upload/avatar.ts\n");
+
+/***/ })
+
+};
+;
+
+// load runtime
+var __webpack_require__ = require("../../../webpack-api-runtime.js");
+__webpack_require__.C(exports);
+var __webpack_exec__ = (moduleId) => (__webpack_require__(__webpack_require__.s = moduleId))
+var __webpack_exports__ = __webpack_require__.X(0, ["vendor-chunks/next"], () => (__webpack_exec__("(api)/./node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js?kind=PAGES_API&page=%2Fapi%2Fupload%2Favatar&preferredRegion=&absolutePagePath=.%2Fpages%5Capi%5Cupload%5Cavatar.ts&middlewareConfigBase64=e30%3D!")));
+module.exports = __webpack_exports__;
+
+})();

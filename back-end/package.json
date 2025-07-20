@@ -23,11 +23,12 @@
   "dependencies": {
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
+    "@vercel/blob": "^1.1.1",
     "axios": "^1.8.1",
     "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
     "express": "^4.21.2",
-    "formidable": "^3.5.2",
+    "formidable": "^3.5.4",
     "jsonwebtoken": "^9.0.2",
     "mime-types": "^2.1.35",
     "mongoose": "^8.12.1",

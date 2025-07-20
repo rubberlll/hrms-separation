@@ -2,7 +2,7 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/api/verify-token": "pages/api/verify-token.js",
-  "/api/users/update-profile": "pages/api/users/update-profile.js",
-  "/api/login": "pages/api/login.js"
+  "/api/upload/avatar": "pages/api/upload/avatar.js",
+  "/api/jobs": "pages/api/jobs.js",
+  "/api/departments": "pages/api/departments.js"
 }
