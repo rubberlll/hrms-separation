@@ -177,7 +177,7 @@ const Navbar: React.FC = () => {
                   color: "#222",
                   cursor: "pointer",
                 }}
-                onClick={() => navigate("/post/manage")}
+                onClick={() => navigate("/post-manage")}
               >
                 <FileTextOutlined
                   style={{ fontSize: 22, marginBottom: 2, color: "#222" }}

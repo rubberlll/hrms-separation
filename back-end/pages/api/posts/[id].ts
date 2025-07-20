@@ -18,6 +18,21 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     return res
       .status(200)
       .json({ code: 200, message: "获取帖子详情成功", data: post });
+  } else if (req.method === "PUT") {
+    const { title, content, visibility } = req.body;
+    const updateData: Record<string, any> = {};
+    if (title !== undefined) updateData.title = title;
+    if (content !== undefined) updateData.content = content;
+    if (visibility !== undefined) updateData.visibility = visibility;
+    const updated = await (Post as any).findByIdAndUpdate(id, updateData, {
+      new: true,
+    });
+    if (!updated) {
+      return res.status(404).json({ code: 404, message: "帖子不存在" });
+    }
+    return res
+      .status(200)
+      .json({ code: 200, message: "编辑成功", data: updated });
   } else if (req.method === "DELETE") {
     // 删除帖子
     const deleted = await (Post as any).findByIdAndDelete(id);
