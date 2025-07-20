@@ -13,6 +13,9 @@ const PostCreateModal: React.FC<Props> = ({ open, onClose, onSuccess }) => {
   const [form] = Form.useForm();
   const [loading, setLoading] = React.useState(false);
   const userInfo = useLoginStore((state) => state.userInfo);
+  const [visibility, setVisibility] = React.useState<"public" | "private">(
+    "public"
+  );
 
   const handleOk = async () => {
     try {
@@ -21,9 +24,11 @@ const PostCreateModal: React.FC<Props> = ({ open, onClose, onSuccess }) => {
       await request.post("/posts", {
         ...values,
         author: userInfo?.userId,
+        visibility,
       });
       message.success("发帖成功");
       form.resetFields();
+      setVisibility("public");
       onClose();
       onSuccess?.();
     } catch (e) {
@@ -60,6 +65,22 @@ const PostCreateModal: React.FC<Props> = ({ open, onClose, onSuccess }) => {
           rules={[{ required: true, message: "请输入内容" }]}
         >
           <Input.TextArea rows={6} placeholder="请输入内容" />
+        </Form.Item>
+        <Form.Item label="可见性" style={{ marginBottom: 0 }}>
+          <div style={{ display: "flex", gap: 16 }}>
+            <Button
+              type={visibility === "public" ? "primary" : "default"}
+              onClick={() => setVisibility("public")}
+            >
+              公开
+            </Button>
+            <Button
+              type={visibility === "private" ? "primary" : "default"}
+              onClick={() => setVisibility("private")}
+            >
+              仅自己可见
+            </Button>
+          </div>
         </Form.Item>
       </Form>
     </Modal>

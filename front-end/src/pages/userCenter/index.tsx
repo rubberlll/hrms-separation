@@ -6,7 +6,7 @@ import { useLoginStore } from "../../store/useLoginStore";
 import UserProfileDrawer from "../../components/UserProfileDrawer";
 import AvatarUpload from "../../components/AvatarUpload";
 import request from "../../utils/request";
-import PostCard from "../../components/PostCard";
+import PostCard from "../../components/PostCard/index.tsx";
 
 const roleColor = (role: string) => {
   if (role === "admin") return "red";
@@ -22,13 +22,13 @@ const UserCenter: React.FC = () => {
 
   useEffect(() => {
     if (userInfo?.userId) {
-      request.get("/posts").then((res) => {
-        if (res.data?.data) {
-          setPosts(
-            res.data.data.filter((p: any) => p.author?._id === userInfo.userId)
-          );
-        }
-      });
+      request
+        .get("/posts", { params: { author: userInfo.userId } })
+        .then((res) => {
+          if (res.data?.data) {
+            setPosts(res.data.data);
+          }
+        });
     }
   }, [userInfo?.userId]);
 
