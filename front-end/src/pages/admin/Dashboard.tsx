@@ -1,5 +1,15 @@
-import React from "react";
-import { Card, Row, Col, Statistic, Tag, Button, List, Avatar } from "antd";
+import React, { useEffect, useState } from "react";
+import {
+  Card,
+  Row,
+  Col,
+  Statistic,
+  Tag,
+  Button,
+  List,
+  Avatar,
+  message,
+} from "antd";
 import {
   UserOutlined,
   BankOutlined,
@@ -8,8 +18,111 @@ import {
   EyeOutlined,
   DeleteOutlined,
 } from "@ant-design/icons";
+import request from "../../utils/request";
+
+interface Job {
+  _id: string;
+  title: string;
+  department: {
+    _id: string;
+    name: string;
+  };
+  location: string;
+  createdAt: string;
+  salaryRange: string;
+  status: string;
+  jobType: string;
+  applicantCount?: number;
+  viewCount?: number;
+}
+
+interface Activity {
+  type: string;
+  content: string;
+  status: string;
+  time: string;
+}
 
 const Dashboard: React.FC = () => {
+  const [jobs, setJobs] = useState<Job[]>([]);
+  const [statistics, setStatistics] = useState({
+    totalJobs: 0,
+    totalCandidates: 0,
+    totalDepartments: 0,
+    todayInterviews: 0,
+  });
+  const [activities, setActivities] = useState<Activity[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchDashboardData();
+  }, []);
+
+  const fetchDashboardData = async () => {
+    setLoading(true);
+    try {
+      // 获取职位列表
+      const jobsRes = await request.get("/jobs");
+      if (jobsRes.data.code === 200) {
+        setJobs(jobsRes.data.data);
+      }
+
+      // 获取统计数据
+      const [departmentsRes, resumesRes] = await Promise.all([
+        request.get("/departments"),
+        request.get("/resumes"),
+      ]);
+
+      const todayStart = new Date();
+      todayStart.setHours(0, 0, 0, 0);
+
+      setStatistics({
+        totalJobs: jobsRes.data.data.length,
+        totalCandidates:
+          resumesRes.data.code === 200 ? resumesRes.data.data.length : 0,
+        totalDepartments:
+          departmentsRes.data.code === 200
+            ? departmentsRes.data.data.length
+            : 0,
+        todayInterviews:
+          resumesRes.data.code === 200
+            ? resumesRes.data.data.filter(
+                (resume: any) =>
+                  resume.interviewProcess?.interviewDate &&
+                  new Date(resume.interviewProcess.interviewDate) >= todayStart
+              ).length
+            : 0,
+      });
+
+      // 生成最近活动
+      const recentActivities = [
+        ...jobsRes.data.data.slice(0, 2).map((job: Job) => ({
+          type: "新",
+          content: `新职位发布 ${job.title} - ${
+            job.department?.name || "未知部门"
+          }`,
+          status: "成功",
+          time: new Date(job.createdAt).toLocaleString(),
+        })),
+        ...resumesRes.data.data.slice(0, 2).map((resume: any) => ({
+          type: "新",
+          content: `新候选人申请 ${
+            resume.userId?.username || "未知用户"
+          }申请了${resume.jobId?.title || "未知职位"}职位`,
+          status: "信息",
+          time: new Date(resume.submittedAt).toLocaleString(),
+        })),
+      ].sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime());
+
+      setActivities(recentActivities);
+    } catch (error) {
+      console.error("获取数据失败:", error);
+      message.error("获取数据失败");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div>
       <Row gutter={24} style={{ marginBottom: 24 }}>
@@ -17,52 +130,44 @@ const Dashboard: React.FC = () => {
           <Card>
             <Statistic
               title="总职位数"
-              value={1234}
+              value={statistics.totalJobs}
               prefix={<BankOutlined />}
               valueStyle={{ fontWeight: 700 }}
+              loading={loading}
             />
-            <div style={{ color: "#1dbf73", fontSize: 14, marginTop: 8 }}>
-              ↑ +12% 较上月
-            </div>
           </Card>
         </Col>
         <Col span={6}>
           <Card>
             <Statistic
               title="活跃候选人"
-              value={8567}
+              value={statistics.totalCandidates}
               prefix={<UserOutlined />}
               valueStyle={{ fontWeight: 700 }}
+              loading={loading}
             />
-            <div style={{ color: "#1dbf73", fontSize: 14, marginTop: 8 }}>
-              ↑ +8% 较上月
-            </div>
           </Card>
         </Col>
         <Col span={6}>
           <Card>
             <Statistic
-              title="合作企业"
-              value={456}
+              title="部门数量"
+              value={statistics.totalDepartments}
               prefix={<TeamOutlined />}
               valueStyle={{ fontWeight: 700 }}
+              loading={loading}
             />
-            <div style={{ color: "#1dbf73", fontSize: 14, marginTop: 8 }}>
-              ↑ +5% 较上月
-            </div>
           </Card>
         </Col>
         <Col span={6}>
           <Card>
             <Statistic
               title="今日面试"
-              value={23}
+              value={statistics.todayInterviews}
               prefix={<CalendarOutlined />}
               valueStyle={{ fontWeight: 700 }}
+              loading={loading}
             />
-            <div style={{ color: "#f44336", fontSize: 14, marginTop: 8 }}>
-              ↓ -3% 较上月
-            </div>
           </Card>
         </Col>
       </Row>
@@ -72,48 +177,13 @@ const Dashboard: React.FC = () => {
             title="热门职位"
             extra={<Button type="link">查看全部</Button>}
             style={{ marginBottom: 24 }}
+            loading={loading}
           >
             <List
               itemLayout="vertical"
-              dataSource={[
-                {
-                  title: "高级前端开发工程师",
-                  company: "阿里巴巴",
-                  location: "杭州",
-                  date: "2024-01-15",
-                  salary: "25K-40K",
-                  status: "招聘中",
-                  applicants: 45,
-                  views: 234,
-                },
-                {
-                  title: "React开发工程师",
-                  company: "字节跳动",
-                  location: "北京",
-                  date: "2024-01-14",
-                  salary: "20K-35K",
-                  status: "招聘中",
-                  applicants: 32,
-                  views: 180,
-                },
-              ]}
+              dataSource={jobs.slice(0, 5)}
               renderItem={(item) => (
-                <List.Item
-                  actions={[
-                    <span key="views">
-                      <EyeOutlined /> {item.views}
-                    </span>,
-                    <Button key="edit" type="link">
-                      编辑
-                    </Button>,
-                    <Button
-                      key="delete"
-                      type="link"
-                      danger
-                      icon={<DeleteOutlined />}
-                    />,
-                  ]}
-                >
+                <List.Item>
                   <List.Item.Meta
                     avatar={<Avatar icon={<BankOutlined />} />}
                     title={
@@ -121,12 +191,15 @@ const Dashboard: React.FC = () => {
                     }
                     description={
                       <>
-                        {item.company} · {item.location} · {item.date} <br />
-                        <Tag color="orange">{item.salary}</Tag>
+                        {item.department?.name || "未知部门"} · {item.location}{" "}
+                        · {new Date(item.createdAt).toLocaleDateString()} <br />
+                        <Tag color="orange">
+                          {item.salaryRange || "薪资面议"}
+                        </Tag>
                         <Tag color="green">{item.status}</Tag>
-                        <span style={{ marginLeft: 16 }}>全职</span>
+                        <span style={{ marginLeft: 16 }}>{item.jobType}</span>
                         <span style={{ marginLeft: 16 }}>
-                          {item.applicants} 申请
+                          {item.applicantCount || 0} 申请
                         </span>
                       </>
                     }
@@ -137,23 +210,10 @@ const Dashboard: React.FC = () => {
           </Card>
         </Col>
         <Col span={8}>
-          <Card title="最近活动">
+          <Card title="最近活动" loading={loading}>
             <List
               itemLayout="horizontal"
-              dataSource={[
-                {
-                  type: "新",
-                  content: "新职位发布 前端开发工程师 - 阿里巴巴",
-                  status: "成功",
-                  time: "2分钟前",
-                },
-                {
-                  type: "新",
-                  content: "新候选人申请 张三申请了React开发工程师职位",
-                  status: "信息",
-                  time: "5分钟前",
-                },
-              ]}
+              dataSource={activities}
               renderItem={(item) => (
                 <List.Item>
                   <List.Item.Meta
