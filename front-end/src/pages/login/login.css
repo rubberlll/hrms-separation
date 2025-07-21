@@ -73,7 +73,6 @@
   flex-direction: row;
   min-width: 700px;
   min-height: 400px;
-  padding-top: -88px;
 }
 .loginMainContent.recruiter {
   flex-direction: row-reverse;
@@ -82,6 +81,10 @@
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  padding: 32px;
+}
+.loginMainContent.recruiter .loginLeftForm {
+  padding: 32px 12px 32px 48px;
 }
 .loginRightImg {
   flex: 1 1 0;
@@ -89,7 +92,6 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  box-shadow: 5px 3px 10px -5px rgba(0, 0, 0, 0.1);
 }
 .loginRightImg img {
   width: 300px;
@@ -135,4 +137,23 @@
   cursor: pointer;
   margin-left: 4px;
   font-weight: 500;
+}
+.loginLeftForm .ant-checkbox-wrapper {
+  color: #888;
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+.loginLeftForm .ant-form-item-label > label {
+  font-size: 18px;
+  color: #777;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+.loginLeftForm .ant-form-item-label > label::before {
+  content: "*";
+  color: #ff4d4f;
+  font-size: 18px;
+  font-weight: bold;
+  margin-right: 6px;
 }

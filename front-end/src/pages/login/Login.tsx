@@ -119,77 +119,98 @@ const Login: React.FC = () => {
             我是招聘方
           </div>
         </div>
-        <div className="loginMainContent">
-          <Card>
-            <div className="loginLeftForm ">
-              <Form
-                name="basic"
-                layout="vertical"
-                style={{ width: 400, maxWidth: "100%" }}
-                initialValues={{ remember: true }}
-                onFinish={onFinish}
-                onFinishFailed={onFinishFailed}
-                autoComplete="off"
-              >
-                <Form.Item<FieldType>
-                  label="用户名"
-                  name="username"
-                  rules={[{ required: true, message: "请输入用户名" }]}
-                  className="loginForm"
-                >
-                  <Input prefix={<UserOutlined />} placeholder="请输入用户名" />
-                </Form.Item>
-                <Form.Item<FieldType>
-                  label="密码"
-                  name="password"
-                  rules={[{ required: true, message: "请输入密码" }]}
-                >
-                  <Input.Password
-                    prefix={<LockOutlined />}
-                    placeholder="请输入密码"
-                  />
-                </Form.Item>
-                <Form.Item<FieldType>
-                  name="remember"
-                  valuePropName="checked"
-                  label={null}
-                  style={{ textAlign: "left", marginBottom: 0 }}
-                >
-                  <Checkbox>记住密码</Checkbox>
-                </Form.Item>
-                <Form.Item label={null} style={{ marginBottom: 0 }}>
-                  <Button
-                    type="primary"
-                    htmlType="submit"
-                    style={{
-                      width: "100%",
-                      background: "#FF7F22",
-                      borderRadius: 8,
-                      fontWeight: "bold",
-                      fontSize: 16,
-                      border: "none",
-                    }}
-                  >
-                    登录
-                  </Button>
-                </Form.Item>
-                <Form.Item label={null} style={{ marginBottom: 0 }}>
-                  <div className="loginBottomTip">
-                    <div>忘记密码？</div>
-                    <div>
-                      还没有账户？
-                      <span
-                        className="register-link"
-                        onClick={() => navigate("/register")}
-                      >
-                        立即注册
-                      </span>
-                    </div>
-                  </div>
-                </Form.Item>
-              </Form>
+        <div
+          className={`loginMainContent${
+            role === "recruiter" ? " recruiter" : ""
+          }`}
+        >
+          <div className="loginLeftForm">
+            <div
+              className="login-title"
+              style={{
+                fontWeight: "bold",
+                fontSize: 24,
+                color: "#444",
+                marginBottom: 16,
+                marginLeft: 148,
+                textAlign: "left",
+              }}
+            >
+              登录
             </div>
-          </Card>
+            <Form
+              name="basic"
+              layout="vertical"
+              style={{ width: 380, maxWidth: "90%" }}
+              initialValues={{ remember: true }}
+              onFinish={onFinish}
+              onFinishFailed={onFinishFailed}
+              autoComplete="off"
+            >
+              <Form.Item<FieldType>
+                label="用户名"
+                name="username"
+                rules={[{ required: true, message: "请输入用户名" }]}
+                className="loginForm"
+              >
+                <Input
+                  style={{ height: 48, lineHeight: "48px", fontSize: 16 }}
+                  prefix={<UserOutlined />}
+                  placeholder="请输入用户名"
+                />
+              </Form.Item>
+              <Form.Item<FieldType>
+                label="密码"
+                name="password"
+                rules={[{ required: true, message: "请输入密码" }]}
+              >
+                <Input.Password
+                  style={{ height: 48, lineHeight: "48px", fontSize: 16 }}
+                  prefix={<LockOutlined />}
+                  placeholder="请输入密码"
+                />
+              </Form.Item>
+              <Form.Item<FieldType>
+                name="remember"
+                valuePropName="checked"
+                label={null}
+                style={{ textAlign: "left", marginBottom: 0 }}
+              >
+                <Checkbox>记住密码</Checkbox>
+              </Form.Item>
+              <Form.Item label={null} style={{ marginBottom: 0 }}>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  style={{
+                    width: "100%",
+                    background: "#FF7F22",
+                    borderRadius: 14,
+                    fontWeight: "bold",
+                    fontSize: 20,
+                    height: 54,
+                    border: "none",
+                  }}
+                >
+                  登录
+                </Button>
+              </Form.Item>
+              <Form.Item label={null} style={{ marginBottom: 0 }}>
+                <div className="loginBottomTip">
+                  <div>忘记密码？</div>
+                  <div>
+                    还没有账户？
+                    <span
+                      className="register-link"
+                      onClick={() => navigate("/register")}
+                    >
+                      立即注册
+                    </span>
+                  </div>
+                </div>
+              </Form.Item>
+            </Form>
+          </div>
           <div className="loginRightImg">
             <img
               src={role === "jobseeker" ? jobFinder : recruiterFinder}
