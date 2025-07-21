@@ -32,6 +32,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         salaryRange,
         jobType,
         expiryDate,
+        createdBy,
       } = req.body;
 
       if (!title || !department || !description || !location) {
@@ -42,8 +43,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         });
       }
 
-      const user = (req as any).user;
-
       const job = await (Job as Model<IJob>).create({
         title,
         department,
@@ -53,7 +52,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         jobType,
         expiryDate,
         status: "open",
-        createdBy: user.userId,
+        createdBy,
       });
 
       return res.status(201).json({

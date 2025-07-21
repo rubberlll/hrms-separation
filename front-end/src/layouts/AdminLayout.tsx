@@ -6,6 +6,7 @@ import {
   TeamOutlined,
   BankOutlined,
   SettingOutlined,
+  ApartmentOutlined,
 } from "@ant-design/icons";
 import logo from "../assets/images/logo1.png";
 import "./AdminLayout.less";
@@ -20,7 +21,7 @@ const menuItems = [
   { key: "/admin", icon: <HomeOutlined />, label: "仪表板" },
   { key: "/admin/jobs", icon: <BankOutlined />, label: "职位管理" },
   { key: "/admin/candidates", icon: <TeamOutlined />, label: "候选人管理" },
-  { key: "/admin/companies", icon: <UserOutlined />, label: "企业管理" },
+  { key: "/admin/departments", icon: <ApartmentOutlined />, label: "部门管理" },
   {
     key: "/admin/setting",
     icon: <SettingOutlined />,
@@ -159,14 +160,14 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         />
       </Sider>
       <Layout>
-        <Header className="admin-header">
-          <div className="admin-header-search">
-            <Input
-              placeholder="搜索职位、候选人..."
-              prefix={<UserOutlined style={{ color: "#bfbfbf" }} />}
-              className="admin-header-search-input"
-            />
-          </div>
+        <Header
+          className="admin-header"
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            alignItems: "center",
+          }}
+        >
           <div className="admin-header-actions">
             <Dropdown
               overlay={

@@ -180,6 +180,26 @@ const router = createBrowserRouter([
     ),
   },
   {
+    path: "/admin/departments",
+    element: (
+      <PrivateRoute roles={["admin", "hr"]}>
+        <AdminLayout>
+          <Department />
+        </AdminLayout>
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/admin/jobs",
+    element: (
+      <PrivateRoute roles={["admin", "hr"]}>
+        <AdminLayout>
+          <Job />
+        </AdminLayout>
+      </PrivateRoute>
+    ),
+  },
+  {
     path: "/admin/permission-management",
     element: (
       <PrivateRoute roles={["admin", "hr", "employee"]}>

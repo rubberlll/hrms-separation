@@ -21,7 +21,7 @@ interface JobStore {
   loading: boolean;
   error: string | null;
   fetchJobs: () => Promise<void>;
-  addJob: (job: Omit<Job, "_id">) => Promise<Job>;
+  addJob: (job: Omit<Job, "_id">, userId: string) => Promise<Job>;
   updateJob: (id: string, job: Partial<Job>) => Promise<Job>;
   deleteJob: (id: string) => Promise<void>;
 }
@@ -41,10 +41,13 @@ export const useJobStore = create<JobStore>((set, get) => ({
     }
   },
 
-  addJob: async (job) => {
+  addJob: async (job, userId) => {
     set({ loading: true, error: null });
     try {
-      const response = await request.post("/jobs", job);
+      const response = await request.post("/jobs", {
+        ...job,
+        createdBy: userId,
+      });
       const newJob = response.data.data;
       set((state) => ({ jobs: [newJob, ...state.jobs], loading: false }));
       return newJob;
