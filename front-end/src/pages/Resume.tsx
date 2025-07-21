@@ -9,6 +9,7 @@ import {
   Button,
   Space,
   message,
+  Spin,
 } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { Document, Page, pdfjs } from "react-pdf";
@@ -70,6 +71,7 @@ const Resume = () => {
   const [isPdfModalOpen, setIsPdfModalOpen] = useState(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [resumes, setResumes] = useState<ResumeType[]>([]);
+  const [iframeLoading, setIframeLoading] = useState(false);
 
   useEffect(() => {
     fetchResumes();
@@ -222,13 +224,7 @@ const Resume = () => {
           >
             查看详情
           </Button>
-          <Button
-            type="link"
-            onClick={() => {
-              setSelectedResume(record);
-              setIsPdfModalOpen(true);
-            }}
-          >
+          <Button type="link" onClick={() => openPdfModal(record)}>
             查看简历附件
           </Button>
         </Space>
@@ -263,6 +259,13 @@ const Resume = () => {
   // 添加一个函数来判断文件类型
   const isPdfFile = (fileName: string) => {
     return fileName && fileName.toLowerCase().endsWith(".pdf");
+  };
+
+  // 打开PDF Modal时，重置 loading
+  const openPdfModal = (resume: ResumeType) => {
+    setSelectedResume(resume);
+    setIframeLoading(true);
+    setIsPdfModalOpen(true);
   };
 
   return (
@@ -462,22 +465,25 @@ const Resume = () => {
             >
               文件名：{selectedResume.fileName}
             </Typography.Text>
-            <iframe
-              src={getFileUrl(selectedResume.fileUrl)}
-              style={{ width: "100%", height: "70vh", border: "none" }}
-              title="简历预览"
-            >
-              <p>
-                您的浏览器不支持iframe。
-                <a
-                  href={getFileUrl(selectedResume.fileUrl)}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  点击下载
-                </a>
-              </p>
-            </iframe>
+            <Spin spinning={iframeLoading} tip="加载中...">
+              <iframe
+                src={getFileUrl(selectedResume.fileUrl)}
+                style={{ width: "100%", height: "70vh", border: "none" }}
+                title="简历预览"
+                onLoad={() => setIframeLoading(false)}
+              >
+                <p>
+                  您的浏览器不支持iframe。
+                  <a
+                    href={getFileUrl(selectedResume.fileUrl)}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    点击下载
+                  </a>
+                </p>
+              </iframe>
+            </Spin>
           </div>
         )}
       </Modal>

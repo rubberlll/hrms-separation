@@ -16,6 +16,7 @@ import {
   DatePicker,
   Spin,
 } from "antd";
+import type { AxiosResponse } from "axios";
 import {
   SearchOutlined,
   EnvironmentOutlined,
@@ -163,24 +164,33 @@ const JobApplicationPage: React.FC = () => {
 
     try {
       setUploading(true);
-      // 这里实现分片上传逻辑
-      const chunkSize = 2 * 1024 * 1024; // 2MB per chunk
+      const chunkSize = 2 * 1024 * 1024; // 2MB
       const chunks = Math.ceil(file.size / chunkSize);
       const fileName = `${Date.now()}_${file.name}`;
 
-      // 创建临时目录
       for (let i = 0; i < chunks; i++) {
         const start = i * chunkSize;
         const end = Math.min(file.size, start + chunkSize);
         const chunk = file.slice(start, end);
 
+        // 创建 Blob 对象
+        const chunkBlob = new Blob([chunk], { type: "application/pdf" });
+
         const formData = new FormData();
-        formData.append("file", chunk);
+        formData.append("file", chunkBlob, "chunk.pdf"); // 使用标准的 'file' 字段名
         formData.append("fileName", fileName);
         formData.append("chunkIndex", String(i));
         formData.append("chunks", String(chunks));
 
-        await request.post("/upload/chunk", formData);
+        const chunkResponse = await request.post("/upload/chunk", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+
+        if (chunkResponse.data.code !== 200) {
+          throw new Error(chunkResponse.data.message || "分片上传失败");
+        }
       }
 
       // 合并文件
@@ -197,6 +207,7 @@ const JobApplicationPage: React.FC = () => {
       }
       throw new Error("文件上传失败");
     } catch (error) {
+      console.error("文件上传错误:", error);
       message.error("文件上传失败");
       return false;
     } finally {
@@ -249,7 +260,11 @@ const JobApplicationPage: React.FC = () => {
       children: (
         <>
           <ResumeUpload />
-          <Form.Item label="技能标签" name="skills">
+          <Form.Item
+            label="技能标签"
+            name="skills"
+            extra="可选：添加您掌握的技能，按回车确认"
+          >
             <Select mode="tags" placeholder="输入技能后按回车确认" />
           </Form.Item>
         </>
@@ -268,7 +283,6 @@ const JobApplicationPage: React.FC = () => {
                     {...restField}
                     name={[name, "company"]}
                     label="公司名称"
-                    rules={[{ required: true }]}
                   >
                     <Input />
                   </Form.Item>
@@ -276,30 +290,16 @@ const JobApplicationPage: React.FC = () => {
                     {...restField}
                     name={[name, "position"]}
                     label="职位"
-                    rules={[{ required: true }]}
                   >
                     <Input />
                   </Form.Item>
-                  <Row gutter={16}>
-                    <Col span={12}>
-                      <Form.Item
-                        {...restField}
-                        name={[name, "startDate"]}
-                        label="开始日期"
-                      >
-                        <DatePicker style={{ width: "100%" }} />
-                      </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                      <Form.Item
-                        {...restField}
-                        name={[name, "endDate"]}
-                        label="结束日期"
-                      >
-                        <DatePicker style={{ width: "100%" }} />
-                      </Form.Item>
-                    </Col>
-                  </Row>
+                  <Form.Item
+                    {...restField}
+                    name={[name, "duration"]}
+                    label="工作时长"
+                  >
+                    <Input placeholder="例如：2年3个月" />
+                  </Form.Item>
                   <Form.Item
                     {...restField}
                     name={[name, "description"]}
@@ -324,7 +324,7 @@ const JobApplicationPage: React.FC = () => {
                 block
                 icon={<PlusOutlined />}
               >
-                添加工作经验
+                添加工作经验（可选）
               </Button>
             </>
           )}
@@ -344,7 +344,6 @@ const JobApplicationPage: React.FC = () => {
                     {...restField}
                     name={[name, "school"]}
                     label="学校名称"
-                    rules={[{ required: true }]}
                   >
                     <Input />
                   </Form.Item>
@@ -352,33 +351,19 @@ const JobApplicationPage: React.FC = () => {
                     {...restField}
                     name={[name, "degree"]}
                     label="学位"
-                    rules={[{ required: true }]}
                   >
                     <Input />
                   </Form.Item>
                   <Form.Item {...restField} name={[name, "major"]} label="专业">
                     <Input />
                   </Form.Item>
-                  <Row gutter={16}>
-                    <Col span={12}>
-                      <Form.Item
-                        {...restField}
-                        name={[name, "startDate"]}
-                        label="开始日期"
-                      >
-                        <DatePicker style={{ width: "100%" }} />
-                      </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                      <Form.Item
-                        {...restField}
-                        name={[name, "endDate"]}
-                        label="结束日期"
-                      >
-                        <DatePicker style={{ width: "100%" }} />
-                      </Form.Item>
-                    </Col>
-                  </Row>
+                  <Form.Item
+                    {...restField}
+                    name={[name, "graduationYear"]}
+                    label="毕业年份"
+                  >
+                    <Input placeholder="例如：2024" />
+                  </Form.Item>
                   <Button
                     type="dashed"
                     danger
@@ -396,7 +381,7 @@ const JobApplicationPage: React.FC = () => {
                 block
                 icon={<PlusOutlined />}
               >
-                添加教育背景
+                添加教育背景（可选）
               </Button>
             </>
           )}
@@ -405,15 +390,12 @@ const JobApplicationPage: React.FC = () => {
     },
     {
       key: "4",
-      label: "求职信",
+      label: "求职理由",
       children: (
-        <Form.Item
-          name="coverLetter"
-          rules={[{ required: true, message: "请填写求职信" }]}
-        >
+        <Form.Item name="coverLetter">
           <Input.TextArea
             rows={8}
-            placeholder="请介绍您的背景、技能和为什么适合这个职位..."
+            placeholder="可选：请介绍您的背景、技能和为什么适合这个职位..."
           />
         </Form.Item>
       ),

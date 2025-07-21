@@ -16,7 +16,6 @@ interface FormidableFile {
   size: number;
   name: string;
   type: string;
-  // 其他可能的属性
 }
 
 async function handler(
@@ -40,8 +39,11 @@ async function handler(
     const form = new IncomingForm({
       uploadDir,
       keepExtensions: true,
-      multiples: true, // 支持多文件上传
-      maxFileSize: 20 * 1024 * 1024, // 设置最大文件大小为20MB
+      multiples: false,
+      maxFileSize: 20 * 1024 * 1024, // 20MB
+      filter: ({ mimetype }) => {
+        return mimetype === "application/pdf";
+      },
     });
 
     return new Promise<void>((resolve, reject) => {
@@ -54,8 +56,8 @@ async function handler(
 
         try {
           // 检查文件和字段是否存在
-          const chunk =
-            files.chunk?.[0] || (files.chunk as unknown as FormidableFile);
+          const file =
+            files.file?.[0] || (files.file as unknown as FormidableFile);
           const fileName = Array.isArray(fields.fileName)
             ? fields.fileName[0]
             : fields.fileName;
@@ -66,10 +68,10 @@ async function handler(
             ? fields.chunks[0]
             : fields.chunks;
 
-          if (!chunk || !fileName || chunkIndex === undefined || !chunks) {
+          if (!file || !fileName || chunkIndex === undefined || !chunks) {
             console.error("参数不完整:", {
-              chunk,
-              fileName,
+              file: !!file,
+              fileName: !!fileName,
               chunkIndex,
               chunks,
             });
@@ -85,12 +87,11 @@ async function handler(
             fs.mkdirSync(fileDir, { recursive: true });
           }
 
-          // 获取正确的文件路径 - 改进类型处理
-          const filePath =
-            (chunk as FormidableFile).filepath || (chunk as any).path;
+          // 获取正确的文件路径
+          const filePath = file.filepath || file.path;
 
           if (!filePath) {
-            console.error("无法获取文件路径:", chunk);
+            console.error("无法获取文件路径:", file);
             res
               .status(500)
               .json({ code: 500, message: "无法获取文件路径", data: null });
