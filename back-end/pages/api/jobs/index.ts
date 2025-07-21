@@ -10,10 +10,10 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     await connectDB();
 
     if (req.method === "GET") {
+      // 暂时只 populate department
       const jobs = await (Job as Model<IJob>)
         .find()
         .populate("department", "name")
-        .populate("createdBy", "username")
         .sort({ createdAt: -1 });
 
       return res.status(200).json({
@@ -66,10 +66,12 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       .status(405)
       .json({ code: 405, message: "方法不允许", data: null });
   } catch (error) {
-    console.error(error);
-    return res
-      .status(500)
-      .json({ code: 500, message: "服务器错误", data: null });
+    console.error("Jobs API Error:", error);
+    return res.status(500).json({
+      code: 500,
+      message: error instanceof Error ? error.message : "服务器错误",
+      data: null,
+    });
   }
 }
 

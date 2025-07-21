@@ -1,215 +1,148 @@
 import React, { useState, useEffect } from "react";
 import {
-  Form,
-  Input,
-  Upload,
   Button,
-  message,
+  Input,
   Select,
-  Spin,
   Card,
+  Tag,
+  Tabs,
+  Form,
   Row,
   Col,
   Space,
   Typography,
-  Tag,
+  Upload,
+  message,
+  Divider,
+  DatePicker,
+  Spin,
 } from "antd";
+import type { AxiosResponse } from "axios";
 import {
-  UploadOutlined,
-  ArrowLeftOutlined,
+  SearchOutlined,
   EnvironmentOutlined,
   ApartmentOutlined,
-  SearchOutlined,
+  ClockCircleOutlined,
+  DollarOutlined,
+  UploadOutlined,
+  ArrowLeftOutlined,
+  PlusOutlined,
+  DeleteOutlined,
+  BookOutlined,
+  ToolOutlined,
+  FileTextOutlined,
   ReloadOutlined,
 } from "@ant-design/icons";
 import request from "../../utils/request";
 import dayjs from "dayjs";
 import "./index.less";
 
-const ApplyPage: React.FC = () => {
-  const [form] = Form.useForm();
-  const [uploading, setUploading] = useState(false);
-  const [jobs, setJobs] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [fileList, setFileList] = useState<any[]>([]);
-  const [selectedJob, setSelectedJob] = useState<any>(null);
-  const [viewMode, setViewMode] = useState<"list" | "apply">("list");
-  const [searchText, setSearchText] = useState<string>("");
-  const [filterDepartment, setFilterDepartment] = useState<string>("all");
-  const [filterStatus, setFilterStatus] = useState<string>("all");
-  const [filterJobType, setFilterJobType] = useState<string>("all");
-  const [departments, setDepartments] = useState<any[]>([]);
+const { Title, Text, Paragraph } = Typography;
+const { Option } = Select;
+const { Dragger } = Upload;
 
-  // 添加工作经验和教育经历的状态
-  const [workExperiences, setWorkExperiences] = useState<any[]>([{}]);
-  const [educations, setEducations] = useState<any[]>([{}]);
-  const [skills, setSkills] = useState<string[]>([]);
+interface Job {
+  _id: string;
+  title: string;
+  department: {
+    _id: string;
+    name: string;
+  };
+  location: string;
+  jobType?: string;
+  salaryRange?: string;
+  description: string;
+  requirements?: string[];
+  status: "open" | "closed" | "archived";
+  expiryDate?: string;
+  createdAt: string;
+  createdBy: {
+    _id: string;
+    username: string;
+  };
+}
+
+interface Department {
+  _id: string;
+  name: string;
+}
+
+interface ApiResponse<T = any> {
+  code: number;
+  message: string;
+  data: T;
+}
+
+const JobApplicationPage: React.FC = () => {
+  const [viewMode, setViewMode] = useState<"list" | "apply">("list");
+  const [selectedJob, setSelectedJob] = useState<Job | null>(null);
+  const [searchText, setSearchText] = useState("");
+  const [filterDepartment, setFilterDepartment] = useState("全部部门");
+  const [filterJobType, setFilterJobType] = useState("全部类型");
+  const [jobs, setJobs] = useState<Job[]>([]);
+  const [departments, setDepartments] = useState<Department[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [form] = Form.useForm();
+
+  // 获取职位列表
+  const fetchJobs = async () => {
+    try {
+      setLoading(true);
+      const res = await request.get<any, AxiosResponse<ApiResponse<Job[]>>>(
+        "/jobs"
+      );
+      if (res.data.code === 200) {
+        setJobs(res.data.data);
+      }
+    } catch (error) {
+      message.error("获取职位列表失败");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 获取部门列表
+  const fetchDepartments = async () => {
+    try {
+      const res = await request.get<
+        any,
+        AxiosResponse<ApiResponse<Department[]>>
+      >("/departments");
+      if (res.data.code === 200) {
+        setDepartments(res.data.data);
+      }
+    } catch (error) {
+      message.error("获取部门列表失败");
+    }
+  };
 
   useEffect(() => {
-    // 获取所有发布的职位
-    const fetchJobs = async () => {
-      setLoading(true);
-      try {
-        const response = await request.get("/jobs");
-        setJobs(response.data.data || []);
-      } catch (error) {
-        console.error("获取职位列表失败:", error);
-        message.error("获取职位列表失败");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    const fetchDepartments = async () => {
-      try {
-        const response = await request.get("/departments");
-        setDepartments(response.data.data || []);
-      } catch (error) {
-        console.error("获取部门列表失败:", error);
-      }
-    };
-
     fetchJobs();
     fetchDepartments();
   }, []);
 
-  const handleUpload = {
-    customRequest: async ({ file, onSuccess, onError }: any) => {
-      const chunkSize = 1024 * 1024; // 1MB 每片
-      const chunks = Math.ceil(file.size / chunkSize);
-      setUploading(true);
+  const filteredJobs = jobs.filter((job) => {
+    const matchesSearch =
+      searchText === "" ||
+      job.title.toLowerCase().includes(searchText.toLowerCase()) ||
+      job.description.toLowerCase().includes(searchText.toLowerCase());
 
-      try {
-        const uploadChunks = async () => {
-          for (let i = 0; i < chunks; i++) {
-            const start = i * chunkSize;
-            const end = Math.min(file.size, start + chunkSize);
-            const chunk = file.slice(start, end);
+    const matchesDepartment =
+      filterDepartment === "全部部门" ||
+      job.department.name === filterDepartment;
+    const matchesJobType =
+      filterJobType === "全部类型" || job.jobType === filterJobType;
 
-            const formData = new FormData();
-            formData.append("chunk", chunk);
-            formData.append("fileName", file.name);
-            formData.append("chunkIndex", String(i));
-            formData.append("chunks", String(chunks));
+    return (
+      job.status === "open" &&
+      matchesSearch &&
+      matchesDepartment &&
+      matchesJobType
+    );
+  });
 
-            // 添加错误处理和重试逻辑
-            let retries = 3;
-            while (retries > 0) {
-              try {
-                const response = await request.post("/upload/chunk", formData, {
-                  headers: {
-                    "Content-Type": "multipart/form-data",
-                  },
-                });
-
-                if (response.status !== 200) {
-                  throw new Error(`上传失败: ${response.statusText}`);
-                }
-
-                break; // 成功则跳出重试循环
-              } catch (err) {
-                retries--;
-                if (retries === 0) throw err;
-                // 等待一秒后重试
-                await new Promise((resolve) => setTimeout(resolve, 1000));
-              }
-            }
-          }
-
-          // 所有分片上传完成后，请求合并文件
-          const mergeResponse = await request.post("/upload/merge", {
-            fileName: file.name,
-            chunks: chunks,
-          });
-
-          return mergeResponse.data.data;
-        };
-
-        const result = await uploadChunks();
-        onSuccess(result);
-        message.success(`${file.name} 上传成功`);
-        return result;
-      } catch (error) {
-        console.error("上传错误详情:", error);
-        onError(error);
-        message.error(`${file.name} 上传失败: ${error.message || "未知错误"}`);
-      } finally {
-        setUploading(false);
-      }
-    },
-    beforeUpload: (file: File) => {
-      const isPDF = file.type === "application/pdf";
-      if (!isPDF) {
-        message.error("只能上传 PDF 文件！");
-        return Upload.LIST_IGNORE;
-      }
-      const isLt20M = file.size / 1024 / 1024 < 20;
-      if (!isLt20M) {
-        message.error("文件大小不能超过 20MB！");
-        return Upload.LIST_IGNORE;
-      }
-      return true;
-    },
-  };
-
-  const onFinish = async (values: any) => {
-    try {
-      if (fileList.length === 0) {
-        message.error("请上传简历文件");
-        return;
-      }
-
-      const fileInfo = fileList[0].response || {};
-
-      // 处理工作经验数据，确保格式与后端模型匹配
-      const formattedWorkExperience =
-        values.workExperience?.map((exp: any) => ({
-          company: exp.company,
-          position: exp.position,
-          duration: `${exp.startDate || ""} - ${exp.endDate || ""}`,
-          description: exp.description,
-        })) || [];
-
-      // 处理教育经历数据，确保格式与后端模型匹配
-      const formattedEducation = values.education?.[0]
-        ? {
-            school: values.education[0].school,
-            major: values.education[0].major,
-            degree: values.education[0].degree,
-            graduationYear: values.education[0].endDate?.split("-")[0] || "",
-          }
-        : undefined;
-
-      const submitData = {
-        jobId: selectedJob._id,
-        fileUrl: fileInfo.url,
-        fileName: fileList[0].name,
-        coverLetter: values.coverLetter,
-        status: "pending",
-        submittedAt: new Date(),
-        // 使用格式化后的数据
-        workExperience: formattedWorkExperience,
-        education: formattedEducation,
-        skills: values.skills || [],
-      };
-
-      await request.post("/resumes", submitData);
-      message.success("简历提交成功！");
-      form.resetFields();
-      setFileList([]);
-      setViewMode("list");
-      setSelectedJob(null);
-      // 重置新增的状态
-      setWorkExperiences([{}]);
-      setEducations([{}]);
-      setSkills([]);
-    } catch (error) {
-      console.error("提交失败:", error);
-      message.error("提交失败，请重试");
-    }
-  };
-
-  const handleApplyJob = (job: any) => {
+  const handleApplyJob = (job: Job) => {
     setSelectedJob(job);
     setViewMode("apply");
     form.resetFields();
@@ -219,461 +152,512 @@ const ApplyPage: React.FC = () => {
     setViewMode("list");
     setSelectedJob(null);
     form.resetFields();
-    setFileList([]);
   };
 
-  // 筛选职位列表
-  const filteredJobs = jobs.filter((job) => {
-    // 只显示开放中的职位
-    if (job.status !== "open") return false;
-
-    // 搜索文本筛选
-    const matchesSearch = searchText
-      ? job.title.toLowerCase().includes(searchText.toLowerCase()) ||
-        job.description.toLowerCase().includes(searchText.toLowerCase()) ||
-        job.location.toLowerCase().includes(searchText.toLowerCase())
-      : true;
-
-    // 部门筛选
-    const jobDeptId =
-      typeof job.department === "object" && job.department
-        ? job.department._id
-        : job.department;
-    const matchesDepartment =
-      filterDepartment === "all" ? true : jobDeptId === filterDepartment;
-
-    return matchesSearch && matchesDepartment;
-  });
-
-  const getDepartmentName = (job: any) => {
-    if (typeof job.department === "object" && job.department) {
-      return job.department.name;
+  // 处理文件上传
+  const handleFileUpload = async (file: File) => {
+    if (file.type !== "application/pdf") {
+      message.error("只支持上传PDF文件");
+      return false;
     }
-    return job.department || "未分配";
-  };
 
-  const getStatusTag = (status: "open" | "closed" | "archived") => {
-    switch (status) {
-      case "open":
-        return <Tag color="green">招聘中</Tag>;
-      case "closed":
-        return <Tag color="orange">已关闭</Tag>;
-      case "archived":
-        return <Tag color="default">已归档</Tag>;
-      default:
-        return null;
+    if (file.size > 20 * 1024 * 1024) {
+      message.error("文件大小不能超过20MB");
+      return false;
+    }
+
+    try {
+      setUploading(true);
+      // 这里实现分片上传逻辑
+      const chunkSize = 2 * 1024 * 1024; // 2MB per chunk
+      const chunks = Math.ceil(file.size / chunkSize);
+      const fileName = `${Date.now()}_${file.name}`;
+
+      // 创建临时目录
+      for (let i = 0; i < chunks; i++) {
+        const start = i * chunkSize;
+        const end = Math.min(file.size, start + chunkSize);
+        const chunk = file.slice(start, end);
+
+        const formData = new FormData();
+        formData.append("file", chunk);
+        formData.append("fileName", fileName);
+        formData.append("chunkIndex", String(i));
+        formData.append("chunks", String(chunks));
+
+        await request.post("/upload/chunk", formData);
+      }
+
+      // 合并文件
+      const mergeRes = await request.post<
+        any,
+        AxiosResponse<ApiResponse<{ url: string }>>
+      >("/upload/merge", {
+        fileName,
+        chunks,
+      });
+
+      if (mergeRes.data.code === 200) {
+        return mergeRes.data.data.url;
+      }
+      throw new Error("文件上传失败");
+    } catch (error) {
+      message.error("文件上传失败");
+      return false;
+    } finally {
+      setUploading(false);
     }
   };
 
-  // 重置筛选条件
+  const handleSubmitApplication = async (values: any) => {
+    if (!selectedJob) return;
+
+    try {
+      const fileUrl = await handleFileUpload(values.resume[0].originFileObj);
+      if (!fileUrl) return;
+
+      const submitData = {
+        jobId: selectedJob._id,
+        fileUrl,
+        fileName: values.resume[0].name,
+        education: values.education,
+        workExperience: values.workExperience,
+        skills: values.skills,
+        coverLetter: values.coverLetter,
+      };
+
+      const res = await request.post<any, AxiosResponse<ApiResponse>>(
+        "/resumes",
+        submitData
+      );
+      if (res.data.code === 201) {
+        message.success("申请提交成功！");
+        handleBackToList();
+      } else {
+        message.error(res.data.message || "申请提交失败");
+      }
+    } catch (error) {
+      message.error("申请提交失败");
+    }
+  };
+
   const resetFilters = () => {
     setSearchText("");
-    setFilterDepartment("all");
-    setFilterStatus("all");
-    setFilterJobType("all");
+    setFilterDepartment("全部部门");
+    setFilterJobType("全部类型");
   };
 
-  // 添加工作经验表单项
-  const addWorkExperience = () => {
-    setWorkExperiences([...workExperiences, {}]);
-  };
-
-  // 移除工作经验表单项
-  const removeWorkExperience = (index: number) => {
-    const newWorkExperiences = [...workExperiences];
-    newWorkExperiences.splice(index, 1);
-    setWorkExperiences(newWorkExperiences);
-  };
-
-  // 添加教育经历表单项
-  const addEducation = () => {
-    setEducations([...educations, {}]);
-  };
-
-  // 移除教育经历表单项
-  const removeEducation = (index: number) => {
-    const newEducations = [...educations];
-    newEducations.splice(index, 1);
-    setEducations(newEducations);
-  };
-
-  return (
-    <div className="apply-container">
-      {viewMode === "list" ? (
+  const tabItems = [
+    {
+      key: "1",
+      label: "简历信息",
+      children: (
         <>
-          <h2 className="apply-title">职位列表</h2>
-          <div className="apply-subtitle">
-            发现您的理想工作机会 · 共找到 {filteredJobs.length} 个职位
-          </div>
-          <Spin spinning={loading}>
-            {/* 搜索和筛选区域 */}
-            <Card className="apply-search-card">
-              <Row gutter={16} align="middle">
-                <Col flex="1 1 260px">
-                  <Input
-                    className="apply-search-input"
-                    prefix={<SearchOutlined style={{ color: "#bfbfbf" }} />}
-                    placeholder="搜索职位名称或描述"
-                    value={searchText}
-                    onChange={(e) => setSearchText(e.target.value)}
-                    allowClear
-                  />
-                </Col>
-                <Col flex="0 0 180px">
-                  <Select
-                    className="apply-search-select"
-                    placeholder="选择部门"
-                    style={{ width: "100%" }}
-                    value={filterDepartment}
-                    onChange={(value) => setFilterDepartment(value)}
-                  >
-                    <Select.Option value="all">全部部门</Select.Option>
-                    {departments.map((dept) => (
-                      <Select.Option key={dept._id} value={dept._id}>
-                        {dept.name}
-                      </Select.Option>
-                    ))}
-                  </Select>
-                </Col>
-                <Col flex="0 0 150px">
-                  <Select
-                    className="apply-search-select"
-                    placeholder="招聘状态"
-                    style={{ width: "100%" }}
-                    value={filterStatus}
-                    onChange={(value) => setFilterStatus(value)}
-                  >
-                    <Select.Option value="all">全部状态</Select.Option>
-                    <Select.Option value="open">招聘中</Select.Option>
-                    <Select.Option value="closed">已关闭</Select.Option>
-                    <Select.Option value="archived">已归档</Select.Option>
-                  </Select>
-                </Col>
-                <Col flex="0 0 150px">
-                  <Select
-                    className="apply-search-select"
-                    placeholder="招聘类型"
-                    style={{ width: "100%" }}
-                    value={filterJobType}
-                    onChange={(value) => setFilterJobType(value)}
-                  >
-                    <Select.Option value="all">全部类型</Select.Option>
-                    <Select.Option value="社招">社招</Select.Option>
-                    <Select.Option value="校招">校招</Select.Option>
-                    <Select.Option value="实习">实习</Select.Option>
-                  </Select>
-                </Col>
-                <Col flex="0 0 110px">
-                  <Button
-                    className="apply-search-reset"
-                    icon={<ReloadOutlined />}
-                    onClick={resetFilters}
-                  >
-                    重置
-                  </Button>
-                </Col>
-              </Row>
-            </Card>
-
-            {filteredJobs.length === 0 ? (
-              <Card>
-                <Typography.Text>暂无招聘中的职位</Typography.Text>
-              </Card>
-            ) : (
-              <Space direction="vertical" style={{ width: "100%" }}>
-                {filteredJobs.map((job) => (
-                  <Card
-                    key={job._id}
-                    className="job-list-item"
-                    style={{ marginBottom: 24 }}
-                  >
-                    <Row align="top" justify="space-between">
-                      <Col flex="auto">
-                        <Typography.Title
-                          level={4}
-                          style={{
-                            marginBottom: 8,
-                            display: "flex",
-                            alignItems: "center",
-                            gap: 8,
-                          }}
-                        >
-                          {job.title} {getStatusTag(job.status)}
-                        </Typography.Title>
-                        <Typography.Text
-                          type="secondary"
-                          style={{ display: "block", marginBottom: 8 }}
-                        >
-                          {getDepartmentName(job)} · {job.location}
-                          {job.jobType && ` · ${job.jobType}`}
-                        </Typography.Text>
-                        {job.salaryRange && (
-                          <Typography.Text
-                            style={{
-                              color: "#fa8c16",
-                              fontSize: 16,
-                              fontWeight: 500,
-                              display: "block",
-                              marginBottom: 16,
-                            }}
-                          >
-                            {job.salaryRange}
-                          </Typography.Text>
-                        )}
-                        <div style={{ marginBottom: 16 }}>
-                          <Typography.Text strong>职位描述：</Typography.Text>
-                          <Typography.Paragraph
-                            type="secondary"
-                            style={{ marginBottom: 0 }}
-                          >
-                            {job.description}
-                          </Typography.Paragraph>
-                        </div>
-                        {job.expiryDate && (
-                          <Typography.Text type="secondary">
-                            截止日期:{" "}
-                            {new Date(job.expiryDate).toLocaleDateString()}
-                          </Typography.Text>
-                        )}
-                      </Col>
-                      <Col>
-                        <Button
-                          type="primary"
-                          onClick={() => handleApplyJob(job)}
-                        >
-                          申请职位
-                        </Button>
-                      </Col>
-                    </Row>
-                  </Card>
-                ))}
-              </Space>
-            )}
-          </Spin>
+          <Form.Item
+            label="上传简历"
+            name="resume"
+            rules={[{ required: true, message: "请上传您的简历" }]}
+            valuePropName="fileList"
+            getValueFromEvent={(e) => {
+              if (Array.isArray(e)) {
+                return e;
+              }
+              return e?.fileList;
+            }}
+          >
+            <Dragger
+              name="file"
+              multiple={false}
+              beforeUpload={() => false}
+              accept=".pdf"
+            >
+              <p className="ant-upload-drag-icon">
+                <UploadOutlined />
+              </p>
+              <p className="ant-upload-text">点击或拖拽文件到此处上传</p>
+              <p className="ant-upload-hint">支持PDF格式，文件大小不超过20MB</p>
+            </Dragger>
+          </Form.Item>
+          <Form.Item label="技能标签" name="skills">
+            <Select mode="tags" placeholder="输入技能后按回车确认" />
+          </Form.Item>
         </>
-      ) : (
-        <>
-          <div style={{ marginBottom: 16 }}>
-            <Button
-              icon={<ArrowLeftOutlined />}
-              onClick={handleBackToList}
-              className="apply-back-btn"
-            >
-              返回
-            </Button>
-            <Typography.Title
-              level={3}
-              style={{ display: "inline-block", margin: 0 }}
-            >
-              职位申请
-            </Typography.Title>
-            <Typography.Text style={{ marginLeft: 8 }}>
-              {selectedJob?.title}
-            </Typography.Text>
-          </div>
-
-          <Card style={{ marginBottom: 16 }}>
-            <Typography.Title level={4}>{selectedJob?.title}</Typography.Title>
-            <Typography.Text type="secondary">
-              {getDepartmentName(selectedJob)} · {selectedJob?.location}
-              {selectedJob?.jobType && ` · ${selectedJob?.jobType}`}
-            </Typography.Text>
-            {selectedJob?.salaryRange && (
-              <Typography.Text type="success" className="apply-job-salary">
-                {selectedJob?.salaryRange}
-              </Typography.Text>
-            )}
-            <Typography.Paragraph className="apply-job-desc">
-              <strong>职位描述：</strong>
-              <br />
-              {selectedJob?.description}
-            </Typography.Paragraph>
-          </Card>
-
-          <Form form={form} onFinish={onFinish} layout="vertical">
-            <Form.Item
-              name="resume"
-              label="上传简历"
-              rules={[{ required: true, message: "请上传简历" }]}
-            >
-              <Upload
-                {...handleUpload}
-                maxCount={1}
-                accept=".pdf"
-                fileList={fileList}
-                onChange={({ fileList }) => setFileList(fileList)}
-              >
-                <Button icon={<UploadOutlined />} loading={uploading}>
-                  选择文件
-                </Button>
-              </Upload>
-            </Form.Item>
-
-            {/* 工作经验部分 */}
-            <Card title="工作经验" className="apply-section">
-              {workExperiences.map((_, index) => (
-                <div key={index} className="apply-section">
+      ),
+    },
+    {
+      key: "2",
+      label: "工作经验",
+      children: (
+        <Form.List name="workExperience">
+          {(fields, { add, remove }) => (
+            <>
+              {fields.map(({ key, name, ...restField }) => (
+                <Card key={key} style={{ marginBottom: 16 }}>
+                  <Form.Item
+                    {...restField}
+                    name={[name, "company"]}
+                    label="公司名称"
+                    rules={[{ required: true }]}
+                  >
+                    <Input />
+                  </Form.Item>
+                  <Form.Item
+                    {...restField}
+                    name={[name, "position"]}
+                    label="职位"
+                    rules={[{ required: true }]}
+                  >
+                    <Input />
+                  </Form.Item>
                   <Row gutter={16}>
                     <Col span={12}>
                       <Form.Item
-                        name={["workExperience", index, "company"]}
-                        label="公司名称"
-                        rules={[{ required: true, message: "请输入公司名称" }]}
-                      >
-                        <Input placeholder="公司名称" />
-                      </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                      <Form.Item
-                        name={["workExperience", index, "position"]}
-                        label="职位"
-                        rules={[{ required: true, message: "请输入职位" }]}
-                      >
-                        <Input placeholder="职位" />
-                      </Form.Item>
-                    </Col>
-                  </Row>
-                  <Row gutter={16}>
-                    <Col span={12}>
-                      <Form.Item
-                        name={["workExperience", index, "startDate"]}
+                        {...restField}
+                        name={[name, "startDate"]}
                         label="开始日期"
                       >
-                        <Input type="date" />
+                        <DatePicker style={{ width: "100%" }} />
                       </Form.Item>
                     </Col>
                     <Col span={12}>
                       <Form.Item
-                        name={["workExperience", index, "endDate"]}
+                        {...restField}
+                        name={[name, "endDate"]}
                         label="结束日期"
                       >
-                        <Input type="date" />
+                        <DatePicker style={{ width: "100%" }} />
                       </Form.Item>
                     </Col>
                   </Row>
                   <Form.Item
-                    name={["workExperience", index, "description"]}
+                    {...restField}
+                    name={[name, "description"]}
                     label="工作描述"
                   >
-                    <Input.TextArea rows={3} placeholder="工作职责和成就" />
+                    <Input.TextArea rows={3} />
                   </Form.Item>
-                  {workExperiences.length > 1 && (
-                    <Button
-                      type="dashed"
-                      danger
-                      onClick={() => removeWorkExperience(index)}
-                      className="apply-add-btn"
-                    >
-                      删除此工作经验
-                    </Button>
-                  )}
-                </div>
+                  <Button
+                    type="dashed"
+                    danger
+                    onClick={() => remove(name)}
+                    block
+                    icon={<DeleteOutlined />}
+                  >
+                    删除此项
+                  </Button>
+                </Card>
               ))}
               <Button
                 type="dashed"
-                onClick={addWorkExperience}
+                onClick={() => add()}
                 block
-                className="apply-add-btn"
+                icon={<PlusOutlined />}
               >
-                + 添加工作经验
+                添加工作经验
               </Button>
-            </Card>
-
-            {/* 教育经历部分 */}
-            <Card title="教育经历" className="apply-section">
-              {educations.map((_, index) => (
-                <div key={index} className="apply-section">
+            </>
+          )}
+        </Form.List>
+      ),
+    },
+    {
+      key: "3",
+      label: "教育背景",
+      children: (
+        <Form.List name="education">
+          {(fields, { add, remove }) => (
+            <>
+              {fields.map(({ key, name, ...restField }) => (
+                <Card key={key} style={{ marginBottom: 16 }}>
+                  <Form.Item
+                    {...restField}
+                    name={[name, "school"]}
+                    label="学校名称"
+                    rules={[{ required: true }]}
+                  >
+                    <Input />
+                  </Form.Item>
+                  <Form.Item
+                    {...restField}
+                    name={[name, "degree"]}
+                    label="学位"
+                    rules={[{ required: true }]}
+                  >
+                    <Input />
+                  </Form.Item>
+                  <Form.Item {...restField} name={[name, "major"]} label="专业">
+                    <Input />
+                  </Form.Item>
                   <Row gutter={16}>
                     <Col span={12}>
                       <Form.Item
-                        name={["education", index, "school"]}
-                        label="学校名称"
-                        rules={[{ required: true, message: "请输入学校名称" }]}
-                      >
-                        <Input placeholder="学校名称" />
-                      </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                      <Form.Item
-                        name={["education", index, "degree"]}
-                        label="学位"
-                        rules={[{ required: true, message: "请输入学位" }]}
-                      >
-                        <Input placeholder="学位" />
-                      </Form.Item>
-                    </Col>
-                  </Row>
-                  <Row gutter={16}>
-                    <Col span={12}>
-                      <Form.Item
-                        name={["education", index, "startDate"]}
+                        {...restField}
+                        name={[name, "startDate"]}
                         label="开始日期"
                       >
-                        <Input type="date" />
+                        <DatePicker style={{ width: "100%" }} />
                       </Form.Item>
                     </Col>
                     <Col span={12}>
                       <Form.Item
-                        name={["education", index, "endDate"]}
+                        {...restField}
+                        name={[name, "endDate"]}
                         label="结束日期"
                       >
-                        <Input type="date" />
+                        <DatePicker style={{ width: "100%" }} />
                       </Form.Item>
                     </Col>
                   </Row>
-                  <Form.Item name={["education", index, "major"]} label="专业">
-                    <Input placeholder="专业" />
-                  </Form.Item>
-                  {educations.length > 1 && (
-                    <Button
-                      type="dashed"
-                      danger
-                      onClick={() => removeEducation(index)}
-                      className="apply-add-btn"
-                    >
-                      删除此教育经历
-                    </Button>
-                  )}
-                </div>
+                  <Button
+                    type="dashed"
+                    danger
+                    onClick={() => remove(name)}
+                    block
+                    icon={<DeleteOutlined />}
+                  >
+                    删除此项
+                  </Button>
+                </Card>
               ))}
               <Button
                 type="dashed"
-                onClick={addEducation}
+                onClick={() => add()}
                 block
-                className="apply-add-btn"
+                icon={<PlusOutlined />}
               >
-                + 添加教育经历
+                添加教育背景
               </Button>
-            </Card>
+            </>
+          )}
+        </Form.List>
+      ),
+    },
+    {
+      key: "4",
+      label: "求职信",
+      children: (
+        <Form.Item
+          name="coverLetter"
+          rules={[{ required: true, message: "请填写求职信" }]}
+        >
+          <Input.TextArea
+            rows={8}
+            placeholder="请介绍您的背景、技能和为什么适合这个职位..."
+          />
+        </Form.Item>
+      ),
+    },
+  ];
 
-            {/* 技能部分 */}
-            <Form.Item name="skills" label="技能">
-              <Select
-                mode="tags"
-                style={{ width: "100%" }}
-                placeholder="输入技能并按回车添加"
-                onChange={(value) => setSkills(value)}
-              />
-            </Form.Item>
+  if (viewMode === "apply" && selectedJob) {
+    return (
+      <div className="apply-page-container">
+        <div style={{ maxWidth: 800, margin: "0 auto" }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "16px",
+              marginBottom: "32px",
+            }}
+          >
+            <Button icon={<ArrowLeftOutlined />} onClick={handleBackToList}>
+              返回职位列表
+            </Button>
+            <div>
+              <Title level={3} style={{ margin: 0 }}>
+                申请职位
+              </Title>
+              <Text type="secondary">{selectedJob.title}</Text>
+            </div>
+          </div>
 
-            <Form.Item
-              name="coverLetter"
-              label="求职信"
-              rules={[{ required: true, message: "请填写求职信" }]}
+          <Card className="job-card">
+            <Title level={4}>{selectedJob.title}</Title>
+            <Space size="middle" style={{ marginBottom: 16 }}>
+              <Text type="secondary">
+                <ApartmentOutlined className="job-card-icon" />
+                {selectedJob.department.name}
+              </Text>
+              <Text type="secondary">
+                <EnvironmentOutlined className="job-card-icon" />
+                {selectedJob.location}
+              </Text>
+              <Text className="job-salary">
+                <DollarOutlined className="job-card-icon" />
+                {selectedJob.salaryRange}
+              </Text>
+            </Space>
+            <Paragraph>{selectedJob.description}</Paragraph>
+            <Space wrap>
+              {selectedJob.requirements?.map((req) => (
+                <Tag key={req}>{req}</Tag>
+              ))}
+            </Space>
+          </Card>
+
+          <Card className="apply-form-card">
+            <Form
+              form={form}
+              layout="vertical"
+              onFinish={handleSubmitApplication}
             >
-              <Input.TextArea rows={6} />
-            </Form.Item>
+              <Tabs
+                defaultActiveKey="1"
+                items={tabItems}
+                className="apply-form-tabs"
+              />
+              <Divider />
+              <Form.Item>
+                <Space>
+                  <Button onClick={handleBackToList}>取消</Button>
+                  <Button type="primary" htmlType="submit" loading={uploading}>
+                    提交申请
+                  </Button>
+                </Space>
+              </Form.Item>
+            </Form>
+          </Card>
+        </div>
+      </div>
+    );
+  }
 
-            <Form.Item>
-              <Button type="primary" htmlType="submit">
-                提交申请
-              </Button>
-            </Form.Item>
-          </Form>
-        </>
-      )}
+  return (
+    <div className="apply-page-container">
+      <div className="page-title-header">
+        <Title style={{ textAlign: "left" }}>职位招聘</Title>
+        <Space size="large">
+          <Text className="sub-title">发现您的理想工作机会</Text>
+          <Text className="job-count">共找到 {filteredJobs.length} 个职位</Text>
+        </Space>
+      </div>
+
+      <Card className="filter-card">
+        <Row gutter={[16, 16]} align="bottom">
+          <Col flex="auto">
+            <Text>搜索职位</Text>
+            <Input
+              prefix={<SearchOutlined />}
+              placeholder="搜索职位名称或描述..."
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
+            />
+          </Col>
+          <Col>
+            <Text>部门</Text>
+            <Select
+              value={filterDepartment}
+              onChange={setFilterDepartment}
+              style={{ width: 180 }}
+            >
+              <Option value="全部部门">全部部门</Option>
+              {departments.map((dept) => (
+                <Option key={dept._id} value={dept.name}>
+                  {dept.name}
+                </Option>
+              ))}
+            </Select>
+          </Col>
+          <Col>
+            <Text>工作类型</Text>
+            <Select
+              value={filterJobType}
+              onChange={setFilterJobType}
+              style={{ width: 150 }}
+            >
+              <Option value="全部类型">全部类型</Option>
+              <Option value="全职">全职</Option>
+              <Option value="兼职">兼职</Option>
+              <Option value="实习">实习</Option>
+            </Select>
+          </Col>
+          <Col>
+            <Button icon={<ReloadOutlined />} onClick={resetFilters}>
+              重置
+            </Button>
+          </Col>
+        </Row>
+      </Card>
+
+      <Spin spinning={loading}>
+        {filteredJobs.length === 0 ? (
+          <Card style={{ textAlign: "center", padding: "48px" }}>
+            <BookOutlined style={{ fontSize: 48, color: "#d1d5db" }} />
+            <Title level={5}>暂无匹配的职位</Title>
+            <Text type="secondary">请尝试调整搜索条件或筛选器</Text>
+          </Card>
+        ) : (
+          <Row gutter={[24, 24]}>
+            {filteredJobs.map((job) => (
+              <Col key={job._id} xs={24} md={12} lg={8}>
+                <Card className="job-card" hoverable>
+                  <Space direction="vertical" style={{ width: "100%" }}>
+                    <Row justify="space-between" align="top">
+                      <Title level={5} className="job-card-title">
+                        {job.title}
+                      </Title>
+                      <Tag color="green">招聘中</Tag>
+                    </Row>
+                    <Space>
+                      <Text type="secondary">
+                        <ApartmentOutlined className="job-card-icon" />
+                        {job.department.name}
+                      </Text>
+                      <Text type="secondary">
+                        <EnvironmentOutlined className="job-card-icon" />
+                        {job.location}
+                      </Text>
+                      {job.jobType && (
+                        <Text type="secondary">
+                          <ClockCircleOutlined className="job-card-icon" />
+                          {job.jobType}
+                        </Text>
+                      )}
+                    </Space>
+                    {job.salaryRange && (
+                      <Text className="job-salary">{job.salaryRange}</Text>
+                    )}
+                    <Paragraph ellipsis={{ rows: 2 }}>
+                      {job.description}
+                    </Paragraph>
+                    {job.requirements && job.requirements.length > 0 && (
+                      <Space wrap>
+                        {job.requirements.slice(0, 3).map((req) => (
+                          <Tag key={req}>{req}</Tag>
+                        ))}
+                        {job.requirements.length > 3 && (
+                          <Tag>+{job.requirements.length - 3} 更多</Tag>
+                        )}
+                      </Space>
+                    )}
+                    <Divider style={{ margin: "12px 0" }} />
+                    <Row justify="space-between" align="middle">
+                      {job.expiryDate ? (
+                        <Text type="secondary">
+                          截止: {dayjs(job.expiryDate).format("YYYY-MM-DD")}
+                        </Text>
+                      ) : (
+                        <Text type="secondary">
+                          发布: {dayjs(job.createdAt).format("YYYY-MM-DD")}
+                        </Text>
+                      )}
+                      <Button
+                        type="primary"
+                        onClick={() => handleApplyJob(job)}
+                      >
+                        申请职位
+                      </Button>
+                    </Row>
+                  </Space>
+                </Card>
+              </Col>
+            ))}
+          </Row>
+        )}
+      </Spin>
     </div>
   );
 };
 
-export default ApplyPage;
+export default JobApplicationPage;

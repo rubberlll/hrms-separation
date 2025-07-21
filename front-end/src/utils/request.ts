@@ -10,7 +10,7 @@ interface ResponseData<T = any> {
 }
 
 const request = axios.create({
-  baseURL: "/api",
+  baseURL: "/api", // 这个会被 webpack 代理到 http://localhost:3001
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",
@@ -26,11 +26,12 @@ request.interceptors.request.use(
     }
 
     // 添加这行代码来记录完整的请求 URL
-    console.log("请求发送到:", config.baseURL + config.url);
+    console.log("请求发送到:", (config.baseURL || "") + (config.url || ""));
 
     return config;
   },
   (error: AxiosError) => {
+    console.error("请求错误:", error);
     return Promise.reject(error);
   }
 );
@@ -38,6 +39,8 @@ request.interceptors.request.use(
 // 响应拦截器
 request.interceptors.response.use(
   (response: AxiosResponse<ResponseData>) => {
+    console.log("响应数据:", response.data);
+
     // 检查是否有 success 字段（兼容旧 API 格式）
     if (response.data.success === true) {
       return response;
@@ -55,8 +58,11 @@ request.interceptors.response.use(
     return Promise.reject(new Error(msg || "请求失败"));
   },
   (error: AxiosError<ResponseData>) => {
+    console.error("响应错误:", error);
+
     if (error.response) {
       const { status, data } = error.response;
+      console.error("错误状态:", status, "错误数据:", data);
 
       switch (status) {
         case 401:
@@ -72,14 +78,16 @@ request.interceptors.response.use(
           message.error("请求的资源不存在");
           break;
         case 500:
-          message.error("服务器错误");
+          message.error("服务器错误: " + (data?.message || "未知错误"));
           break;
         default:
           message.error(data?.message || "请求失败");
       }
     } else if (error.request) {
+      console.error("网络错误:", error.request);
       message.error("网络错误，请检查网络连接");
     } else {
+      console.error("请求配置错误:", error.message);
       message.error("请求配置错误");
     }
 

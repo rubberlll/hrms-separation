@@ -1,178 +1,100 @@
-.apply-container {
-  max-width: 1300px;
-  background: #fff;
-}
-.apply-title {
-  font-weight: 700;
-  font-size: 22px;
+.apply-page-container {
+  background: linear-gradient(to bottom right, white, #ffffff);
+  min-height: 100vh;
   padding: 32px;
 }
-.apply-search-card {
-  margin-bottom: 24px;
-  background: #fff;
-  border: none;
-  box-shadow: none;
-  padding: 0 0 0 0;
+.apply-page-container .page-title-header {
+  text-align: left;
+  margin-bottom: 48px;
 }
-.apply-search-input {
-  height: 44px;
-  border-radius: 8px;
-  font-size: 16px;
-  background: #fafbfc;
-  border: 1px solid #e5eaf3;
-  transition: border-color 0.2s, background 0.2s;
-}
-.apply-search-input:focus,
-.apply-search-input:hover {
-  border-color: #ff7a00;
-  background: #fafbfc;
-}
-.apply-search-select {
-  height: 44px !important;
-  border-radius: 8px !important;
-  font-size: 16px;
-  background: #fafbfc;
-  border: 1px solid #e5eaf3;
-}
-.apply-search-select .ant-select-selector {
-  height: 44px !important;
-  border-radius: 8px !important;
-  background: #fafbfc !important;
-  border: none !important;
-  font-size: 16px;
-  box-shadow: none !important;
-  transition: border-color 0.2s, background 0.2s;
-}
-.apply-search-select:hover .ant-select-selector,
-.apply-search-select.ant-select-focused .ant-select-selector {
-  border-color: #ff7a00 !important;
-  background: #fafbfc !important;
-}
-.apply-search-reset {
-  height: 44px;
-  border-radius: 8px;
-  font-size: 16px;
-  background: #fff;
-  border: 1px solid #e5eaf3;
-  color: #222;
-  transition: border-color 0.2s, background 0.2s;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-.apply-search-reset:hover {
-  border-color: #ff7a00;
-  background: #fff7f0;
-  color: #ff7a00;
-}
-.apply-job-desc {
-  margin-top: 16px;
-}
-.apply-job-salary {
-  display: block;
-  margin-top: 8px;
-}
-.apply-back-btn {
-  margin-right: 16px;
-}
-.apply-section {
-  margin-bottom: 16px;
-  border: 1px dashed #d9d9d9;
-  padding: 16px;
-  border-radius: 4px;
-}
-.apply-add-btn {
-  margin-top: 8px;
-}
-.apply-job-card {
-  position: relative;
-  background: #fff;
-  border: 1.5px solid #e3eefd;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(30, 136, 229, 0.06);
-  padding: 32px 32px 24px 32px;
-  margin-bottom: 24px;
-  transition: box-shadow 0.2s, border-color 0.2s, background 0.2s;
-}
-.apply-job-card:hover {
-  box-shadow: 0 4px 16px rgba(255, 122, 0, 0.12);
-  border-color: #ff7a00;
-  background: #fff7f0;
-}
-.apply-job-header {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 16px;
+.apply-page-container .page-title-header h1 {
+  font-size: 2.25rem;
+  font-weight: bold;
+  color: #1f2937;
   margin-bottom: 8px;
 }
-.apply-job-title {
-  font-size: 22px;
-  font-weight: 700;
-  color: #222;
+.apply-page-container .page-title-header .sub-title {
+  font-size: 1.25rem;
+  color: #6b7280;
 }
-.apply-job-status {
-  background: #e6f9ed;
-  color: #1dbf73;
-  border-radius: 12px;
-  font-size: 14px;
-  padding: 2px 14px;
-  margin-left: 12px;
-  font-weight: 600;
-}
-.apply-job-apply-btn {
-  position: absolute;
-  right: 32px;
-  top: 32px;
-  background: #ff7a00;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  padding: 0 24px;
-  height: 40px;
-  box-shadow: 0 2px 8px rgba(255, 122, 0, 0.08);
-  transition: background 0.2s;
-}
-.apply-job-apply-btn:hover {
-  background: #ff9100;
-  color: #fff;
-}
-.apply-job-info {
-  color: #888;
-  font-size: 15px;
-  margin-bottom: 12px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-.apply-job-desc {
-  color: #222;
-  font-size: 16px;
-  margin-bottom: 16px;
-}
-.apply-job-skills {
-  margin-bottom: 8px;
-}
-.apply-job-skills .apply-job-skill-tag {
-  display: inline-block;
-  background: #f5f7fa;
-  color: #1976d2;
-  border-radius: 16px;
-  font-size: 14px;
-  padding: 2px 16px;
-  margin-right: 8px;
-  margin-bottom: 4px;
+.apply-page-container .page-title-header .job-count {
+  color: #f97316;
   font-weight: 500;
 }
-.apply-job-expiry {
-  color: #aaa;
-  font-size: 13px;
-  margin-top: 4px;
-}
-.apply-subtitle {
-  font-size: 16px;
-  color: #6b7685;
+.apply-page-container .filter-card,
+.apply-page-container .job-card,
+.apply-page-container .apply-form-card {
+  border: 1px solid #fed7aa;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
   margin-bottom: 24px;
-  padding: 0 32px;
+}
+.apply-page-container .job-card {
+  transition: box-shadow 0.3s ease-in-out;
+}
+.apply-page-container .job-card:hover {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+}
+.apply-page-container .job-card .job-card-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #1f2937;
+}
+.apply-page-container .job-card .job-card-icon {
+  margin-right: 8px;
+  color: #6b7280;
+}
+.apply-page-container .job-card .job-salary {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #f97316;
+}
+.apply-page-container .apply-form-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: #f97316;
+}
+.apply-page-container .apply-form-tabs .ant-tabs-ink-bar {
+  background: #f97316;
+}
+.apply-page-container .form-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.apply-page-container .form-section-header .section-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #f97316;
+}
+.apply-page-container .upload-dragger {
+  border: 2px dashed #fed7aa;
+  background-color: white;
+}
+.apply-page-container .upload-dragger:hover {
+  border-color: #f97316;
+}
+.apply-page-container .upload-dragger .ant-upload-drag-icon .anticon {
+  color: #f97316;
+  font-size: 48px;
+}
+.apply-page-container .ant-btn-primary {
+  background-color: #f97316;
+  border-color: #f97316;
+}
+.apply-page-container .ant-btn-primary:hover,
+.apply-page-container .ant-btn-primary:focus {
+  background-color: #d65b06;
+  border-color: #d65b06;
+}
+.apply-page-container .ant-btn-dangerous {
+  color: #ef4444;
+  border-color: #fecaca;
+}
+.apply-page-container .ant-btn-dangerous:hover {
+  color: white;
+  background-color: #ef4444;
+  border-color: #ef4444;
 }
