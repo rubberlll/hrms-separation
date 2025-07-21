@@ -1,0 +1,105 @@
+.dept-page {
+  min-height: 100vh;
+  background: white;
+  padding: 32px;
+  .dept-header {
+    margin-bottom: 32px;
+    h1 {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #ea580c;
+    }
+    p {
+      color: #666;
+    }
+  }
+  .dept-main {
+    display: flex;
+    gap: 24px;
+    .dept-tree-card {
+      width: 320px;
+      min-width: 260px;
+      .dept-tree-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: 600;
+        color: #ea580c;
+        margin-bottom: 12px;
+      }
+      .dept-tree-body {
+        max-height: 600px;
+        overflow-y: auto;
+      }
+      .dept-tree-row {
+        margin-bottom: 2px;
+        // 明显缩进和左侧色块
+        &[data-level="1"] .dept-tree-item {
+          padding-left: 24px;
+          border-left: 4px solid #fed7aa;
+        }
+        &[data-level="2"] .dept-tree-item {
+          padding-left: 48px;
+          border-left: 4px solid #fed7aa;
+        }
+        &[data-level="3"] .dept-tree-item {
+          padding-left: 72px;
+          border-left: 4px solid #fed7aa;
+        }
+      }
+      .dept-tree-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 8px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background 0.2s;
+        &:hover {
+          background: #fff7ed;
+        }
+        &.selected {
+          background: white;
+          border: 1px solid #ea580c;
+        }
+        .expand-btn {
+          margin-right: 4px;
+          color: #ea580c;
+          cursor: pointer;
+        }
+        .dept-name {
+          font-weight: 500;
+        }
+      }
+    }
+    .dept-detail {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      .dept-detail-card,
+      .dept-emp-card {
+        border: 1px solid #fed7aa;
+      }
+      .dept-detail-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .dept-detail-title {
+          font-size: 1.25rem;
+          font-weight: bold;
+        }
+      }
+      .dept-detail-desc {
+        color: #666;
+        margin: 8px 0 0 0;
+      }
+      .dept-emp-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: 600;
+      }
+    }
+  }
+}

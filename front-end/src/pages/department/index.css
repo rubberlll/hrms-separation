@@ -1,0 +1,104 @@
+.dept-page {
+  min-height: 100vh;
+  background: white;
+  padding: 32px;
+}
+.dept-page .dept-header {
+  margin-bottom: 32px;
+}
+.dept-page .dept-header h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #ea580c;
+}
+.dept-page .dept-header p {
+  color: #666;
+}
+.dept-page .dept-main {
+  display: flex;
+  gap: 24px;
+}
+.dept-page .dept-main .dept-tree-card {
+  width: 320px;
+  min-width: 260px;
+}
+.dept-page .dept-main .dept-tree-card .dept-tree-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  color: #ea580c;
+  margin-bottom: 12px;
+}
+.dept-page .dept-main .dept-tree-card .dept-tree-body {
+  max-height: 600px;
+  overflow-y: auto;
+}
+.dept-page .dept-main .dept-tree-card .dept-tree-row {
+  margin-bottom: 2px;
+}
+.dept-page .dept-main .dept-tree-card .dept-tree-row[data-level="1"] .dept-tree-item {
+  padding-left: 24px;
+  border-left: 4px solid #fed7aa;
+}
+.dept-page .dept-main .dept-tree-card .dept-tree-row[data-level="2"] .dept-tree-item {
+  padding-left: 48px;
+  border-left: 4px solid #fed7aa;
+}
+.dept-page .dept-main .dept-tree-card .dept-tree-row[data-level="3"] .dept-tree-item {
+  padding-left: 72px;
+  border-left: 4px solid #fed7aa;
+}
+.dept-page .dept-main .dept-tree-card .dept-tree-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.dept-page .dept-main .dept-tree-card .dept-tree-item:hover {
+  background: #fff7ed;
+}
+.dept-page .dept-main .dept-tree-card .dept-tree-item.selected {
+  background: white;
+  border: 1px solid #ea580c;
+}
+.dept-page .dept-main .dept-tree-card .dept-tree-item .expand-btn {
+  margin-right: 4px;
+  color: #ea580c;
+  cursor: pointer;
+}
+.dept-page .dept-main .dept-tree-card .dept-tree-item .dept-name {
+  font-weight: 500;
+}
+.dept-page .dept-main .dept-detail {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.dept-page .dept-main .dept-detail .dept-detail-card,
+.dept-page .dept-main .dept-detail .dept-emp-card {
+  border: 1px solid #fed7aa;
+}
+.dept-page .dept-main .dept-detail .dept-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.dept-page .dept-main .dept-detail .dept-detail-header .dept-detail-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+.dept-page .dept-main .dept-detail .dept-detail-desc {
+  color: #666;
+  margin: 8px 0 0 0;
+}
+.dept-page .dept-main .dept-detail .dept-emp-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+}
