@@ -1,0 +1,32 @@
+.resume-upload .ant-upload-drag {
+  border: 2px dashed #fed7aa !important;
+  background: #fff7ed !important;
+  border-radius: 8px;
+  padding: 24px;
+  transition: all 0.3s;
+}
+.resume-upload .ant-upload-drag:hover {
+  border-color: #f97316 !important;
+}
+.resume-upload .ant-upload-drag .ant-upload-drag-icon .anticon {
+  color: #f97316;
+  font-size: 48px;
+}
+.resume-upload .ant-upload-drag .ant-upload-text {
+  color: #1f2937;
+  font-size: 16px;
+  margin: 8px 0;
+}
+.resume-upload .ant-upload-drag .ant-upload-hint {
+  color: #6b7280;
+  font-size: 14px;
+}
+.resume-upload .ant-upload-list .ant-upload-list-item {
+  border: 1px solid #fed7aa;
+}
+.resume-upload .ant-upload-list .ant-upload-list-item:hover {
+  background: #fff7ed;
+}
+.resume-upload .ant-upload-list .ant-upload-list-item .ant-upload-list-item-name {
+  color: #1f2937;
+}

@@ -1,0 +1,47 @@
+@import "../../styles/antd-theme.less";
+
+.resume-upload {
+  .ant-upload-drag {
+    border: 2px dashed #fed7aa !important;
+    background: #fff7ed !important;
+    border-radius: 8px;
+    padding: 24px;
+    transition: all 0.3s;
+
+    &:hover {
+      border-color: #f97316 !important;
+    }
+
+    .ant-upload-drag-icon {
+      .anticon {
+        color: #f97316;
+        font-size: 48px;
+      }
+    }
+
+    .ant-upload-text {
+      color: #1f2937;
+      font-size: 16px;
+      margin: 8px 0;
+    }
+
+    .ant-upload-hint {
+      color: #6b7280;
+      font-size: 14px;
+    }
+  }
+
+  .ant-upload-list {
+    .ant-upload-list-item {
+      border: 1px solid #fed7aa;
+
+      &:hover {
+        background: #fff7ed;
+      }
+
+      .ant-upload-list-item-name {
+        color: #1f2937;
+      }
+    }
+  }
+}

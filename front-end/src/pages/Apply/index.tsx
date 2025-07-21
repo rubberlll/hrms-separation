@@ -11,35 +11,30 @@ import {
   Col,
   Space,
   Typography,
-  Upload,
   message,
   Divider,
   DatePicker,
   Spin,
 } from "antd";
-import type { AxiosResponse } from "axios";
 import {
   SearchOutlined,
   EnvironmentOutlined,
   ApartmentOutlined,
   ClockCircleOutlined,
   DollarOutlined,
-  UploadOutlined,
   ArrowLeftOutlined,
   PlusOutlined,
   DeleteOutlined,
   BookOutlined,
-  ToolOutlined,
-  FileTextOutlined,
-  ReloadOutlined,
+  RedoOutlined,
 } from "@ant-design/icons";
 import request from "../../utils/request";
+import ResumeUpload from "../../components/ResumeUpload";
 import dayjs from "dayjs";
 import "./index.less";
 
 const { Title, Text, Paragraph } = Typography;
 const { Option } = Select;
-const { Dragger } = Upload;
 
 interface Job {
   _id: string;
@@ -253,31 +248,7 @@ const JobApplicationPage: React.FC = () => {
       label: "简历信息",
       children: (
         <>
-          <Form.Item
-            label="上传简历"
-            name="resume"
-            rules={[{ required: true, message: "请上传您的简历" }]}
-            valuePropName="fileList"
-            getValueFromEvent={(e) => {
-              if (Array.isArray(e)) {
-                return e;
-              }
-              return e?.fileList;
-            }}
-          >
-            <Dragger
-              name="file"
-              multiple={false}
-              beforeUpload={() => false}
-              accept=".pdf"
-            >
-              <p className="ant-upload-drag-icon">
-                <UploadOutlined />
-              </p>
-              <p className="ant-upload-text">点击或拖拽文件到此处上传</p>
-              <p className="ant-upload-hint">支持PDF格式，文件大小不超过20MB</p>
-            </Dragger>
-          </Form.Item>
+          <ResumeUpload />
           <Form.Item label="技能标签" name="skills">
             <Select mode="tags" placeholder="输入技能后按回车确认" />
           </Form.Item>
@@ -573,7 +544,7 @@ const JobApplicationPage: React.FC = () => {
             </Select>
           </Col>
           <Col>
-            <Button icon={<ReloadOutlined />} onClick={resetFilters}>
+            <Button icon={<RedoOutlined />} onClick={resetFilters}>
               重置
             </Button>
           </Col>
