@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import mongoose from "mongoose";
 import connectDB from "../../../lib/mongodb";
 import User from "../../../models/User";
 import Department from "../../../models/Department";
@@ -10,37 +11,42 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     try {
       await connectDB();
 
-      const users = await User.find({})
-        .select("-password")
-        .populate("department", "name");
+      let query = {};
 
-      const formattedUsers = users.map((user) => ({
-        key: user._id,
-        username: user.username,
-        email: user.email,
-        phone: user.phone || "",
-        role: user.role,
-        status: user.status,
-        department: user.department ? (user.department as any).name : "",
-        departmentId: user.department || "",
-        entryDate: user.entryDate
-          ? new Date(user.entryDate).toISOString().split("T")[0]
-          : "",
-        employmentType: user.employmentType || "",
-        avatar: user.avatar || "",
-        createdAt: user.createdAt,
-      }));
+      // 如果提供了department参数，添加到查询条件
+      if (req.query.department) {
+        const departmentId = req.query.department;
+        if (mongoose.Types.ObjectId.isValid(departmentId as string)) {
+          query = {
+            ...query,
+            department: new mongoose.Types.ObjectId(departmentId as string),
+          };
+        } else {
+          return res.status(400).json({
+            code: 400,
+            message: "无效的部门ID",
+            data: null,
+          });
+        }
+      }
+
+      const users = await User.find(query)
+        .select("-password")
+        .populate("department", "name")
+        .lean();
 
       return res.status(200).json({
         code: 200,
         message: "获取用户列表成功",
-        data: formattedUsers,
+        data: users,
       });
     } catch (error) {
-      console.error(error);
-      return res
-        .status(500)
-        .json({ code: 500, message: "服务器错误", data: null });
+      console.error("获取用户列表错误:", error);
+      return res.status(500).json({
+        code: 500,
+        message: "获取用户列表失败",
+        data: null,
+      });
     }
   } else if (req.method === "PUT") {
     try {

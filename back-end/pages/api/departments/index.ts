@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import Department, { IDepartment } from "../../../models/Department";
+import User from "../../../models/User";
 import dbConnect from "../../../lib/mongodb";
 import { authMiddleware, AuthenticatedRequest } from "../../../middleware/auth";
 import { Model } from "mongoose";
@@ -13,17 +14,43 @@ const handler = async (req: AuthenticatedRequest, res: NextApiResponse) => {
   switch (method) {
     case "GET":
       try {
+        // 先获取所有部门
         const departments = await (Department as Model<IDepartment>)
           .find({})
-          .populate("manager", "name email")
-          .populate("parentDepartment", "name");
+          .populate("parentDepartment", "name")
+          .lean();
+
+        // 获取每个部门的员工数量
+        const employeeCounts = await User.aggregate([
+          {
+            $match: { department: { $exists: true, $ne: null } },
+          },
+          {
+            $group: {
+              _id: "$department",
+              count: { $sum: 1 },
+            },
+          },
+        ]);
+
+        // 将员工数量添加到部门数据中
+        const departmentsWithCounts = departments.map((dept) => {
+          const countInfo = employeeCounts.find(
+            (count) => count._id.toString() === dept._id.toString()
+          );
+          return {
+            ...dept,
+            employeeCount: countInfo ? countInfo.count : 0,
+          };
+        });
 
         return res.status(200).json({
           code: 200,
           message: "获取部门列表成功",
-          data: departments,
+          data: departmentsWithCounts,
         });
       } catch (error) {
+        console.error("获取部门列表错误:", error);
         return res.status(500).json({
           code: 500,
           message: "获取部门列表失败",

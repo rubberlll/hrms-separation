@@ -102,9 +102,19 @@ const DepartmentManagement: React.FC = () => {
     try {
       const res = await request.get(`/users?department=${deptId}`);
       if (res.data.code === 200) {
-        setUsers(res.data.data.filter((u: any) => u.department));
+        // 确保只显示department字段存在且与当前部门匹配的用户
+        setUsers(
+          res.data.data.filter((u: User) => {
+            const userDeptId =
+              typeof u.department === "string"
+                ? u.department
+                : (u.department as any)?._id;
+            return userDeptId && userDeptId.toString() === deptId;
+          })
+        );
       }
     } catch (e) {
+      console.error("获取员工失败:", e);
       message.error("获取员工失败");
     }
   };
@@ -119,19 +129,14 @@ const DepartmentManagement: React.FC = () => {
   // 递归渲染部门树
   const renderTree = (depts: Department[], level = 0) =>
     depts.map((dept) => (
-      <div
-        key={dept._id}
-        className="dept-tree-row"
-        data-level={level}
-        style={{}}
-      >
+      <div key={dept._id} className="dept-tree-row" data-level={level}>
         <div
           className={`dept-tree-item ${
             selectedDept?._id === dept._id ? "selected" : ""
           }`}
           onClick={() => setSelectedDept(dept)}
         >
-          {dept.children && (
+          {dept.children && dept.children.length > 0 && (
             <span
               className="expand-btn"
               onClick={(e) => {
@@ -152,6 +157,7 @@ const DepartmentManagement: React.FC = () => {
           </Tag>
         </div>
         {dept.children &&
+          dept.children.length > 0 &&
           expandedKeys.includes(dept._id) &&
           renderTree(dept.children, level + 1)}
       </div>
@@ -212,6 +218,7 @@ const DepartmentManagement: React.FC = () => {
         message.success("新增成功");
       }
       setEmpModal({ ...empModal, visible: false });
+      fetchDepartments(); // Refresh department counts
       if (selectedDept) fetchEmployees(selectedDept._id);
     } catch (e) {
       message.error("操作失败");
@@ -222,6 +229,7 @@ const DepartmentManagement: React.FC = () => {
     try {
       await request.delete(`/users/${id}`);
       message.success("删除成功");
+      fetchDepartments(); // Refresh department counts
       if (selectedDept) fetchEmployees(selectedDept._id);
     } catch (e) {
       message.error("删除失败");
@@ -255,14 +263,14 @@ const DepartmentManagement: React.FC = () => {
           >
             编辑
           </Button>
-          <Button
-            icon={<DeleteOutlined />}
-            size="small"
-            danger
-            onClick={() => handleEmpDelete(record._id)}
+          <Popconfirm
+            title="确定删除该员工?"
+            onConfirm={() => handleEmpDelete(record._id)}
           >
-            删除
-          </Button>
+            <Button icon={<DeleteOutlined />} size="small" danger>
+              删除
+            </Button>
+          </Popconfirm>
         </Space>
       ),
     },
