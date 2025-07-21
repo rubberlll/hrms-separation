@@ -24,6 +24,7 @@ const SearchResult = lazy(() => import("../pages/search"));
 const PostManage = lazy(() => import("../pages/post"));
 const ResumeMaker = lazy(() => import("../pages/ResumeMaker"));
 const Register = lazy(() => import("../pages/register/index"));
+const AccountSetting = lazy(() => import("../pages/account/AccountSetting"));
 
 import CLayout from "../layouts/CLayout";
 const AdminLayout = lazy(() => import("../layouts/AdminLayout"));
@@ -155,6 +156,10 @@ const router = createBrowserRouter([
     ),
   },
   {
+    path: "/account/setting",
+    element: <AccountSetting />,
+  },
+  {
     path: "/admin",
     element: (
       <PrivateRoute roles={["admin", "hr", "employee"]}>
@@ -182,6 +187,14 @@ const router = createBrowserRouter([
           <PermissionManagement />
         </AdminLayout>
       </PrivateRoute>
+    ),
+  },
+  {
+    path: "/admin/setting",
+    element: (
+      <AdminLayout>
+        <AccountSetting />
+      </AdminLayout>
     ),
   },
   {

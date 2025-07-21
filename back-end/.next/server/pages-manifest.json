@@ -1,1 +1,10 @@
-{}
+{
+  "/_app": "pages/_app.js",
+  "/_error": "pages/_error.js",
+  "/_document": "pages/_document.js",
+  "/api/verify-token": "pages/api/verify-token.js",
+  "/api/resumes": "pages/api/resumes.js",
+  "/api/users/[id]": "pages/api/users/[id].js",
+  "/api/users/update-profile": "pages/api/users/update-profile.js",
+  "/api/users": "pages/api/users.js"
+}
