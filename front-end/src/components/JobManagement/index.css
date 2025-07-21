@@ -1,0 +1,47 @@
+.job-management-container .job-management-card {
+  border-radius: 8px;
+}
+.job-management-container .job-management-card .ant-card-body {
+  padding: 24px;
+}
+.job-management-container .job-management-tabs .ant-tabs-nav {
+  background-color: #f0f2f5;
+  border-radius: 8px;
+  display: inline-flex;
+  padding: 4px;
+  margin-bottom: 24px;
+}
+.job-management-container .job-management-tabs .ant-tabs-nav::before {
+  display: none;
+}
+.job-management-container .job-management-tabs .ant-tabs-nav .ant-tabs-nav-wrap::before,
+.job-management-container .job-management-tabs .ant-tabs-nav .ant-tabs-nav-wrap::after {
+  display: none;
+}
+.job-management-container .job-management-tabs .ant-tabs-nav .ant-tabs-nav-list {
+  display: flex;
+  flex: 1;
+}
+.job-management-container .job-management-tabs .ant-tabs-nav .ant-tabs-tab {
+  flex: 1;
+  justify-content: center;
+  border-radius: 6px !important;
+  border: none !important;
+  background-color: transparent;
+  color: #595959;
+  margin: 0 !important;
+  padding: 6px 16px !important;
+  transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  font-size: 14px;
+}
+.job-management-container .job-management-tabs .ant-tabs-nav .ant-tabs-tab-active {
+  background-color: #fa8c16 !important;
+}
+.job-management-container .job-management-tabs .ant-tabs-nav .ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: white !important;
+  font-weight: 500;
+  text-shadow: none;
+}
+.job-management-container .job-management-tabs .ant-tabs-nav .ant-tabs-ink-bar {
+  display: none !important;
+}

@@ -12,6 +12,7 @@ import {
   Col,
   Space,
   Typography,
+  Tag,
 } from "antd";
 import {
   UploadOutlined,
@@ -251,6 +252,19 @@ const ApplyPage: React.FC = () => {
     return job.department || "未分配";
   };
 
+  const getStatusTag = (status: "open" | "closed" | "archived") => {
+    switch (status) {
+      case "open":
+        return <Tag color="green">招聘中</Tag>;
+      case "closed":
+        return <Tag color="orange">已关闭</Tag>;
+      case "archived":
+        return <Tag color="default">已归档</Tag>;
+      default:
+        return null;
+    }
+  };
+
   // 重置筛选条件
   const resetFilters = () => {
     setSearchText("");
@@ -368,47 +382,70 @@ const ApplyPage: React.FC = () => {
             ) : (
               <Space direction="vertical" style={{ width: "100%" }}>
                 {filteredJobs.map((job) => (
-                  <div key={job._id} className="apply-job-card">
-                    <div className="apply-job-header">
-                      <span className="apply-job-title">{job.title}</span>
-                      {job.status === "open" && (
-                        <span className="apply-job-status">招聘中</span>
-                      )}
-                      <Button
-                        className="apply-job-apply-btn"
-                        onClick={() => handleApplyJob(job)}
-                      >
-                        申请职位
-                      </Button>
-                    </div>
-                    <div className="apply-job-info">
-                      <ApartmentOutlined /> {getDepartmentName(job)}
-                      <EnvironmentOutlined style={{ marginLeft: 16 }} />{" "}
-                      {job.location}
-                      {job.jobType && (
-                        <span style={{ marginLeft: 16 }}>{job.jobType}</span>
-                      )}
-                    </div>
-                    <div className="apply-job-desc">
-                      <strong>职位描述：</strong>
-                      <br />
-                      {job.description}
-                    </div>
-                    {job.skills && job.skills.length > 0 && (
-                      <div className="apply-job-skills">
-                        {job.skills.map((skill) => (
-                          <span className="apply-job-skill-tag" key={skill}>
-                            {skill}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-                    {job.expiryDate && (
-                      <div className="apply-job-expiry">
-                        截止日期: {dayjs(job.expiryDate).format("YYYY-MM-DD")}
-                      </div>
-                    )}
-                  </div>
+                  <Card
+                    key={job._id}
+                    className="job-list-item"
+                    style={{ marginBottom: 24 }}
+                  >
+                    <Row align="top" justify="space-between">
+                      <Col flex="auto">
+                        <Typography.Title
+                          level={4}
+                          style={{
+                            marginBottom: 8,
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 8,
+                          }}
+                        >
+                          {job.title} {getStatusTag(job.status)}
+                        </Typography.Title>
+                        <Typography.Text
+                          type="secondary"
+                          style={{ display: "block", marginBottom: 8 }}
+                        >
+                          {getDepartmentName(job)} · {job.location}
+                          {job.jobType && ` · ${job.jobType}`}
+                        </Typography.Text>
+                        {job.salaryRange && (
+                          <Typography.Text
+                            style={{
+                              color: "#fa8c16",
+                              fontSize: 16,
+                              fontWeight: 500,
+                              display: "block",
+                              marginBottom: 16,
+                            }}
+                          >
+                            {job.salaryRange}
+                          </Typography.Text>
+                        )}
+                        <div style={{ marginBottom: 16 }}>
+                          <Typography.Text strong>职位描述：</Typography.Text>
+                          <Typography.Paragraph
+                            type="secondary"
+                            style={{ marginBottom: 0 }}
+                          >
+                            {job.description}
+                          </Typography.Paragraph>
+                        </div>
+                        {job.expiryDate && (
+                          <Typography.Text type="secondary">
+                            截止日期:{" "}
+                            {new Date(job.expiryDate).toLocaleDateString()}
+                          </Typography.Text>
+                        )}
+                      </Col>
+                      <Col>
+                        <Button
+                          type="primary"
+                          onClick={() => handleApplyJob(job)}
+                        >
+                          申请职位
+                        </Button>
+                      </Col>
+                    </Row>
+                  </Card>
                 ))}
               </Space>
             )}

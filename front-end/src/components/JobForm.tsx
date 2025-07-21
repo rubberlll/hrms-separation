@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Form, Input, Button, Select, DatePicker, message } from "antd";
+import {
+  Form,
+  Input,
+  Button,
+  Select,
+  DatePicker,
+  message,
+  Row,
+  Col,
+} from "antd";
 import { useJobStore } from "../store/useJobStore";
 import { useLoginStore } from "../store/useLoginStore";
 import dayjs from "dayjs";
@@ -150,25 +159,31 @@ const JobForm: React.FC<JobFormProps> = ({ editingJobId, onCancelEdit }) => {
         <Form.Item label="薪资范围" name="salaryRange">
           <Input placeholder="请输入薪资范围，例如：15k-25k" />
         </Form.Item>
-        <Form.Item
-          label="职位状态"
-          name="status"
-          rules={[{ required: true, message: "请选择职位状态" }]}
-          initialValue="open"
-        >
-          <Select placeholder="请选择职位状态">
-            <Option value="open">开放中</Option>
-            <Option value="closed">已关闭</Option>
-            <Option value="archived">已归档</Option>
-          </Select>
-        </Form.Item>
-        <Form.Item label="招聘类型" name="jobType">
-          <Select placeholder="请选择招聘类型">
-            <Option value="社招">社招</Option>
-            <Option value="校招">校招</Option>
-            <Option value="实习">实习</Option>
-          </Select>
-        </Form.Item>
+        <Row gutter={16}>
+          <Col span={12}>
+            <Form.Item
+              label="职位状态"
+              name="status"
+              rules={[{ required: true, message: "请选择职位状态" }]}
+              initialValue="open"
+            >
+              <Select placeholder="请选择职位状态">
+                <Option value="open">开放中</Option>
+                <Option value="closed">已关闭</Option>
+                <Option value="archived">已归档</Option>
+              </Select>
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item label="招聘类型" name="jobType">
+              <Select placeholder="请选择招聘类型">
+                <Option value="社招">社招</Option>
+                <Option value="校招">校招</Option>
+                <Option value="实习">实习</Option>
+              </Select>
+            </Form.Item>
+          </Col>
+        </Row>
         <Form.Item label="截止日期" name="expiryDate">
           <DatePicker style={{ width: "100%" }} placeholder="请选择截止日期" />
         </Form.Item>
