@@ -88,7 +88,7 @@ async function handler(
           }
 
           // 获取正确的文件路径
-          const filePath = file.filepath || file.path;
+          const filePath = file.filepath;
 
           if (!filePath) {
             console.error("无法获取文件路径:", file);
