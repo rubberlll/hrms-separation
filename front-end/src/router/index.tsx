@@ -23,6 +23,7 @@ const UserCenter = lazy(() => import("../pages/userCenter/index"));
 const SearchResult = lazy(() => import("../pages/search"));
 const PostManage = lazy(() => import("../pages/post"));
 const ResumeMaker = lazy(() => import("../pages/ResumeMaker"));
+const Register = lazy(() => import("../pages/register/index"));
 
 import CLayout from "../layouts/CLayout";
 const AdminLayout = lazy(() => import("../layouts/AdminLayout"));
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
   {
     path: "/login",
     Component: Login,
+  },
+  {
+    path: "/register",
+    Component: Register,
   },
   {
     path: "/",

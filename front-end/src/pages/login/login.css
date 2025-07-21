@@ -73,18 +73,15 @@
   flex-direction: row;
   min-width: 700px;
   min-height: 400px;
+  padding-top: -88px;
 }
 .loginMainContent.recruiter {
   flex-direction: row-reverse;
 }
 .loginLeftForm {
-  flex: 1 1 0;
-  padding: 32px 24px;
-  padding-left: 46px;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 5px 3px 10px -5px rgba(0, 0, 0, 0.1);
+  flex-direction: column;
+  align-items: stretch;
 }
 .loginRightImg {
   flex: 1 1 0;
@@ -98,4 +95,44 @@
   width: 300px;
   height: 350px;
   margin-bottom: 16px;
+}
+.custom-tabs {
+  display: flex;
+  background: #f4f7fa;
+  border-radius: 10px;
+  padding: 4px;
+  margin-bottom: 32px;
+  width: 100%;
+  max-width: 400px;
+  box-sizing: border-box;
+}
+.custom-tab {
+  flex: 1;
+  text-align: center;
+  padding: 12px 0;
+  font-size: 18px;
+  font-weight: 500;
+  color: #6b7685;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.custom-tab.active {
+  background: #fff;
+  color: #222;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+.loginBottomTip {
+  margin-top: 24px;
+  text-align: center;
+  color: #6b7685;
+  font-size: 16px;
+  line-height: 1.8;
+}
+.loginBottomTip .register-link {
+  color: #ff7f22;
+  cursor: pointer;
+  margin-left: 4px;
+  font-weight: 500;
 }

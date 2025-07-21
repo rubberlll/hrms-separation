@@ -1,0 +1,128 @@
+body,
+html,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.register-bg {
+  min-height: 100vh;
+  background: #f3f6fa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.register-card {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 6px 32px rgba(0, 0, 0, 0.06);
+  padding: 14px 0 36px 0;
+  width: 620px;
+  max-width: 95vw;
+  margin-top: 44px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: scale(0.87);
+  transform-origin: top center;
+}
+
+.register-title {
+  font-size: 22px;
+  font-weight: bold;
+  color: #222;
+  margin-bottom: 32px;
+  letter-spacing: 2px;
+  text-align: center;
+}
+
+.register-form {
+  width: 90%;
+}
+
+.register-form .ant-form-item {
+  margin-bottom: 28px;
+}
+
+.register-form .ant-form-item-label > label {
+  font-size: 16px;
+  color: #222;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.register-form .ant-form-item-label > label::before {
+  content: "*";
+  color: #ff4d4f;
+  margin-right: 4px;
+}
+
+.register-form .ant-input-affix-wrapper,
+.register-form .ant-input,
+.register-form .ant-input-password {
+  border-radius: 12px;
+  border: 1px solid #e8eaf0;
+  background: #fff;
+  font-size: 16px;
+  padding: 14px 14px;
+  transition: border 0.2s;
+  box-sizing: border-box;
+}
+
+.register-form .ant-input-affix-wrapper-focused,
+.register-form .ant-input:focus,
+.register-form .ant-input-affix-wrapper:focus {
+  border-color: #ff7f22;
+  background: #fff;
+}
+
+.register-form .ant-input-password {
+  padding: 0;
+}
+
+.register-form .ant-btn-primary {
+  width: 100%;
+  background: #ff7f22;
+  border: none;
+  border-radius: 14px;
+  font-size: 20px;
+  font-weight: bold;
+  height: 54px;
+  margin-top: 12px;
+  box-shadow: 0 2px 8px rgba(255, 127, 34, 0.08);
+  transition: background 0.2s;
+}
+.register-form .ant-btn-primary:hover,
+.register-form .ant-btn-primary:focus {
+  background: #e86c0c;
+}
+
+.register-bottom-tip {
+  margin-top: 38px;
+  text-align: center;
+  color: #6b7685;
+  font-size: 16px;
+  letter-spacing: 1px;
+}
+.register-bottom-tip .register-link {
+  color: #ff7f22;
+  cursor: pointer;
+  margin-left: 4px;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+.register-bottom-tip .register-link:hover {
+  color: #e86c0c;
+}
+
+@media (max-width: 600px) {
+  .register-card {
+    width: 98vw;
+    padding: 24px 0 20px 0;
+  }
+  .register-form {
+    width: 98%;
+  }
+}
