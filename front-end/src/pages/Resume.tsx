@@ -45,7 +45,14 @@ interface ResumeType {
     description: string;
   }[];
   skills?: string[];
-  jobId?: string;
+  jobId?: {
+    _id: string;
+    title: string;
+    department?: {
+      _id: string;
+      name: string;
+    };
+  };
   userId: string;
   interviewProcess?: {
     currentStage: "初筛" | "技术面试" | "HR面试" | "终面" | "offer谈判";
@@ -96,7 +103,7 @@ const Resume = () => {
           education: resume.education,
           workExperience: resume.workExperience,
           skills: resume.skills,
-          jobId: resume.jobId?._id,
+          jobId: resume.jobId, // Keep the whole object
           userId: resume.userId?._id,
           interviewProcess: resume.interviewProcess,
           employmentInfo: resume.employmentInfo,
@@ -117,19 +124,20 @@ const Resume = () => {
       if (response.data.code === 200) {
         message.success("更新状态成功");
 
-        // 如果状态是"hired"（已录用），则更新用户角色为"employee"
+        // 如果状态是"hired"（已录用），则更新用户角色为"employee"，并更新部门
         if (status === "hired" && selectedResume) {
           try {
-            const userResponse = await request.put(
-              `/users/${selectedResume.userId}`,
-              {
-                role: "employee",
-                status: "active",
-              }
-            );
-            if (userResponse.data.code === 200) {
-              message.success("已将用户角色更新为员工");
+            const departmentId = selectedResume.jobId?.department?._id;
+            if (!departmentId) {
+              message.error("无法找到该职位关联的部门信息，更新失败");
+              return;
             }
+            await request.put(`/users/${selectedResume.userId}`, {
+              role: "employee",
+              status: "active",
+              department: departmentId, // Use the correct departmentId
+            });
+            message.success("已将用户角色和部门更新为员工");
           } catch (error) {
             console.error("更新用户角色失败:", error);
             message.error("更新用户角色失败");

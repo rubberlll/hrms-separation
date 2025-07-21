@@ -10,26 +10,30 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     await connectDB();
 
     if (req.method === "GET") {
-      const user = (req as any).user;
-
-      // 根据用户角色决定返回哪些简历
-      let query = {};
-      if (user.role === "user") {
-        // 普通用户只能查看自己的简历
-        query = { userId: user.userId };
+      try {
+        await connectDB();
+        const resumes = await (Resume as Model<IResume>)
+          .find()
+          .populate("userId", "username email phone")
+          .populate({
+            path: "jobId",
+            select: "title department", // Select title and department from Job
+            populate: {
+              path: "department",
+              select: "name", // Select name from Department
+            },
+          });
+        return res.status(200).json({
+          code: 200,
+          message: "获取简历列表成功",
+          data: resumes,
+        });
+      } catch (error) {
+        console.error(error);
+        return res
+          .status(500)
+          .json({ code: 500, message: "服务器错误", data: null });
       }
-
-      const resumes = await (Resume as Model<IResume>)
-        .find(query)
-        .populate("userId", "username email")
-        .populate("jobId", "title department")
-        .sort({ submittedAt: -1 });
-
-      return res.status(200).json({
-        code: 200,
-        message: "获取简历列表成功",
-        data: resumes,
-      });
     }
 
     if (req.method === "POST") {

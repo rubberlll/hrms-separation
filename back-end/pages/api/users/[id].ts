@@ -1,16 +1,22 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import mongoose from "mongoose";
 import connectDB from "../../../lib/mongodb";
 import User from "../../../models/User";
 import { authMiddleware, roleCheck } from "../../../middleware/auth";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { id } = req.query;
+  const userId = Array.isArray(id) ? id[0] : id;
+
+  if (!userId || !mongoose.Types.ObjectId.isValid(userId)) {
+    return res.status(400).json({ code: 400, message: "无效的用户ID" });
+  }
 
   if (req.method === "GET") {
     try {
       await connectDB();
 
-      const user = await User.findById(id)
+      const user = await User.findById(userId)
         .select("-password")
         .populate("department", "name");
 
@@ -53,10 +59,9 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       await connectDB();
 
       const updateData = req.body;
-      // 防止修改敏感字段
       delete updateData.password;
 
-      const updatedUser = await User.findByIdAndUpdate(id, updateData, {
+      const updatedUser = await User.findByIdAndUpdate(userId, updateData, {
         new: true,
         runValidators: true,
       }).select("-password");
@@ -82,7 +87,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     try {
       await connectDB();
 
-      const deletedUser = await User.findByIdAndDelete(id);
+      const deletedUser = await User.findByIdAndDelete(userId);
 
       if (!deletedUser) {
         return res
@@ -108,5 +113,4 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-// 只有管理员和HR可以操作用户信息
 export default authMiddleware(roleCheck(["admin", "hr"])(handler));
